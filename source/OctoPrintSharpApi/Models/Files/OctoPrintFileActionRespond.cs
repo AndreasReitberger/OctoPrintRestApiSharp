@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintFileActionRespond
     {
+        #region Properties
         [JsonProperty("origin", NullValueHandling = NullValueHandling.Ignore)]
         public string Origin { get; set; }
 
@@ -15,5 +16,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
         public OctoPrintFileActionRespondRefs Refs { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

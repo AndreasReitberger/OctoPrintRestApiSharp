@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class ActionCommandPrompt
+    public partial class SettingsActionCommandPrompt
     {
+        #region Properties
         [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
         public string Command { get; set; }
 
@@ -18,5 +16,13 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
 
         [JsonProperty("enable_signal_support", NullValueHandling = NullValueHandling.Ignore)]
         public bool? EnableSignalSupport { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

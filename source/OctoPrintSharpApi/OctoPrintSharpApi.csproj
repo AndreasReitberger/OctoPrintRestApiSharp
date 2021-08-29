@@ -7,17 +7,18 @@
     <Authors>Andreas Reitberger</Authors>
     <Company>Andreas Reitberger</Company>
     <Description>A simple Rest-API-Client for interacting with a OctoPrint instance from any Csharp project.</Description>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <FileVersion>1.0.8.0</FileVersion>
-    <Version>1.0.8</Version>
+    <AssemblyVersion>1.0.9.0</AssemblyVersion>
+    <FileVersion>1.0.9.0</FileVersion>
+    <Version>1.0.9</Version>
     <Copyright>Andreas Reitberger</Copyright>
     <RepositoryUrl>https://github.com/AndreasReitberger/OctoPrintSharpApi</RepositoryUrl>
     <PackageTags>OctoPrint, Server, API, Rest, Sharp, Csharp</PackageTags>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="RestSharp" Version="106.11.7" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="UtilitiesSharpLibrary" Version="1.0.0" />
     <PackageReference Include="WebSocket4Net" Version="0.15.2" />

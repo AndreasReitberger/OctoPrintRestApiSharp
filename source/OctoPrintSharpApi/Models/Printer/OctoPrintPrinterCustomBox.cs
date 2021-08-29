@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models.Printer
 {
     public partial class OctoPrintPrinterCustomBox
     {
+        #region Properties
         [JsonProperty("x_max", NullValueHandling = NullValueHandling.Ignore)]
         public long? XMax { get; set; }
 
@@ -21,5 +22,13 @@ namespace AndreasReitberger.Models.Printer
 
         [JsonProperty("z_min", NullValueHandling = NullValueHandling.Ignore)]
         public long? ZMin { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

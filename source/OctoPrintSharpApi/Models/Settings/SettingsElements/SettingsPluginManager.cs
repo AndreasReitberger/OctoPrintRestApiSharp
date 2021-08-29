@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Pluginmanager
+    public partial class SettingsPluginManager
     {
+        #region Properties
         [JsonProperty("confirm_disable", NullValueHandling = NullValueHandling.Ignore)]
         public bool? ConfirmDisable { get; set; }
 
@@ -14,7 +14,7 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
         public bool? DependencyLinks { get; set; }
 
         [JsonProperty("hidden", NullValueHandling = NullValueHandling.Ignore)]
-        public object[] Hidden { get; set; }
+        public List<object> Hidden { get; set; } = new();
 
         [JsonProperty("ignore_throttled", NullValueHandling = NullValueHandling.Ignore)]
         public bool? IgnoreThrottled { get; set; }
@@ -36,5 +36,13 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
 
         [JsonProperty("repository_ttl", NullValueHandling = NullValueHandling.Ignore)]
         public long? RepositoryTtl { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

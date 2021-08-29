@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintFilePrints
     {
+        #region Properties
         [JsonProperty("failure")]
         public long Failure { get; set; }
 
@@ -12,5 +13,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("success")]
         public long Success { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

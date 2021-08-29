@@ -6,6 +6,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintPrinter
     {
+        #region Properties
         [JsonProperty("axes")]
         public OctoPrintPrinterAxes Axes { get; set; }
 
@@ -41,5 +42,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("volume")]
         public OctoPrintPrinterVolume Volume { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

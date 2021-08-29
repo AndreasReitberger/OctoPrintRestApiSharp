@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintJobInfoProgress
     {
+        #region Properties
         [JsonProperty("completion", NullValueHandling = NullValueHandling.Ignore)]
         public double Completion { get; set; }
 
@@ -15,5 +16,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("printTimeLeft", NullValueHandling = NullValueHandling.Ignore)]
         public long PrintTimeLeft { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

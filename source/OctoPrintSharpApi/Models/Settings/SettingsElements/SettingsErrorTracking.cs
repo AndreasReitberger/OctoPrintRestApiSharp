@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Errortracking
+    public partial class SettingsErrorTracking
     {
+        #region Properties
         [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
         public bool? Enabled { get; set; }
 
@@ -21,5 +20,13 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
 
         [JsonProperty("url_server", NullValueHandling = NullValueHandling.Ignore)]
         public Uri UrlServer { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

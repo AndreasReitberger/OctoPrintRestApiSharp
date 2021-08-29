@@ -148,15 +148,13 @@ namespace AndreasReitberger.Models.WebCam
                 OnPropertyChanged();
             }
         }
-
         #endregion
 
-        #region Constructors
-        public OctoPrintWebCamSettingsInfo()
+        #region Overrides
+        public override string ToString()
         {
-
+            return JsonConvert.SerializeObject(this);
         }
-
         #endregion
     }
 }

@@ -6,6 +6,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintWebSocketConnectionPermission
     {
+        #region Properties
         [JsonProperty("key")]
         public string Key { get; set; }
 
@@ -26,5 +27,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
         public string Plugin { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

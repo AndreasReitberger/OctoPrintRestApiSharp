@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintVersionInfo
     {
+        #region Properties
         [JsonProperty("api")]
         public string Api { get; set; }
 
@@ -12,5 +13,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("text")]
         public string Text { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

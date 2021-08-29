@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintPrinterExtruder
     {
+        #region Properties
         [JsonProperty("count")]
         public long Count { get; set; }
 
@@ -15,5 +16,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("sharedNozzle")]
         public bool SharedNozzle { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

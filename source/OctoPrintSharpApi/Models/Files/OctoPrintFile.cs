@@ -5,6 +5,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintFile
     {
+        #region Properties
         [JsonIgnore]
         public bool IsAnalysed
         {
@@ -17,8 +18,7 @@ namespace AndreasReitberger.Models
         }
 
         [JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintFile[] Children { get; set; }
-        //public OctoPrintFileChild[] Children { get; set; }
+        public List<OctoPrintFile> Children { get; set; } = new();
 
         [JsonProperty("date")]
         public long Date { get; set; }
@@ -57,7 +57,16 @@ namespace AndreasReitberger.Models
         public string Type { get; set; }
 
         [JsonProperty("typePath", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] TypePath { get; set; }
+        public List<string> TypePath { get; set; } = new();
+
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
 
     }
 }

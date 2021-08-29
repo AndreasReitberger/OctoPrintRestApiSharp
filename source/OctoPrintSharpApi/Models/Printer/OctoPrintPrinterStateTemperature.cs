@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintPrinterStateTemperature
     {
+        #region Properties
         [JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
         public OctoPrintPrinterStateTemperatureInfo Bed { get; set; }
 
@@ -18,5 +19,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("tool1", NullValueHandling = NullValueHandling.Ignore)]
         public OctoPrintPrinterStateTemperatureInfo Tool1 { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

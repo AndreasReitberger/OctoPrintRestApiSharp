@@ -7,6 +7,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintWebSocketConnectionInfo
     {
+        #region Properties
         [JsonProperty("version")]
         public string Version { get; set; }
 
@@ -29,6 +30,14 @@ namespace AndreasReitberger.Models
         public object SafeMode { get; set; }
 
         [JsonProperty("permissions")]
-        public List<OctoPrintWebSocketConnectionPermission> Permissions { get; set; }
+        public List<OctoPrintWebSocketConnectionPermission> Permissions { get; set; } = new();
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

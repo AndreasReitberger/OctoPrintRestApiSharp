@@ -1,4 +1,6 @@
-﻿namespace AndreasReitberger.Models
+﻿using Newtonsoft.Json;
+
+namespace AndreasReitberger.Models
 {
     public class OctoPrintModel
     {
@@ -16,6 +18,13 @@
 
         #region Constructor
         public OctoPrintModel() { }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
         #endregion
     }
 }

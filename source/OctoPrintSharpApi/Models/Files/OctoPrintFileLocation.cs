@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace AndreasReitberger.Models
 {
@@ -9,12 +7,11 @@ namespace AndreasReitberger.Models
         #region Static
         public static List<OctoPrintFileLocation> GetList()
         {
-            var list = new List<OctoPrintFileLocation>();
-
-            list.Add(new OctoPrintFileLocation() { Location = "local", Icon = "\U000f02ca" });
-            list.Add(new OctoPrintFileLocation() { Location = "sdcard", Icon = "\U000f07dc" });
-
-            return list;
+            return new List<OctoPrintFileLocation>
+            {
+                new OctoPrintFileLocation() { Location = "local", Icon = "\U000f02ca" },
+                new OctoPrintFileLocation() { Location = "sdcard", Icon = "\U000f07dc" }
+            };
         }
 
         #endregion

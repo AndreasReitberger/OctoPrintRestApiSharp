@@ -1,14 +1,13 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Feature
+    public partial class SettingsFeature
     {
+        #region Properties
         [JsonProperty("autoUppercaseBlacklist", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] AutoUppercaseBlacklist { get; set; }
+        public List<string> AutoUppercaseBlacklist { get; set; } = new();
 
         [JsonProperty("g90InfluencesExtruder", NullValueHandling = NullValueHandling.Ignore)]
         public bool? G90InfluencesExtruder { get; set; }
@@ -42,5 +41,13 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
 
         [JsonProperty("temperatureGraph", NullValueHandling = NullValueHandling.Ignore)]
         public bool? TemperatureGraph { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

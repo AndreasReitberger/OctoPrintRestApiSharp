@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Folder
+    public partial class SettingsFolder
     {
+        #region Properties
         [JsonProperty("logs", NullValueHandling = NullValueHandling.Ignore)]
         public string Logs { get; set; }
 
@@ -21,5 +19,13 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
 
         [JsonProperty("watched", NullValueHandling = NullValueHandling.Ignore)]
         public string Watched { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

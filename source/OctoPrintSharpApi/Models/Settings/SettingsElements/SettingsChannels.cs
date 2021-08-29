@@ -1,25 +1,31 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Channels
+    public partial class SettingsChannels
     {
+        #region Properties
         [JsonProperty("_blog", NullValueHandling = NullValueHandling.Ignore)]
-        public Blog Blog { get; set; }
+        public SettingsBlog Blog { get; set; }
 
         [JsonProperty("_important", NullValueHandling = NullValueHandling.Ignore)]
-        public Blog Important { get; set; }
+        public SettingsBlog Important { get; set; }
 
         [JsonProperty("_octopi", NullValueHandling = NullValueHandling.Ignore)]
-        public Blog Octopi { get; set; }
+        public SettingsBlog Octopi { get; set; }
 
         [JsonProperty("_plugins", NullValueHandling = NullValueHandling.Ignore)]
-        public Blog Plugins { get; set; }
+        public SettingsBlog Plugins { get; set; }
 
         [JsonProperty("_releases", NullValueHandling = NullValueHandling.Ignore)]
-        public Blog Releases { get; set; }
+        public SettingsBlog Releases { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

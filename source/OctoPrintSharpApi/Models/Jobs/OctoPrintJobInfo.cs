@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models
 {
     public partial class OctoPrintJobInfo
     {
+        #region Properties
         [JsonProperty("job")]
         public OctoPrintJobInfoJob Job { get; set; }
 
@@ -15,6 +13,14 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("state")]
         public string State { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 
 }

@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintPrinterVolume
     {
+        #region Properties
         [JsonProperty("depth")]
         public long Depth { get; set; }
 
@@ -18,5 +19,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("width")]
         public long Width { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

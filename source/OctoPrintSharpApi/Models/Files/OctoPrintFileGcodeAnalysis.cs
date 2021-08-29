@@ -6,6 +6,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintFileGcodeAnalysis
     {
+        #region Properties
         [JsonProperty("dimensions")]
         public OctoPrintFileDimensions Dimensions { get; set; } = new OctoPrintFileDimensions() { Depth = 0, Height = 0, Width = 0 };
 
@@ -13,10 +14,10 @@ namespace AndreasReitberger.Models
         public double EstimatedPrintTime { get; set; } = 0;
 
         [JsonProperty("filament")]
-        public Dictionary<string, OctoPrintPrinterFilament> Filament { get; set; }
+        public Dictionary<string, OctoPrintFilament> Filament { get; set; } = new();
 
         [JsonProperty("printingArea")]
-        public Dictionary<string, double> PrintingArea { get; set; }
+        public Dictionary<string, double> PrintingArea { get; set; } = new();
 
         [JsonIgnore]
         public double TotalFilamentVolume
@@ -26,7 +27,7 @@ namespace AndreasReitberger.Models
                 double filamentUsed = 0;
                 if(Filament != null)
                 {
-                    foreach(KeyValuePair<string, OctoPrintPrinterFilament> pair in Filament)
+                    foreach(KeyValuePair<string, OctoPrintFilament> pair in Filament)
                     {
                         try
                         {
@@ -48,7 +49,7 @@ namespace AndreasReitberger.Models
                 double filamentUsed = 0;
                 if(Filament != null)
                 {
-                    foreach(KeyValuePair<string, OctoPrintPrinterFilament> pair in Filament)
+                    foreach(KeyValuePair<string, OctoPrintFilament> pair in Filament)
                     {
                         try
                         {
@@ -62,5 +63,13 @@ namespace AndreasReitberger.Models
                 return filamentUsed;
             }
         }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

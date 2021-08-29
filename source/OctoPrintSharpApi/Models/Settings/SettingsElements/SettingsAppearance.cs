@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Appearance
+    public partial class SettingsAppearance
     {
+        #region Properties
         [JsonProperty("closeModalsWithClick", NullValueHandling = NullValueHandling.Ignore)]
         public bool? CloseModalsWithClick { get; set; }
 
@@ -30,5 +28,13 @@ namespace AndreasReitberger.Models.Settings.SettingsElements
 
         [JsonProperty("showFahrenheitAlso", NullValueHandling = NullValueHandling.Ignore)]
         public bool? ShowFahrenheitAlso { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

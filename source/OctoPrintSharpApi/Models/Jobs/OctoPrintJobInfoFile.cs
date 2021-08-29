@@ -4,6 +4,7 @@ namespace AndreasReitberger.Models
 {
     public partial class OctoPrintJobInfoFile
     {
+        #region Properties
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -18,5 +19,13 @@ namespace AndreasReitberger.Models
 
         [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
         public string Path { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }

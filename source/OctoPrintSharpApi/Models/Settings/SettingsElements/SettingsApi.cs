@@ -1,16 +1,22 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.Settings.SettingsElements
 {
-    public partial class Api
+    public partial class SettingsApi
     {
+        #region Properties
         [JsonProperty("allowCrossOrigin", NullValueHandling = NullValueHandling.Ignore)]
         public bool? AllowCrossOrigin { get; set; }
 
         [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
         public string Key { get; set; }
+        #endregion
+
+        #region Overrides
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+        #endregion
     }
 }
