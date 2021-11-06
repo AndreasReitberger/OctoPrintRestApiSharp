@@ -55,3 +55,6 @@ var state = await OctoPrintServer.Instance.GetCurrentToolStateAsync(true);
 
 var jobinfo = await OctoPrintServer.Instance.GetJobInfoAsync();
 ```
+
+# Dependencies
+RCoreSharp: https://github.com/AndreasReitberger/CoreSharp
