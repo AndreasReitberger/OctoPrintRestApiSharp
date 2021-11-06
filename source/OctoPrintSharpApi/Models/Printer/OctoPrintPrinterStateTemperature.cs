@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace AndreasReitberger.Models
 {
@@ -12,7 +13,7 @@ namespace AndreasReitberger.Models
         public OctoPrintPrinterStateTemperatureInfo Chamber { get; set; }
 
         [JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateHistory[] History { get; set; }
+        public List<OctoPrintPrinterStateHistory> History { get; set; } = new();
 
         [JsonProperty("tool0", NullValueHandling = NullValueHandling.Ignore)]
         public OctoPrintPrinterStateTemperatureInfo Tool0 { get; set; }

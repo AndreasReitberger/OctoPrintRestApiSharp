@@ -1,8 +1,7 @@
-﻿using AndreasReitberger.Models.Settings.SettingsElements;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models.Settings
+namespace AndreasReitberger.Models
 {
     public partial class OctoPrintSettings
     {

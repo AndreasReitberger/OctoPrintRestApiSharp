@@ -1,5 +1,5 @@
 using AndreasReitberger;
-using AndreasReitberger.Utilities;
+using AndreasReitberger.Core.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

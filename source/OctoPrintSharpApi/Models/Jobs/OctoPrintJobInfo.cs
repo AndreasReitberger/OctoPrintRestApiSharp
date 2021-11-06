@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AndreasReitberger.Enum;
+using Newtonsoft.Json;
 
 namespace AndreasReitberger.Models
 {
@@ -15,8 +16,17 @@ namespace AndreasReitberger.Models
         public string State { get; set; }
         #endregion
 
+        #region Static
+        public static OctoPrintJobInfo Default = new()
+        {
+            State = OctoPrintConnectionStates.Operational.ToString(),
+            Progress = new OctoPrintJobInfoProgress() { Completion = 0 },
+            Job = new OctoPrintJobInfoJob(),
+        };
+        #endregion
+
         #region Overrides
-        public override string ToString()
+    public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
         }

@@ -1,8 +1,8 @@
-﻿using AndreasReitberger.Utilities;
+﻿using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using System;
 
-namespace AndreasReitberger.Models.WebCam
+namespace AndreasReitberger.Models
 {
     public class OctoPrintWebCamSettingsInfo : BaseModel
     {

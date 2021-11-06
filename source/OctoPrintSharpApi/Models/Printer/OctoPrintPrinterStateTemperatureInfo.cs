@@ -22,6 +22,15 @@ namespace AndreasReitberger.Models
 
         #endregion
 
+        #region Static
+        public static OctoPrintPrinterStateTemperatureInfo Default = new()
+        {
+            Actual = 0,
+            Target = 0,
+            Offset = 0,
+        };
+        #endregion
+
         #region Methods
         OctoPrintCurrentToolState GetCurrentState()
         {

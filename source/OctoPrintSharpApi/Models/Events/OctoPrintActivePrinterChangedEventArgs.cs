@@ -2,11 +2,11 @@
 
 namespace AndreasReitberger.Models
 {
-    public partial class SettingsGcodeAnalysis
+    public class OctoPrintActivePrinterChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        [JsonProperty("runAt", NullValueHandling = NullValueHandling.Ignore)]
-        public string RunAt { get; set; }
+        public OctoPrintPrinter NewPrinter { get; set; }
+        public OctoPrintPrinter OldPrinter { get; set; }
         #endregion
 
         #region Overrides

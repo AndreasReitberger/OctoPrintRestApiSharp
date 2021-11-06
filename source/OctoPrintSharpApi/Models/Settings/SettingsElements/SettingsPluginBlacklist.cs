@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace AndreasReitberger.Models.Settings.SettingsElements
+namespace AndreasReitberger.Models
 {
     public partial class SettingsPluginBlacklist
     {

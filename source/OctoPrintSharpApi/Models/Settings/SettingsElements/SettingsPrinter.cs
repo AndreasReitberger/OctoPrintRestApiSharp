@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AndreasReitberger.Models.Settings.SettingsElements
+namespace AndreasReitberger.Models
 {
     public partial class SettingsPrinter
     {

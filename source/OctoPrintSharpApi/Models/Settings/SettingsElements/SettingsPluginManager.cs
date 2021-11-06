@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models.Settings.SettingsElements
+namespace AndreasReitberger.Models
 {
     public partial class SettingsPluginManager
     {

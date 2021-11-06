@@ -1,28 +1,25 @@
-﻿using System;
+﻿using AndreasReitberger.Enum;
+using AndreasReitberger.Interfaces;
+using AndreasReitberger.Models;
+using AndreasReitberger.Core.Utilities;
+using Newtonsoft.Json;
+// Thirdparty
+using RestSharp;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Security;
+using System.Security.Authentication;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-// Thirdparty
-using RestSharp;
-using Newtonsoft.Json;
-using AndreasReitberger.Enum;
-using AndreasReitberger.Models;
-using AndreasReitberger.Models.Settings;
-using AndreasReitberger.Utilities;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
-using AndreasReitberger.Interfaces;
-using System.Net.Http;
-using System.Security.Authentication;
-using System.Security;
-
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 
@@ -663,6 +660,13 @@ namespace AndreasReitberger
             set
             {
                 if (_activePrinter == value) return;
+                OnActivePrinterChanged(new OctoPrintActivePrinterChangedEventArgs()
+                {
+                    SessonId = SessionId,
+                    NewPrinter = value,
+                    OldPrinter = _activePrinter,
+                    Printer = GetActivePrinterSlug(),
+                });
                 _activePrinter = value;
                 OnPropertyChanged();
             }
@@ -781,6 +785,53 @@ namespace AndreasReitberger
                     NewActivePrintInfo = value,
                     Printer = GetActivePrinterSlug(),
                 });
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        [XmlIgnore]
+        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _extruders = new();
+        [JsonIgnore]
+        [XmlIgnore]
+        public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> Extruders
+        {
+            get => _extruders;
+            set
+            {
+                if (_extruders == value) return;
+                _extruders = value;
+                OnPropertyChanged();
+            }
+        }
+        [JsonIgnore]
+        [XmlIgnore]
+        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedBeds = new();
+        [JsonIgnore]
+        [XmlIgnore]
+        public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> HeatedBeds
+        {
+            get => _heatedBeds;
+            set
+            {
+                if (_heatedBeds == value) return;
+                _heatedBeds = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonIgnore]
+        [XmlIgnore]
+        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedChambers = new();
+        [JsonIgnore]
+        [XmlIgnore]
+        public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> HeatedChambers
+        {
+            get => _heatedChambers;
+            set
+            {
+                if (_heatedChambers == value) return;
+                _heatedChambers = value;
                 OnPropertyChanged();
             }
         }
@@ -1191,6 +1242,12 @@ namespace AndreasReitberger
         {
             OctoPrintModelGroupsChanged?.Invoke(this, e);
         }
+
+        public event EventHandler<OctoPrintActivePrinterChangedEventArgs> ActivePrinterChanged;
+        protected virtual void OnActivePrinterChanged(OctoPrintActivePrinterChangedEventArgs e)
+        {
+            ActivePrinterChanged?.Invoke(this, e);
+        }
         #endregion
 
         #endregion
@@ -1400,24 +1457,22 @@ namespace AndreasReitberger
         #region RestApi
 
         async Task<OctoPrintApiRequestRespone> SendRestApiRequestAsync(
-            Method Method, 
-            string Command, 
-            string JsonDataString = "", 
-            Dictionary<string, string> UrlSegments = null, 
-            int Timeout = 10000, 
-            string RequestTargetUri = "")
+            Method Method,
+            string Command,
+            string JsonDataString = "",
+            Dictionary<string, string> UrlSegments = null,
+            int Timeout = 10000)
         {
             CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, Timeout));
-            return await SendRestApiRequestAsync(Method, Command, cts, JsonDataString, UrlSegments, RequestTargetUri).ConfigureAwait(false);
+            return await SendRestApiRequestAsync(Method, Command, cts, JsonDataString, UrlSegments).ConfigureAwait(false);
         }
 
         async Task<OctoPrintApiRequestRespone> SendRestApiRequestAsync(
-            Method Method, 
+            Method Method,
             string Command,
             CancellationTokenSource cts,
-            string JsonDataString = "", 
-            Dictionary<string, string> UrlSegments = null, 
-            string RequestTargetUri = ""
+            string JsonDataString = "",
+            Dictionary<string, string> UrlSegments = null
             )
         {
             OctoPrintApiRequestRespone apiRsponeResult = new();
@@ -1448,7 +1503,7 @@ namespace AndreasReitberger
                     IRestResponse respone = await client.ExecuteAsync(request, cts.Token).ConfigureAwait(false);
 
                     if ((
-                        respone.StatusCode == HttpStatusCode.OK || respone.StatusCode == HttpStatusCode.NoContent) && 
+                        respone.StatusCode == HttpStatusCode.OK || respone.StatusCode == HttpStatusCode.NoContent) &&
                         respone.ResponseStatus == ResponseStatus.Completed)
                     {
                         apiRsponeResult.IsOnline = true;
@@ -1463,7 +1518,7 @@ namespace AndreasReitberger
                             Uri = fullUri,
                         };
                     }
-                    else if (respone.StatusCode == HttpStatusCode.NonAuthoritativeInformation || respone.StatusCode == HttpStatusCode.Forbidden)
+                    else if (respone.StatusCode is HttpStatusCode.NonAuthoritativeInformation or HttpStatusCode.Forbidden)
                     {
                         apiRsponeResult.IsOnline = true;
                         apiRsponeResult.HasAuthenticationError = true;
@@ -1517,9 +1572,9 @@ namespace AndreasReitberger
 
         async Task<OctoPrintApiRequestRespone> SendRestApiRequestAsync(
             Method Method,
-            string Command, 
-            object JsonData, 
-            Dictionary<string, string> UrlSegments = null, 
+            string Command,
+            object JsonData,
+            Dictionary<string, string> UrlSegments = null,
             int Timeout = 10000
             )
         {
@@ -1527,10 +1582,10 @@ namespace AndreasReitberger
         }
 
         async Task<OctoPrintApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
-            OctoPrintFileLocation Location, 
-            string Target, 
-            byte[] File, 
-            bool SelectFile, 
+            OctoPrintFileLocation Location,
+            string Target,
+            byte[] File,
+            bool SelectFile,
             bool PrintFile,
             int Timeout = 10000)
         {
@@ -1861,8 +1916,31 @@ namespace AndreasReitberger
         {
             try
             {
-                if (newState == null) return;
+                if (newState == null || newState?.Temperature == null)
+                {
+                    return;
+                }
 
+                Extruders = newState.Temperature?.Tool1 == null ? new()
+                {
+                    newState.Temperature?.Tool0,
+                } :
+                new()
+                {
+                    newState.Temperature?.Tool0,
+                    newState.Temperature?.Tool1,
+                }
+                ;
+                HeatedBeds = newState.Temperature?.Bed != null ? new()
+                {
+                    newState.Temperature?.Bed,
+                } :
+                new();
+                HeatedChambers = newState.Temperature?.Chamber != null ? new()
+                {
+                    newState.Temperature?.Chamber,
+                } :
+                new();
             }
             catch (Exception exc)
             {
@@ -1931,6 +2009,11 @@ namespace AndreasReitberger
             ObservableCollection<OctoPrintModel> collectedFiles = new();
             try
             {
+                if (files == null)
+                {
+                    return collectedFiles;
+                }
+
                 foreach (OctoPrintFile file in files)
                 {
                     Stack<OctoPrintFile> fileStack = new();
@@ -2174,14 +2257,22 @@ namespace AndreasReitberger
         #endregion
 
         #region ActivePrinter
-        public async Task SetPrinterActiveAsync(int Index, bool RefreshPrinterList = true)
+        public async Task SetPrinterActiveAsync(int Index = -1, bool RefreshPrinterList = true)
         {
             try
             {
                 if (RefreshPrinterList)
                     await RefreshPrinterListAsync().ConfigureAwait(false);
-                if (Printers.Count > Index)
+                if (Printers.Count > Index && Index >= 0)
                     ActivePrinter = Printers[Index];
+                else
+                {
+                    // If no index is provided, or it's out of bound, the first online printer is used
+                    ActivePrinter = Printers.FirstOrDefault(printer => printer.IsOnline);
+                    // If no online printers is found, however there is at least one printer configured, use this one
+                    if (ActivePrinter == null && Printers.Count > 0)
+                        ActivePrinter = Printers[0];
+                }
             }
             catch (Exception exc)
             {
@@ -2194,7 +2285,7 @@ namespace AndreasReitberger
             {
                 if (RefreshPrinterList)
                     await RefreshPrinterListAsync().ConfigureAwait(false);
-                var printer = Printers.FirstOrDefault(prt => prt.Id == Id);
+                OctoPrintPrinter printer = Printers.FirstOrDefault(prt => prt.Id == Id);
                 if (printer != null && ActivePrinter != printer)
                 {
                     ActivePrinter = printer;
@@ -2449,15 +2540,39 @@ namespace AndreasReitberger
             try
             {
                 string command = "connection";
-                object parameter = new
+                object parameter;
+                if (string.IsNullOrEmpty(port) && baudrate < 0)
                 {
-                    command = "connect",
-                    port = port,
-                    baudrate = baudrate,
-                    printerProfile = printerProfile,
-                    save = save,
-                    autoconnect = autoconnect
-                };
+                    parameter = new
+                    {
+                        command = "connect",
+                        printerProfile = printerProfile,
+                        save = save,
+                        autoconnect = autoconnect
+                    };
+                }
+                else if(string.IsNullOrEmpty(port))
+                {
+                    parameter = new
+                    {
+                        command = "connect",
+                        baudrate = baudrate,
+                        printerProfile = printerProfile,
+                        save = save,
+                        autoconnect = autoconnect
+                    };
+                }
+                else
+                {
+                    parameter = new
+                    {
+                        command = "connect",
+                        port = port,
+                        printerProfile = printerProfile,
+                        save = save,
+                        autoconnect = autoconnect
+                    };
+                }
 
                 // no content result
                 OctoPrintApiRequestRespone result = await SendRestApiRequestAsync(Method.POST, command, parameter).ConfigureAwait(false);
@@ -2468,6 +2583,12 @@ namespace AndreasReitberger
                 OnError(new UnhandledExceptionEventArgs(exc, false));
                 return false;
             }
+        }
+
+        public async Task<bool> ConnectPrinterAsync(string printerProfile, bool save, bool autoconnect, string port = "", long baudrte = -1)
+        {
+            // Use auto settings
+            return await ConnectPrinterAsync(port, baudrte, printerProfile, save, autoconnect).ConfigureAwait(false);
         }
 
         public async Task<bool> DisconnectPrinterAsync()
@@ -2498,14 +2619,16 @@ namespace AndreasReitberger
         {
             try
             {
-                var models = await GetFilesAsync(location, path, recursive).ConfigureAwait(false);
+                OctoPrintFiles models = await GetFilesAsync(location, path, recursive).ConfigureAwait(false);
                 if (models != null)
                 {
-                    ObservableCollection<OctoPrintModel> col = IterateOctoPrintFileStack(models.Children ?? models.Files);
-                    return col;
+                    //return IterateOctoPrintFileStack(models.Children ?? models.Files);
+                    return IterateOctoPrintFileStack(models?.Children?.Count > 0 ? models?.Children : models?.Files);
                 }
                 else
+                {
                     return new ObservableCollection<OctoPrintModel>();
+                }
             }
             catch (Exception exc)
             {
@@ -2518,7 +2641,7 @@ namespace AndreasReitberger
         {
             try
             {
-                var modelDatas = new ObservableCollection<OctoPrintModel>();
+                ObservableCollection<OctoPrintModel> modelDatas = new();
                 if (!IsReady || ActivePrinter == null)
                 {
                     Models = modelDatas;

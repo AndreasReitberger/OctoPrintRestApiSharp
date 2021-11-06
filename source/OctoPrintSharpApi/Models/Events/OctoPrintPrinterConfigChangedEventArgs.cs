@@ -1,5 +1,4 @@
-﻿using AndreasReitberger.Models.Settings;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace AndreasReitberger.Models
 {
