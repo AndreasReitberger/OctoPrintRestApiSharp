@@ -26,7 +26,7 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Overrides
-    public override string ToString()
+        public override string ToString()
         {
             return JsonConvert.SerializeObject(this);
         }

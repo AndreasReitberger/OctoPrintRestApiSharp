@@ -1591,7 +1591,7 @@ namespace AndreasReitberger
         {
             OctoPrintApiRequestRespone apiRsponeResult = new();
             if (!IsOnline) return apiRsponeResult;
-            
+
             try
             {
                 CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, Timeout));
@@ -1679,16 +1679,16 @@ namespace AndreasReitberger
             }
             catch (Exception exc)
             {
-                OnError(new UnhandledExceptionEventArgs(exc, false));               
+                OnError(new UnhandledExceptionEventArgs(exc, false));
             }
             return apiRsponeResult;
         }
 
         async Task<OctoPrintApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
-            OctoPrintFileLocation Location, 
-            string Target, 
-            string FilePath, 
-            bool SelectFile, 
+            OctoPrintFileLocation Location,
+            string Target,
+            string FilePath,
+            bool SelectFile,
             bool PrintFile,
             int Timeout = 10000)
         {
@@ -1782,15 +1782,15 @@ namespace AndreasReitberger
             }
             catch (Exception exc)
             {
-                OnError(new UnhandledExceptionEventArgs(exc, false));               
+                OnError(new UnhandledExceptionEventArgs(exc, false));
             }
             return apiRsponeResult;
         }
 
         async Task<OctoPrintApiRequestRespone> SendMultipartFormDataFolderCreationRestApiRequestAsync(
-            string Target, 
-            string FolderName, 
-            string Path, 
+            string Target,
+            string FolderName,
+            string Path,
             int Timeout = 10000)
         {
             OctoPrintApiRequestRespone apiRsponeResult = new();
@@ -1880,7 +1880,7 @@ namespace AndreasReitberger
             }
             catch (Exception exc)
             {
-                OnError(new UnhandledExceptionEventArgs(exc, false));               
+                OnError(new UnhandledExceptionEventArgs(exc, false));
             }
             return apiRsponeResult;
         }
@@ -1986,7 +1986,7 @@ namespace AndreasReitberger
 
                 OctoPrintApiRequestRespone result = await SendRestApiRequestAsync(Method.GET, files, "", urlSegements).ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                if(list != null)
+                if (list != null)
                 {
                     FreeDiskSpace = list.Free;
                     TotalDiskSpace = list.Total;
@@ -2196,7 +2196,8 @@ namespace AndreasReitberger
                     return; // StopListening();
             }
             ConnectWebSocket();
-            Timer = new Timer(async (action) => {
+            Timer = new Timer(async (action) =>
+            {
                 // Do not check the online state ever tick
                 if (RefreshCounter > 5)
                 {
@@ -2486,7 +2487,7 @@ namespace AndreasReitberger
             }
         }
         #endregion
-       
+
         #region VersionInformation
         public async Task<OctoPrintVersionInfo> GetVersionInfoAsync()
         {
@@ -2551,7 +2552,7 @@ namespace AndreasReitberger
                         autoconnect = autoconnect
                     };
                 }
-                else if(string.IsNullOrEmpty(port))
+                else if (string.IsNullOrEmpty(port))
                 {
                     parameter = new
                     {
@@ -2852,7 +2853,7 @@ namespace AndreasReitberger
             try
             {
                 var result = await SendMultipartFormDataFolderCreationRestApiRequestAsync(location, name, path);
-                if(result != null)
+                if (result != null)
                     return result.Succeeded;
                 else return false;
             }
@@ -2926,13 +2927,14 @@ namespace AndreasReitberger
             try
             {
                 string command = "printer/printhead";
-                object parameter = new { 
-                    command = "jog", 
-                    x = double.IsInfinity(X) ? 0 : X, 
-                    y = double.IsInfinity(Y) ? 0 : Y, 
-                    z = double.IsInfinity(Z) ? 0 : Z, 
+                object parameter = new
+                {
+                    command = "jog",
+                    x = double.IsInfinity(X) ? 0 : X,
+                    y = double.IsInfinity(Y) ? 0 : Y,
+                    z = double.IsInfinity(Z) ? 0 : Z,
                     speed = Speed,
-                    absolute = absolute ? "true" : "false" 
+                    absolute = absolute ? "true" : "false"
                 };
 
                 // no content for this result
@@ -3057,7 +3059,7 @@ namespace AndreasReitberger
 
                 string command = "printer/tool";
                 object parameter = null;
-                if(tool0 != int.MinValue && tool1 != int.MinValue)
+                if (tool0 != int.MinValue && tool1 != int.MinValue)
                     parameter = new { command = "target", targets = new { tool0 = tool0, tool1 = tool1 } };
                 else if (tool0 != int.MinValue)
                     parameter = new { command = "target", targets = new { tool0 = tool0 } };
@@ -3697,13 +3699,13 @@ namespace AndreasReitberger
                 OctoPrintConnectionStates state = OctoPrintConnectionStates.Unkown;
                 string cropped = ConnectionState.Replace(" ", string.Empty);
                 System.Enum.TryParse(cropped, out state);
-                if(state == OctoPrintConnectionStates.Unkown)
+                if (state == OctoPrintConnectionStates.Unkown)
                 {
                     // Just for debugging
                 }
                 return state;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return OctoPrintConnectionStates.Unkown;
             }
