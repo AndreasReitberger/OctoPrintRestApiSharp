@@ -7,23 +7,24 @@
     <Authors>Andreas Reitberger</Authors>
     <Company>Andreas Reitberger</Company>
     <Description>A simple Rest-API-Client for interacting with a OctoPrint instance from any Csharp project.</Description>
-    <AssemblyVersion>1.1.2.0</AssemblyVersion>
-    <FileVersion>1.1.2.0</FileVersion>
-    <Version>1.1.2</Version>
+    <AssemblyVersion>1.1.3.0</AssemblyVersion>
+    <FileVersion>1.1.3.0</FileVersion>
+    <Version>1.1.3</Version>
     <Copyright>Andreas Reitberger</Copyright>
     <RepositoryUrl>https://github.com/AndreasReitberger/OctoPrintSharpApi</RepositoryUrl>
     <PackageTags>OctoPrint, Server, API, Rest, Sharp, Csharp</PackageTags>
     <LangVersion>9.0</LangVersion>
     <PackageProjectUrl>https://github.com/AndreasReitberger/OctoPrintRestApiSharp</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="RCoreSharp" Version="1.0.5" />
-    <PackageReference Include="RestSharp" Version="106.13.0" />
+    <PackageReference Include="RCoreSharp" Version="1.0.6" />
+    <PackageReference Include="RestSharp" Version="106.15.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="WebSocket4Net" Version="0.15.2" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
-
 </Project>

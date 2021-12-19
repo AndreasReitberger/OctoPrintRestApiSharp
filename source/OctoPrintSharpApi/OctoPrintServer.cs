@@ -1585,6 +1585,7 @@ namespace AndreasReitberger
             OctoPrintFileLocation Location,
             string Target,
             byte[] File,
+            string FileName,
             bool SelectFile,
             bool PrintFile,
             int Timeout = 10000)
@@ -1606,7 +1607,7 @@ namespace AndreasReitberger
 
                 //Multiform
                 request.AddHeader("Content-Type", "multipart/form-data");
-                request.AddFileBytes("file", File, "application/octet-stream");
+                request.AddFileBytes("file", File, FileName, "application/octet-stream");
                 request.AddParameter("select", SelectFile ? "true" : "false", "multipart/form-data)", ParameterType.GetOrPost);
                 request.AddParameter("print", PrintFile ? "true" : "false", "multipart/form-data", ParameterType.GetOrPost);
                 request.AddParameter("path", Target, "multipart/form-data", ParameterType.GetOrPost);
@@ -2797,7 +2798,9 @@ namespace AndreasReitberger
         {
             try
             {
-                OctoPrintApiRequestRespone result = await SendMultipartFormDataFileRestApiRequestAsync(location, target, filePath, select, print);
+                OctoPrintApiRequestRespone result =
+                    await SendMultipartFormDataFileRestApiRequestAsync(location, target, filePath, select, print)
+                    .ConfigureAwait(false);
                 if (result != null)
                 {
                     OctoPrintUploadFileRespone respone = JsonConvert.DeserializeObject<OctoPrintUploadFileRespone>(result.Result);
@@ -2812,11 +2815,13 @@ namespace AndreasReitberger
             }
         }
 
-        public async Task<bool> UploadFileAsync(OctoPrintFileLocation location, string target, byte[] file, bool select = false, bool print = false)
+        public async Task<bool> UploadFileAsync(OctoPrintFileLocation location, string target, byte[] file, string fileName, bool select = false, bool print = false)
         {
             try
             {
-                OctoPrintApiRequestRespone result = await SendMultipartFormDataFileRestApiRequestAsync(location, target, file, select, print);
+                OctoPrintApiRequestRespone result =
+                    await SendMultipartFormDataFileRestApiRequestAsync(location, target, file, fileName, select, print)
+                    .ConfigureAwait(false);
                 if (result != null)
                 {
                     OctoPrintUploadFileRespone respone = JsonConvert.DeserializeObject<OctoPrintUploadFileRespone>(result.Result);
