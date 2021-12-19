@@ -1,6 +1,10 @@
 # OctoPrintRestApiSharp
 A simple C# library to communicate with an OctoPrint server via REST-API.
 
+# Nuget
+Get the latest version from nuget.org<br>
+[![NuGet](https://img.shields.io/nuget/v/OctoPrintSharpApi.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/OctoPrintSharpApi/)
+
 # Usage
 You can find some usage examples in the TestProject of the source code.
 
