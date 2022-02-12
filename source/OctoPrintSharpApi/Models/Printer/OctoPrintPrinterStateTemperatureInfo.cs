@@ -9,13 +9,13 @@ namespace AndreasReitberger.Models
         #region Properties
 
         [JsonProperty("actual", NullValueHandling = NullValueHandling.Ignore)]
-        public double Actual { get; set; }
+        public double? Actual { get; set; } = 0;
 
         [JsonProperty("target")]
-        public long Target { get; set; }
+        public double? Target { get; set; } = 0;
 
         [JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
-        public long Offset { get; set; }
+        public double? Offset { get; set; } = 0;
 
         [JsonIgnore]
         public OctoPrintCurrentToolState State { get => GetCurrentState(); }
@@ -34,14 +34,14 @@ namespace AndreasReitberger.Models
         #region Methods
         OctoPrintCurrentToolState GetCurrentState()
         {
-            if (Target < 0 || Actual < 0)
+            if (Target == null || Target < 0 || Actual == null || Actual < 0)
                 return OctoPrintCurrentToolState.Error;
             else
             {
                 if (Target <= 0)
                     return OctoPrintCurrentToolState.Idle;
                 // Check if temperature is reached with a hysteresis
-                else if (Target > Actual && Math.Abs(Target - Actual) > 2)
+                else if (Target > Actual && Math.Abs((double)Target - (double)Actual) > 2)
                     return OctoPrintCurrentToolState.Heating;
                 else
                     return OctoPrintCurrentToolState.Ready;

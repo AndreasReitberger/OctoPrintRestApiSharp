@@ -1,8 +1,10 @@
 using AndreasReitberger;
 using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
@@ -17,13 +19,13 @@ namespace OctoPrintSharpApiTest
     {
         // https://docs.microsoft.com/en-us/dotnet/core/tutorials/testing-library-with-visual-studio
 
-        private static string _api = "569C08A7C8CE4242B9FFFEEA16239D2F";
-        private static string _host = "192.168.10.77";
-        private static int _port = 8080;
+        private static string _api = "A1FE2CC8FCCE4BD59910D8865ABBDAE5";
+        private static string _host = "192.168.10.44";
+        private static int _port = 80;
         private static bool _ssl = false;
 
         private bool _skipWebSocketTests = true;
-        private bool _skipOnlineTests = true;
+        private bool _skipOnlineTests = false;
         private bool _skipPrinterActionTests = true;
 
         [TestMethod]
@@ -128,7 +130,7 @@ namespace OctoPrintSharpApiTest
                     if (_server.ActivePrinter == null)
                         await _server.SetPrinterActiveAsync(0, true);
 
-                    var printers = await _server.GetAllPrinterProfilesAsync();
+                    ObservableCollection<OctoPrintPrinter> printers = await _server.GetAllPrinterProfilesAsync();
                     Assert.IsTrue(printers != null && printers.Count > 0);
                 }
                 else
@@ -187,6 +189,30 @@ namespace OctoPrintSharpApiTest
                     await _server.CheckOnlineAsync();
                 } while (_server.IsOnline && !cts.IsCancellationRequested);
                 Assert.IsTrue(cts.IsCancellationRequested);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [TestMethod]
+        public async Task DownloadModelTest()
+        {
+            string _modelPath = "http://192.168.10.44/downloads/files/local/babygroot_0.6n_0.15mm_PLA_MK3S_1d2h57m.gcode";
+            try
+            {
+                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                _server.Error += (o, args) =>
+                {
+                    Assert.Fail(args.ToString());
+                };
+                _server.ServerWentOffline += (o, args) =>
+                {
+                    Assert.Fail(args.ToString());
+                };
+                byte[] file = await _server.DownloadFileFromUriAsync(_modelPath);
+                Assert.IsNotNull(file);
             }
             catch (Exception exc)
             {
@@ -256,10 +282,14 @@ namespace OctoPrintSharpApiTest
         [TestMethod]
         public async Task SetHeatedbedTest()
         {
-            if (_skipPrinterActionTests) return;
+            //if (_skipPrinterActionTests) return;
             try
             {
                 OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                _server.Error += (s, e) =>
+                {
+                    Assert.Fail($"Error occured: {e?.ToString()}");
+                };
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -272,7 +302,7 @@ namespace OctoPrintSharpApiTest
 
                     if (result)
                     {
-                        double temp = 0;
+                        double? temp = 0;
                         // Wait till temp rises
                         while (temp < 23)
                         {
@@ -335,10 +365,14 @@ namespace OctoPrintSharpApiTest
         [TestMethod]
         public async Task SetExtruderTest()
         {
-            if (_skipPrinterActionTests) return;
+            //if (_skipPrinterActionTests) return;
             try
             {
                 OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                _server.Error += (s, e) =>
+                {
+                    Assert.Fail($"Error occured: {e?.ToString()}");
+                };
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -351,7 +385,7 @@ namespace OctoPrintSharpApiTest
 
                     if (result)
                     {
-                        double extruderTemp = 0;
+                        double? extruderTemp = 0;
                         // Wait till temp rises
                         while (extruderTemp < 28)
                         {
