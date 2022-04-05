@@ -444,5 +444,19 @@ namespace OctoPrintSharpApiTest
                 Assert.Fail(exc.Message);
             }
         }
+
+        [TestMethod]
+        public async Task ConnectionBuilderTest()
+        {
+            string host = "192.168.10.112";
+            string api = "_yourkey";
+
+            using OctoPrintServer client = new OctoPrintServer.OctoPrintServerConnectionBuilder()
+                .WithServerAddress(host, 3344, false)
+                .WithApiKey(api)
+                .Build();
+            await client.CheckOnlineAsync();
+            Assert.IsTrue(client?.IsOnline ?? false);
+        }
     }
 }

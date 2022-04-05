@@ -26,7 +26,7 @@ using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 namespace AndreasReitberger
 {
     //http://docs.octoprint.org/en/master/api/
-    public class OctoPrintServer : IPrintServerClient
+    public partial class OctoPrintServer : IPrintServerClient
     {
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -131,11 +131,9 @@ namespace AndreasReitberger
         #endregion
 
         #region RefreshTimer
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         Timer _timer;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public Timer Timer
         {
             get => _timer;
@@ -167,11 +165,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         bool _isListening = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool IsListening
         {
             get => _isListening;
@@ -189,11 +185,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         bool _initialDataFetched = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool InitialDataFetched
         {
             get => _initialDataFetched;
@@ -210,29 +204,10 @@ namespace AndreasReitberger
         #region Properties
 
         #region Connection
-        [JsonIgnore]
-        [XmlIgnore]
-        HttpMessageHandler _httpHandler;
-        [JsonIgnore]
-        [XmlIgnore]
-        public HttpMessageHandler HttpHandler
-        {
-            get => _httpHandler;
-            set
-            {
-                if (_httpHandler == value) return;
-                _httpHandler = value;
-                UpdateRestClientInstance();
-                OnPropertyChanged();
 
-            }
-        }
-
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         string _sessionId = string.Empty;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public string SessionId
         {
             get => _sessionId;
@@ -240,6 +215,20 @@ namespace AndreasReitberger
             {
                 if (_sessionId == value) return;
                 _sessionId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        [JsonProperty(nameof(ServerName))]
+        string _serverName = string.Empty;
+        [JsonIgnore]
+        public string ServerName
+        {
+            get => _serverName;
+            set
+            {
+                if (_serverName == value) return;
+                _serverName = value;
                 OnPropertyChanged();
             }
         }
@@ -319,8 +308,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(OverrideValidationRules))]
         [XmlAttribute(nameof(OverrideValidationRules))]
         bool _overrideValidationRules = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool OverrideValidationRules
         {
             get => _overrideValidationRules;
@@ -336,8 +324,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(IsOnline))]
         [XmlAttribute(nameof(IsOnline))]
         bool _isOnline = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool IsOnline
         {
             get => _isOnline;
@@ -367,8 +354,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(IsConnecting))]
         [XmlAttribute(nameof(IsConnecting))]
         bool _isConnecting = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool IsConnecting
         {
             get => _isConnecting;
@@ -383,8 +369,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(AuthenticationFailed))]
         [XmlAttribute(nameof(AuthenticationFailed))]
         bool _authenticationFailed = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool AuthenticationFailed
         {
             get => _authenticationFailed;
@@ -399,8 +384,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(IsRefreshing))]
         [XmlAttribute(nameof(IsRefreshing))]
         bool _isRefreshing = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool IsRefreshing
         {
             get => _isRefreshing;
@@ -415,8 +399,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(RetriesWhenOffline))]
         [XmlAttribute(nameof(RetriesWhenOffline))]
         int _retriesWhenOffline = 2;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public int RetriesWhenOffline
         {
             get => _retriesWhenOffline;
@@ -430,11 +413,9 @@ namespace AndreasReitberger
         #endregion
 
         #region General
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         bool _updateAvailable = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool UpdateAvailable
         {
             get => _updateAvailable;
@@ -452,11 +433,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         object _update;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public object Update
         {
             get => _update;
@@ -473,8 +452,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(EnableProxy))]
         [XmlAttribute(nameof(EnableProxy))]
         bool _enableProxy = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool EnableProxy
         {
             get => _enableProxy;
@@ -490,8 +468,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(ProxyUseDefaultCredentials))]
         [XmlAttribute(nameof(ProxyUseDefaultCredentials))]
         bool _proxyUseDefaultCredentials = true;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool ProxyUseDefaultCredentials
         {
             get => _proxyUseDefaultCredentials;
@@ -507,8 +484,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(SecureProxyConnection))]
         [XmlAttribute(nameof(SecureProxyConnection))]
         bool _secureProxyConnection = true;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool SecureProxyConnection
         {
             get => _secureProxyConnection;
@@ -523,8 +499,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(ProxyAddress))]
         [XmlAttribute(nameof(ProxyAddress))]
         string _proxyAddress = string.Empty;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public string ProxyAddress
         {
             get => _proxyAddress;
@@ -539,8 +514,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(ProxyPort))]
         [XmlAttribute(nameof(ProxyPort))]
         int _proxyPort = 443;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public int ProxyPort
         {
             get => _proxyPort;
@@ -555,8 +529,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(ProxyUser))]
         [XmlAttribute(nameof(ProxyUser))]
         string _proxyUser = string.Empty;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public string ProxyUser
         {
             get => _proxyUser;
@@ -571,8 +544,7 @@ namespace AndreasReitberger
         [JsonProperty(nameof(ProxyPassword))]
         [XmlAttribute(nameof(ProxyPassword))]
         SecureString _proxyPassword;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public SecureString ProxyPassword
         {
             get => _proxyPassword;
@@ -665,11 +637,9 @@ namespace AndreasReitberger
         #endregion
 
         #region Printers
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         OctoPrintPrinter _activePrinter;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public OctoPrintPrinter ActivePrinter
         {
             get => _activePrinter;
@@ -688,11 +658,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         ObservableCollection<OctoPrintPrinter> _printers = new();
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public ObservableCollection<OctoPrintPrinter> Printers
         {
             get => _printers;
@@ -711,11 +679,9 @@ namespace AndreasReitberger
         #endregion
 
         #region State & Config
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         OctoPrintSettings _config;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public OctoPrintSettings Config
         {
             get => _config;
@@ -735,11 +701,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         OctoPrintConnectionSettings _connectionSettings;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public OctoPrintConnectionSettings ConnectionSettings
         {
             get => _connectionSettings;
@@ -759,11 +723,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         OctoPrintPrinterState _state;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public OctoPrintPrinterState State
         {
             get => _state;
@@ -783,11 +745,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         OctoPrintJobInfo _activePrintInfo;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public OctoPrintJobInfo ActivePrintInfo
         {
             get => _activePrintInfo;
@@ -805,11 +765,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _extruders = new();
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> Extruders
         {
             get => _extruders;
@@ -820,11 +778,10 @@ namespace AndreasReitberger
                 OnPropertyChanged();
             }
         }
-        [JsonIgnore]
-        [XmlIgnore]
+
+        [JsonIgnore, XmlIgnore]
         ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedBeds = new();
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> HeatedBeds
         {
             get => _heatedBeds;
@@ -836,11 +793,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedChambers = new();
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> HeatedChambers
         {
             get => _heatedChambers;
@@ -854,11 +809,9 @@ namespace AndreasReitberger
         #endregion
 
         #region Models
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         ObservableCollection<OctoPrintModel> _models = new();
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public ObservableCollection<OctoPrintModel> Models
         {
             get => _models;
@@ -908,11 +861,9 @@ namespace AndreasReitberger
         #endregion
 
         #region WebSocket
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         WebSocket _webSocket;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public WebSocket WebSocket
         {
             get => _webSocket;
@@ -924,11 +875,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         Timer _pingTimer;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public Timer PingTimer
         {
             get => _pingTimer;
@@ -940,11 +889,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         int _pingCounter = 0;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public int PingCounter
         {
             get => _pingCounter;
@@ -956,11 +903,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         int _refreshCounter = 0;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public int RefreshCounter
         {
             get => _refreshCounter;
@@ -972,11 +917,9 @@ namespace AndreasReitberger
             }
         }
 
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         bool _isListeningToWebSocket = false;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public bool IsListeningToWebsocket
         {
             get => _isListeningToWebSocket;
