@@ -1,7 +1,7 @@
-﻿using AndreasReitberger.Enum;
+﻿using AndreasReitberger.API.OctoPrint.Enum;
 using Newtonsoft.Json;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public struct OctoPrintCustomGcodeCommand
     {

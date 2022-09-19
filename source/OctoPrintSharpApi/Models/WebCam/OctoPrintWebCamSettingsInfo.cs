@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using System;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public class OctoPrintWebCamSettingsInfo : BaseModel
     {

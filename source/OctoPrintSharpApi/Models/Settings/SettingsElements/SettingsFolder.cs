@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public partial class SettingsFolder
     {

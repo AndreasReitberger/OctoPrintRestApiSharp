@@ -1,9 +1,8 @@
-﻿using AndreasReitberger.Enum;
-using AndreasReitberger.Interfaces;
-using AndreasReitberger.Models;
-using AndreasReitberger.Core.Utilities;
+﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.API.OctoPrint.Enum;
+using AndreasReitberger.API.OctoPrint.Interfaces;
+using AndreasReitberger.API.OctoPrint.Models;
 using Newtonsoft.Json;
-// Thirdparty
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -23,10 +22,10 @@ using System.Xml.Serialization;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 
-namespace AndreasReitberger
+namespace AndreasReitberger.API.OctoPrint
 {
     //http://docs.octoprint.org/en/master/api/
-    public partial class OctoPrintServer : IPrintServerClient
+    public partial class OctoPrintClient : IPrintServerClient
     {
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -61,16 +60,16 @@ namespace AndreasReitberger
         #endregion
 
         #region Instance
-        static OctoPrintServer _instance = null;
+        static OctoPrintClient _instance = null;
         static readonly object Lock = new();
-        public static OctoPrintServer Instance
+        public static OctoPrintClient Instance
         {
             get
             {
                 lock (Lock)
                 {
                     if (_instance == null)
-                        _instance = new OctoPrintServer();
+                        _instance = new OctoPrintClient();
                 }
                 return _instance;
             }
@@ -939,12 +938,12 @@ namespace AndreasReitberger
         #endregion
 
         #region Constructor
-        public OctoPrintServer()
+        public OctoPrintClient()
         {
             Id = Guid.NewGuid();
             UpdateRestClientInstance();
         }
-        public OctoPrintServer(string serverAddress, string api, int port = 80, bool isSecure = false)
+        public OctoPrintClient(string serverAddress, string api, int port = 80, bool isSecure = false)
         {
             Id = Guid.NewGuid();
             InitInstance(serverAddress, api, port, isSecure);
@@ -953,7 +952,7 @@ namespace AndreasReitberger
         #endregion
 
         #region Destructor
-        ~OctoPrintServer()
+        ~OctoPrintClient()
         {
             if (WebSocket != null)
             {
@@ -987,7 +986,7 @@ namespace AndreasReitberger
                 IsInitialized = false;
             }
         }
-        public static void UpdateSingleInstance(OctoPrintServer Inst)
+        public static void UpdateSingleInstance(OctoPrintClient Inst)
         {
             try
             {
@@ -2193,7 +2192,7 @@ namespace AndreasReitberger
                 RestClientOptions options = new(FullWebAddress)
                 {
                     ThrowOnAnyError = true,
-                    Timeout = 10000,
+                    MaxTimeout = 10000,
                 };
                 HttpClientHandler httpHandler = new()
                 {
@@ -2567,7 +2566,7 @@ namespace AndreasReitberger
         #endregion
 
         #region DetectChanges
-        public bool CheckIfConfigurationHasChanged(OctoPrintServer temp)
+        public bool CheckIfConfigurationHasChanged(OctoPrintClient temp)
         {
             try
             {
@@ -3861,39 +3860,6 @@ namespace AndreasReitberger
 
         #endregion
 
-        #region Static
-        public static string ConvertStackToPath(Stack<string> stack, string separator)
-        {
-            StringBuilder sb = new();
-            for (int i = stack.Count - 1; i >= 0; i--)
-            {
-                sb.Append(stack.ElementAt(i));
-                if (i > 0)
-                    sb.Append(separator);
-            }
-            return sb.ToString();
-        }
-
-        public static OctoPrintConnectionStates ConvertConnectionStateString(string ConnectionState)
-        {
-            try
-            {
-                OctoPrintConnectionStates state = OctoPrintConnectionStates.Unkown;
-                string cropped = ConnectionState.Replace(" ", string.Empty);
-                System.Enum.TryParse(cropped, out state);
-                if(state == OctoPrintConnectionStates.Unkown)
-                {
-                    // Just for debugging
-                }
-                return state;
-            }
-            catch(Exception)
-            {
-                return OctoPrintConnectionStates.Unkown;
-            }
-        }
-        #endregion
-
         #region Overrides
         public override string ToString()
         {
@@ -3910,7 +3876,7 @@ namespace AndreasReitberger
         public override bool Equals(object obj)
         {
             if
-                (obj is not OctoPrintServer item)
+                (obj is not OctoPrintClient item)
                 return false;
             return this.Id.Equals(item.Id);
         }

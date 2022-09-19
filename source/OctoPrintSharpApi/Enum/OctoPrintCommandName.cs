@@ -1,4 +1,4 @@
-﻿namespace AndreasReitberger.Enum
+﻿namespace AndreasReitberger.API.OctoPrint.Enum
 {
     public enum OctoPrintCommandName
     {

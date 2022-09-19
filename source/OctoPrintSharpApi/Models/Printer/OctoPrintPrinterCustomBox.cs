@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AndreasReitberger.Models.Printer
+namespace AndreasReitberger.API.OctoPrint.Models.Printer
 {
     public partial class OctoPrintPrinterCustomBox
     {
