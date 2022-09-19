@@ -1,6 +1,15 @@
 # OctoPrintRestApiSharp
 A simple C# library to communicate with an OctoPrint server via REST-API.
 
+# Important!
+With the upcoming version, starting from `1.2.7`, `RepetierServerPro` become `RepetierClient`. also the namespaces will changed and generalized with our other print server api nugets.
+
+| Old                             | New                              |
+| ------------------------------- |:--------------------------------:|
+| `AndreasReitberger`             | `AndreasReitberger.API.OctoPrint`|
+| `OctoPrintServer`               | `OctoPrintClient`                |
+
+
 # Nuget
 Get the latest version from nuget.org<br>
 [![NuGet](https://img.shields.io/nuget/v/OctoPrintSharpApi.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/OctoPrintSharpApi/)
@@ -10,9 +19,9 @@ Get the latest version from nuget.org<br>
 You can find some usage examples in the TestProject of the source code.
 
 ## Init a new server
-Just create a new `OctoPrintServer` object by passing the host, api, port and ssl connection type.
+Just create a new `OctoPrintClient` object by passing the host, api, port and ssl connection type.
 ```csharp
-OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
 await _server.CheckOnlineAsync();
 if (_server.IsOnline)
 {
@@ -28,16 +37,16 @@ if (_server.IsOnline)
 Since then, you can access all functions from the `OctoPrintServer` object.
 
 ## Instance
-If you want to use the OctoPrintServer from different places, use the `Instance`.
+If you want to use the `OctoPrintClient` from different places, use the `Instance`.
 ```csharp
-OctoPrintServer.Instance = new OctoPrintServer(_host, _api, _port, _ssl);
-await OctoPrintServer.Instance.CheckOnlineAsync();
+OctoPrintClient.Instance = new OctoPrintClient(_host, _api, _port, _ssl);
+await OctoPrintClient.Instance.CheckOnlineAsync();
 ```
 
 Aferwards you can use the OctoPrintServer.Instance property to access all functions 
 through your project.
 ```csharp
-var files = await OctoPrintServer.Instance.GetAllFilesAsync("local");
+var files = await OctoPrintClient.Instance.GetAllFilesAsync("local");
 ```
 
 # Available methods
@@ -45,20 +54,20 @@ Please find the some usage examples for the methods below.
 
 ```csharp
 // Load all files from the Server
-var files = await OctoPrintServer.Instance.GetAllFilesAsync("local");
+var files = await OctoPrintClient.Instance.GetAllFilesAsync("local");
 
 // Get all printer profiles
-var printers = await OctoPrintServer.Instance.GetAllPrinterProfilesAsync();
+var printers = await OctoPrintClient.Instance.GetAllPrinterProfilesAsync();
 
 // Update heated bed temperature & read back the state
-bool result = await OctoPrintServer.Instance.SetBedTemperatureAsync(25);
-var state = await OctoPrintServer.Instance.GetCurrentBedStateAsync(true);
+bool result = await OctoPrintClient.Instance.SetBedTemperatureAsync(25);
+var state = await OctoPrintClient.Instance.GetCurrentBedStateAsync(true);
 
 // Update extruder (tool0 or / and tool1) & read back the state
-bool result = await _OctoPrintServer.Instance.SetToolTemperatureAsync(30);
-var state = await OctoPrintServer.Instance.GetCurrentToolStateAsync(true);
+bool result = await OctoPrintClient.Instance.SetToolTemperatureAsync(30);
+var state = await OctoPrintClient.Instance.GetCurrentToolStateAsync(true);
 
-var jobinfo = await OctoPrintServer.Instance.GetJobInfoAsync();
+var jobinfo = await OctoPrintClient.Instance.GetJobInfoAsync();
 ```
 
 # Dependencies
