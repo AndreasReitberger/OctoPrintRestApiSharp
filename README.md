@@ -2,7 +2,7 @@
 A simple C# library to communicate with an OctoPrint server via REST-API.
 
 # Important!
-With the upcoming version, starting from `1.2.7`, `RepetierServerPro` become `RepetierClient`. also the namespaces will changed and generalized with our other print server api nugets.
+With the upcoming version, starting from `1.2.0`, `OctoPrintServer` become `OctoPrintClient`. also the namespaces will changed and generalized with our other print server api nugets.
 
 | Old                             | New                              |
 | ------------------------------- |:--------------------------------:|
