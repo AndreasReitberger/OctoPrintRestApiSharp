@@ -1,6 +1,6 @@
-using AndreasReitberger;
+using AndreasReitberger.API.OctoPrint;
+using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -39,16 +39,16 @@ namespace OctoPrintSharpApiTest
             try
             {
 
-                OctoPrintServer.Instance = new OctoPrintServer(_host, _api, _port, _ssl)
+                OctoPrintClient.Instance = new OctoPrintClient(_host, _api, _port, _ssl)
                 {
                     FreeDiskSpace = 1523165212,
                     TotalDiskSpace = 65621361616161,
                 };
-                OctoPrintServer.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
+                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
-                var serializedString = JsonSerializer.Serialize(OctoPrintServer.Instance);
-                var serializedObject = JsonSerializer.Deserialize<OctoPrintServer>(serializedString);
-                Assert.IsTrue(serializedObject is OctoPrintServer server && server != null);
+                var serializedString = JsonSerializer.Serialize(OctoPrintClient.Instance);
+                var serializedObject = JsonSerializer.Deserialize<OctoPrintClient>(serializedString);
+                Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
 
             }
             catch (Exception exc)
@@ -67,24 +67,24 @@ namespace OctoPrintSharpApiTest
             if (File.Exists(serverConfig)) File.Delete(serverConfig);
             try
             {
-                var xmlSerializer = new XmlSerializer(typeof(OctoPrintServer));
+                var xmlSerializer = new XmlSerializer(typeof(OctoPrintClient));
                 using (var fileStream = new FileStream(serverConfig, FileMode.Create))
                 {
-                    OctoPrintServer.Instance = new OctoPrintServer(_host, _api, _port, _ssl)
+                    OctoPrintClient.Instance = new OctoPrintClient(_host, _api, _port, _ssl)
                     {
                         FreeDiskSpace = 1523165212,
                         TotalDiskSpace = 65621361616161,
                     };
-                    OctoPrintServer.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
+                    OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
-                    xmlSerializer.Serialize(fileStream, OctoPrintServer.Instance);
+                    xmlSerializer.Serialize(fileStream, OctoPrintClient.Instance);
                     Assert.IsTrue(File.Exists(Path.Combine(dir, "server.xml")));
                 }
 
-                xmlSerializer = new XmlSerializer(typeof(OctoPrintServer));
+                xmlSerializer = new XmlSerializer(typeof(OctoPrintClient));
                 using (var fileStream = new FileStream(serverConfig, FileMode.Open))
                 {
-                    var instance = (OctoPrintServer)xmlSerializer.Deserialize(fileStream);
+                    var instance = (OctoPrintClient)xmlSerializer.Deserialize(fileStream);
                 }
 
             }
@@ -99,7 +99,7 @@ namespace OctoPrintSharpApiTest
         {
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -123,7 +123,7 @@ namespace OctoPrintSharpApiTest
         {
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -147,7 +147,7 @@ namespace OctoPrintSharpApiTest
         {
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -172,7 +172,7 @@ namespace OctoPrintSharpApiTest
             if (_skipOnlineTests) return;
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 _server.Error += (o, args) =>
                 {
                     Assert.Fail(args.ToString());
@@ -202,7 +202,7 @@ namespace OctoPrintSharpApiTest
             string _modelPath = "http://192.168.10.44/downloads/files/local/babygroot_0.6n_0.15mm_PLA_MK3S_1d2h57m.gcode";
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 _server.Error += (o, args) =>
                 {
                     Assert.Fail(args.ToString());
@@ -228,7 +228,7 @@ namespace OctoPrintSharpApiTest
                 if (_skipWebSocketTests) return;
 
                 Dictionary<DateTime, string> websocketMessages = new Dictionary<DateTime, string>();
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 await _server.SetPrinterActiveAsync(0);
                 _server.StartListening();
 
@@ -285,7 +285,7 @@ namespace OctoPrintSharpApiTest
             //if (_skipPrinterActionTests) return;
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 _server.Error += (s, e) =>
                 {
                     Assert.Fail($"Error occured: {e?.ToString()}");
@@ -368,7 +368,7 @@ namespace OctoPrintSharpApiTest
             //if (_skipPrinterActionTests) return;
             try
             {
-                OctoPrintServer _server = new OctoPrintServer(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 _server.Error += (s, e) =>
                 {
                     Assert.Fail($"Error occured: {e?.ToString()}");
@@ -451,7 +451,7 @@ namespace OctoPrintSharpApiTest
             string host = "192.168.10.112";
             string api = "_yourkey";
 
-            using OctoPrintServer client = new OctoPrintServer.OctoPrintServerConnectionBuilder()
+            using OctoPrintClient client = new OctoPrintClient.OctoPrintConnectionBuilder()
                 .WithServerAddress(host, 3344, false)
                 .WithApiKey(api)
                 .Build();

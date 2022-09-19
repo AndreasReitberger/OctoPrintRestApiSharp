@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using System;
 
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public partial class OctoPrintPrinter : BaseModel
     {

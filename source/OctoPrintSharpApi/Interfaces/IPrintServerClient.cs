@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace AndreasReitberger.Interfaces
+namespace AndreasReitberger.API.OctoPrint.Interfaces
 {
     public interface IPrintServerClient : INotifyPropertyChanged, IDisposable
     {

@@ -1,21 +1,21 @@
-﻿namespace AndreasReitberger
+﻿namespace AndreasReitberger.API.OctoPrint
 {
-    public partial class OctoPrintServer
+    public partial class OctoPrintClient
     {
-        public class OctoPrintServerConnectionBuilder
+        public class OctoPrintConnectionBuilder
         {
             #region Instance
-            readonly OctoPrintServer _client = new();
+            readonly OctoPrintClient _client = new();
             #endregion
 
             #region Methods
 
-            public OctoPrintServer Build()
+            public OctoPrintClient Build()
             {
                 return _client;
             }
 
-            public OctoPrintServerConnectionBuilder WithServerAddress(string serverAddress, int port = 3344, bool https = false)
+            public OctoPrintConnectionBuilder WithServerAddress(string serverAddress, int port = 3344, bool https = false)
             {
                 _client.IsSecure = https;
                 _client.ServerAddress = serverAddress;
@@ -23,7 +23,7 @@
                 return this;
             }
 
-            public OctoPrintServerConnectionBuilder WithApiKey(string apiKey)
+            public OctoPrintConnectionBuilder WithApiKey(string apiKey)
             {
                 _client.API = apiKey;
                 return this;

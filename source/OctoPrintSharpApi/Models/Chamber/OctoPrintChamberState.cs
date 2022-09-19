@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public partial class OctoPrintChamberState
     {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public class OctoPrintModelGroupsChangedEventArgs : OctoPrintEventArgs
     {

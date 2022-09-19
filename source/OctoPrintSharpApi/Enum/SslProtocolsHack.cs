@@ -1,4 +1,4 @@
-﻿namespace AndreasReitberger.Enum
+﻿namespace AndreasReitberger.API.OctoPrint.Enum
 {
     // https://github.com/sta/websocket-sharp/issues/219#issuecomment-453535816
     public enum SslProtocolsHack

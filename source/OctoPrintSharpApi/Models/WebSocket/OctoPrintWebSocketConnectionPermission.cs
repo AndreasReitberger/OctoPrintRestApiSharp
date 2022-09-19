@@ -1,8 +1,8 @@
-﻿using AndreasReitberger.Enum;
+﻿using AndreasReitberger.API.OctoPrint.Enum;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.API.OctoPrint.Models
 {
     public partial class OctoPrintWebSocketConnectionPermission
     {
