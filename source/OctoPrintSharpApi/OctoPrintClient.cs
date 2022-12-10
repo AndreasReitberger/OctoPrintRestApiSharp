@@ -19,12 +19,14 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 
 namespace AndreasReitberger.API.OctoPrint
 {
     //http://docs.octoprint.org/en/master/api/
+    [ObservableObject]
     public partial class OctoPrintClient : IPrintServerClient
     {
         #region INotifyPropertyChanged
@@ -85,18 +87,9 @@ namespace AndreasReitberger.API.OctoPrint
 
         }
 
+        [ObservableProperty]
         bool _isActive = false;
-        public bool IsActive
-        {
-            get => _isActive;
-            set
-            {
-                if (_isActive == value)
-                    return;
-                _isActive = value;
-                OnPropertyChanged();
-            }
-        }
+
 
         bool _updateInstance = false;
         public bool UpdateInstance
@@ -109,40 +102,21 @@ namespace AndreasReitberger.API.OctoPrint
                 _updateInstance = value;
                 // Update the instance to the latest settings
                 if (_updateInstance)
-                    InitInstance(this.ServerAddress, this.API, this.Port, this.IsSecure);
+                    InitInstance(this.ServerAddress, this.ApiKey, this.Port, this.IsSecure);
 
                 OnPropertyChanged();
             }
         }
+        [ObservableProperty]
 
         bool _isInitialized = false;
-        public bool IsInitialized
-        {
-            get => _isInitialized;
-            set
-            {
-                if (_isInitialized == value)
-                    return;
-                _isInitialized = value;
-                OnPropertyChanged();
-            }
-        }
+
         #endregion
 
         #region RefreshTimer
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
         Timer _timer;
-        [JsonIgnore, XmlIgnore]
-        public Timer Timer
-        {
-            get => _timer;
-            set
-            {
-                if (_timer == value) return;
-                _timer = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(RefreshInterval))]
         int _refreshInterval = 3;
@@ -178,25 +152,16 @@ namespace AndreasReitberger.API.OctoPrint
                 {
                     SessonId = SessionId,
                     IsListening = value,
-                    IsListeningToWebSocket = IsListeningToWebsocket,
+                    IsListeningToWebSocket = IsListeningToWebSocket,
                 });
                 OnPropertyChanged();
             }
         }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
         bool _initialDataFetched = false;
-        [JsonIgnore, XmlIgnore]
-        public bool InitialDataFetched
-        {
-            get => _initialDataFetched;
-            set
-            {
-                if (_initialDataFetched == value) return;
-                _initialDataFetched = value;
-                OnPropertyChanged();
-            }
-        }
+
 
         #endregion
 
@@ -205,120 +170,39 @@ namespace AndreasReitberger.API.OctoPrint
         #region Connection
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
         string _sessionId = string.Empty;
-        [JsonIgnore, XmlIgnore]
-        public string SessionId
-        {
-            get => _sessionId;
-            set
-            {
-                if (_sessionId == value) return;
-                _sessionId = value;
-                OnPropertyChanged();
-            }
-        }
+
 
         [JsonProperty(nameof(ServerName))]
+        [ObservableProperty]
+
         string _serverName = string.Empty;
-        [JsonIgnore]
-        public string ServerName
-        {
-            get => _serverName;
-            set
-            {
-                if (_serverName == value) return;
-                _serverName = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(ServerAddress))]
-        string _address = string.Empty;
-        [JsonIgnore]
-        public string ServerAddress
-        {
-            get => _address;
-            set
-            {
-                if (_address == value) return;
-                _address = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        string _serverAddress = string.Empty;
 
         [JsonProperty(nameof(IsSecure))]
+        [ObservableProperty]
         bool _isSecure = false;
-        [JsonIgnore]
-        public bool IsSecure
-        {
-            get => _isSecure;
-            set
-            {
-                if (_isSecure == value) return;
-                _isSecure = value;
-                OnPropertyChanged();
-            }
-        }
 
-        [JsonProperty(nameof(API))]
-        string _api = string.Empty;
-        [JsonIgnore]
-        public string API
-        {
-            get => _api;
-            set
-            {
-                if (_api == value) return;
-                _api = value;
-                OnPropertyChanged();
-            }
-        }
+        [JsonProperty(nameof(AndreasReitberger.API))]
+        [ObservableProperty]
+        string _apiKey = string.Empty;
 
         [JsonProperty(nameof(Port))]
+        [ObservableProperty]
         int _port = 80;
-        [JsonIgnore]
-        public int Port
-        {
-            get => _port;
-            set
-            {
-                if (_port == value) return;
-                _port = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(DefaultTimeout))]
+        [ObservableProperty]
         int _defaultTimeout = 10000;
-        [JsonIgnore]
-        public int DefaultTimeout
-        {
-            get => _defaultTimeout;
-            set
-            {
-                if (_defaultTimeout != value)
-                {
-                    _defaultTimeout = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
 
         [JsonProperty(nameof(OverrideValidationRules))]
         [XmlAttribute(nameof(OverrideValidationRules))]
+        [ObservableProperty]
         bool _overrideValidationRules = false;
-        [JsonIgnore, XmlIgnore]
-        public bool OverrideValidationRules
-        {
-            get => _overrideValidationRules;
-            set
-            {
-                if (_overrideValidationRules == value)
-                    return;
-                _overrideValidationRules = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(IsOnline))]
         [XmlAttribute(nameof(IsOnline))]
@@ -352,63 +236,24 @@ namespace AndreasReitberger.API.OctoPrint
 
         [JsonProperty(nameof(IsConnecting))]
         [XmlAttribute(nameof(IsConnecting))]
+        [ObservableProperty]
+
         bool _isConnecting = false;
-        [JsonIgnore, XmlIgnore]
-        public bool IsConnecting
-        {
-            get => _isConnecting;
-            set
-            {
-                if (_isConnecting == value) return;
-                _isConnecting = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(AuthenticationFailed))]
         [XmlAttribute(nameof(AuthenticationFailed))]
+        [ObservableProperty]
         bool _authenticationFailed = false;
-        [JsonIgnore, XmlIgnore]
-        public bool AuthenticationFailed
-        {
-            get => _authenticationFailed;
-            set
-            {
-                if (_authenticationFailed == value) return;
-                _authenticationFailed = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(IsRefreshing))]
         [XmlAttribute(nameof(IsRefreshing))]
+        [ObservableProperty]
         bool _isRefreshing = false;
-        [JsonIgnore, XmlIgnore]
-        public bool IsRefreshing
-        {
-            get => _isRefreshing;
-            set
-            {
-                if (_isRefreshing == value) return;
-                _isRefreshing = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(RetriesWhenOffline))]
         [XmlAttribute(nameof(RetriesWhenOffline))]
+        [ObservableProperty]
         int _retriesWhenOffline = 2;
-        [JsonIgnore, XmlIgnore]
-        public int RetriesWhenOffline
-        {
-            get => _retriesWhenOffline;
-            set
-            {
-                if (_retriesWhenOffline == value) return;
-                _retriesWhenOffline = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         #region General
@@ -433,18 +278,9 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
         object _update;
-        [JsonIgnore, XmlIgnore]
-        public object Update
-        {
-            get => _update;
-            private set
-            {
-                if (_update == value) return;
-                _update = value;
-                OnPropertyChanged();
-            }
-        }
+
         #endregion
 
         #region Proxy
@@ -482,157 +318,64 @@ namespace AndreasReitberger.API.OctoPrint
 
         [JsonProperty(nameof(SecureProxyConnection))]
         [XmlAttribute(nameof(SecureProxyConnection))]
+        [ObservableProperty]
         bool _secureProxyConnection = true;
-        [JsonIgnore, XmlIgnore]
-        public bool SecureProxyConnection
-        {
-            get => _secureProxyConnection;
-            private set
-            {
-                if (_secureProxyConnection == value) return;
-                _secureProxyConnection = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(ProxyAddress))]
         [XmlAttribute(nameof(ProxyAddress))]
+        [ObservableProperty]
         string _proxyAddress = string.Empty;
-        [JsonIgnore, XmlIgnore]
-        public string ProxyAddress
-        {
-            get => _proxyAddress;
-            private set
-            {
-                if (_proxyAddress == value) return;
-                _proxyAddress = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(ProxyPort))]
         [XmlAttribute(nameof(ProxyPort))]
+        [ObservableProperty]
         int _proxyPort = 443;
-        [JsonIgnore, XmlIgnore]
-        public int ProxyPort
-        {
-            get => _proxyPort;
-            private set
-            {
-                if (_proxyPort == value) return;
-                _proxyPort = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonProperty(nameof(ProxyUser))]
         [XmlAttribute(nameof(ProxyUser))]
+        [ObservableProperty]
+
         string _proxyUser = string.Empty;
-        [JsonIgnore, XmlIgnore]
-        public string ProxyUser
-        {
-            get => _proxyUser;
-            private set
-            {
-                if (_proxyUser == value) return;
-                _proxyUser = value;
-                OnPropertyChanged();
-            }
-        }
+
 
         [JsonProperty(nameof(ProxyPassword))]
         [XmlAttribute(nameof(ProxyPassword))]
+        [ObservableProperty]
+
         SecureString _proxyPassword;
-        [JsonIgnore, XmlIgnore]
-        public SecureString ProxyPassword
-        {
-            get => _proxyPassword;
-            private set
-            {
-                if (_proxyPassword == value) return;
-                _proxyPassword = value;
-                OnPropertyChanged();
-            }
-        }
+
         #endregion
 
         #region DiskSpace
         [JsonProperty(nameof(FreeDiskSpace))]
-        long _freeDiskspace = 0;
-        [JsonIgnore]
-        public long FreeDiskSpace
-        {
-            get => _freeDiskspace;
-            set
-            {
-                if (_freeDiskspace == value) return;
-                _freeDiskspace = value;
-                OnPropertyChanged();
+        [ObservableProperty]
 
-            }
-        }
+        long _freeDiskSpace = 0;
+        [JsonIgnore]
+
 
         [JsonProperty(nameof(TotalDiskSpace))]
-        long _totalDiskSpace = 0;
-        [JsonIgnore]
-        public long TotalDiskSpace
-        {
-            get => _totalDiskSpace;
-            set
-            {
-                if (_totalDiskSpace == value) return;
-                _totalDiskSpace = value;
-                OnPropertyChanged();
+        [ObservableProperty]
 
-            }
-        }
+        long _totalDiskSpace = 0;
+
         #endregion
 
         #region PrinterStateInformation
         [JsonProperty(nameof(LastFlowRate))]
-        double _lastFlowRate = 100;
-        [JsonIgnore]
-        public double LastFlowRate
-        {
-            get => _lastFlowRate;
-            set
-            {
-                if (_lastFlowRate == value) return;
-                _lastFlowRate = value;
-                OnPropertyChanged();
+        [ObservableProperty]
 
-            }
-        }
+        double _lastFlowRate = 100;
 
         [JsonProperty(nameof(LastFeedRate))]
-        double _lastFeedRate = 100;
-        [JsonIgnore]
-        public double LastFeedRate
-        {
-            get => _lastFeedRate;
-            set
-            {
-                if (_lastFeedRate == value) return;
-                _lastFeedRate = value;
-                OnPropertyChanged();
+        [ObservableProperty]
 
-            }
-        }
+        double _lastFeedRate = 100;
 
         [JsonProperty(nameof(CurrentFileLocation))]
-        OctoPrintFileLocations _currentFileLocation = OctoPrintFileLocations.local;
-        [JsonIgnore]
-        public OctoPrintFileLocations CurrentFileLocation
-        {
-            get => _currentFileLocation;
-            set
-            {
-                if (_currentFileLocation == value) return;
-                _currentFileLocation = value;
-                OnPropertyChanged();
+        [ObservableProperty]
 
-            }
-        }
+        OctoPrintFileLocations _currentFileLocation = OctoPrintFileLocations.local;
         #endregion
 
         #region Printers
@@ -765,46 +508,19 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
+
         ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _extruders = new();
-        [JsonIgnore, XmlIgnore]
-        public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> Extruders
-        {
-            get => _extruders;
-            set
-            {
-                if (_extruders == value) return;
-                _extruders = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
+
         ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedBeds = new();
-        [JsonIgnore, XmlIgnore]
-        public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> HeatedBeds
-        {
-            get => _heatedBeds;
-            set
-            {
-                if (_heatedBeds == value) return;
-                _heatedBeds = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
+
         ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedChambers = new();
-        [JsonIgnore, XmlIgnore]
-        public ObservableCollection<OctoPrintPrinterStateTemperatureInfo> HeatedChambers
-        {
-            get => _heatedChambers;
-            set
-            {
-                if (_heatedChambers == value) return;
-                _heatedChambers = value;
-                OnPropertyChanged();
-            }
-        }
         #endregion
 
         #region Models
@@ -842,12 +558,12 @@ namespace AndreasReitberger.API.OctoPrint
             get
             {
                 return (
-                    !string.IsNullOrEmpty(ServerAddress) && !string.IsNullOrEmpty(API)) && Port > 0 &&
+                    !string.IsNullOrEmpty(ServerAddress) && !string.IsNullOrEmpty(ApiKey)) && Port > 0 &&
                     (
                         // Address
                         (Regex.IsMatch(ServerAddress, RegexHelper.IPv4AddressRegex) || Regex.IsMatch(ServerAddress, RegexHelper.IPv6AddressRegex) || Regex.IsMatch(ServerAddress, RegexHelper.Fqdn)) &&
                         // API-Key
-                        (Regex.IsMatch(API, RegexHelper.OctoPrintApiKey))
+                        (Regex.IsMatch(ApiKey, RegexHelper.OctoPrintApiKey))
                     ||
                         // Or validation rules are overriden
                         OverrideValidationRules
@@ -861,80 +577,29 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region WebSocket
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
         WebSocket _webSocket;
-        [JsonIgnore, XmlIgnore]
-        public WebSocket WebSocket
-        {
-            get => _webSocket;
-            set
-            {
-                if (_webSocket == value) return;
-                _webSocket = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
+
         Timer _pingTimer;
-        [JsonIgnore, XmlIgnore]
-        public Timer PingTimer
-        {
-            get => _pingTimer;
-            set
-            {
-                if (_pingTimer == value) return;
-                _pingTimer = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
+
         int _pingCounter = 0;
-        [JsonIgnore, XmlIgnore]
-        public int PingCounter
-        {
-            get => _pingCounter;
-            set
-            {
-                if (_pingCounter == value) return;
-                _pingCounter = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonIgnore, XmlIgnore]
+        [ObservableProperty]
+
         int _refreshCounter = 0;
-        [JsonIgnore, XmlIgnore]
-        public int RefreshCounter
-        {
-            get => _refreshCounter;
-            set
-            {
-                if (_refreshCounter == value) return;
-                _refreshCounter = value;
-                OnPropertyChanged();
-            }
-        }
 
         [JsonIgnore, XmlIgnore]
-        bool _isListeningToWebSocket = false;
-        [JsonIgnore, XmlIgnore]
-        public bool IsListeningToWebsocket
-        {
-            get => _isListeningToWebSocket;
-            set
-            {
-                if (_isListeningToWebSocket == value) return;
-                _isListeningToWebSocket = value;
-                OnListeningChanged(new OctoPrintEventListeningChangedEventArgs()
-                {
-                    SessonId = SessionId,
-                    IsListening = IsListening,
-                    IsListeningToWebSocket = value,
-                });
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+
+        bool _IsListeningToWebSocket = false;
+
         #endregion
 
         #region Constructor
@@ -1002,7 +667,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 ServerAddress = serverAddress;
-                API = api;
+                ApiKey = api;
                 Port = port;
                 IsSecure = isSecure;
 
@@ -1216,11 +881,11 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 if (!IsReady) return;
-                //if (!IsReady || IsListeningToWebsocket) return;
+                //if (!IsReady || IsListeningToWebSocket) return;
 
                 DisconnectWebSocket();
 
-                string target = $"{(IsSecure ? "wss" : "ws")}://{ServerAddress}:{Port}/sockjs/websocket?t={API}";
+                string target = $"{(IsSecure ? "wss" : "ws")}://{ServerAddress}:{Port}/sockjs/websocket?t={ApiKey}";
                 WebSocket = new WebSocket(target)
                 {
                     EnableAutoSendPing = false
@@ -1287,7 +952,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         private void WebSocket_Error(object sender, ErrorEventArgs e)
         {
-            IsListeningToWebsocket = false;
+            IsListeningToWebSocket = false;
             OnWebSocketError(e);
             OnError(e);
         }
@@ -1327,7 +992,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         private void WebSocket_Closed(object sender, EventArgs e)
         {
-            IsListeningToWebsocket = false;
+            IsListeningToWebSocket = false;
             StopPingTimer();
             OnWebSocketDisconnected(new OctoPrintEventArgs()
             {
@@ -1342,7 +1007,7 @@ namespace AndreasReitberger.API.OctoPrint
             // Not needed with octoprint?
             // PingTimer = new Timer((action) => PingServer(), null, 0, 2500);
 
-            IsListeningToWebsocket = true;
+            IsListeningToWebSocket = true;
             OnWebSocketConnected(new OctoPrintEventArgs()
             {
                 Message = $"WebSocket connection to {WebSocket} established. Connection state while opening was '{(IsOnline ? "online" : "offline")}'",
@@ -1397,7 +1062,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 if ((
-                    respone.StatusCode == HttpStatusCode.OK || respone.StatusCode == HttpStatusCode.NoContent) && 
+                    respone.StatusCode == HttpStatusCode.OK || respone.StatusCode == HttpStatusCode.NoContent) &&
                     respone.ResponseStatus == ResponseStatus.Completed)
                 {
                     apiRsponeResult.IsOnline = true;
@@ -1510,8 +1175,8 @@ namespace AndreasReitberger.API.OctoPrint
                     Method = method
                 };
 
-                request.AddHeader("X-Api-Key", API);
-                
+                request.AddHeader("X-Api-Key", ApiKey);
+
                 if (urlSegments != null)
                 {
                     foreach (KeyValuePair<string, string> pair in urlSegments)
@@ -1631,7 +1296,7 @@ namespace AndreasReitberger.API.OctoPrint
                     Method = Method.Get
                 };
 
-                request.AddHeader("X-Api-Key", API);
+                request.AddHeader("X-Api-Key", ApiKey);
 
                 Uri fullUri = restClient.BuildUri(request);
                 try
@@ -1723,7 +1388,7 @@ namespace AndreasReitberger.API.OctoPrint
                 CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, timeout));
                 RestRequest request = new($"/api/files/{location}");
 
-                request.AddHeader("X-Api-Key", API);
+                request.AddHeader("X-Api-Key", ApiKey);
 
                 request.RequestFormat = DataFormat.Json;
                 request.Method = Method.Post;
@@ -1784,7 +1449,7 @@ namespace AndreasReitberger.API.OctoPrint
             )
         {
             return await SendMultipartFormDataFileRestApiRequestAsync(filePath, location.Location, path, selectFile, printFile, timeout)
-                .ConfigureAwait(false); 
+                .ConfigureAwait(false);
         }
 
         async Task<OctoPrintApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
@@ -1809,7 +1474,7 @@ namespace AndreasReitberger.API.OctoPrint
                 CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, timeout));
                 RestRequest request = new($"/api/files/{location}");
 
-                request.AddHeader("X-Api-Key", API);
+                request.AddHeader("X-Api-Key", ApiKey);
 
                 request.RequestFormat = DataFormat.Json;
                 request.Method = Method.Post;
@@ -1893,7 +1558,7 @@ namespace AndreasReitberger.API.OctoPrint
                 CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, timeout));
                 RestRequest request = new($"/api/files/{location}");
 
-                request.AddHeader("X-Api-Key", API);
+                request.AddHeader("X-Api-Key", ApiKey);
 
                 request.RequestFormat = DataFormat.Json;
                 request.Method = Method.Post;
@@ -1901,7 +1566,7 @@ namespace AndreasReitberger.API.OctoPrint
 
                 //Multiform
                 request.AddHeader("Content-Type", "multipart/form-data");
-                request.AddParameter("foldername",folderName, ParameterType.GetOrPost);
+                request.AddParameter("foldername", folderName, ParameterType.GetOrPost);
                 request.AddParameter("path", path, ParameterType.GetOrPost);
 
                 Uri fullUri = restClient.BuildUri(request);
@@ -1951,7 +1616,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             return await SendMultipartFormDataFolderRestApiRequestAsync(folderName, location.Location, path, timeout)
                 .ConfigureAwait(false);
-        }       
+        }
         #endregion
 
         #region Download
@@ -1964,7 +1629,7 @@ namespace AndreasReitberger.API.OctoPrint
                     UpdateRestClientInstance();
                 }
                 RestRequest request = new(path);
-                request.AddHeader("X-Api-Key", API);
+                request.AddHeader("X-Api-Key", ApiKey);
 
                 request.RequestFormat = DataFormat.Json;
                 request.Method = Method.Get;
@@ -2065,11 +1730,11 @@ namespace AndreasReitberger.API.OctoPrint
                 //get all files & folders 
                 urlSegements.Add("recursive", recursive ? "true" : "false");
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, files, jsonObject: null, cts: default, urlSegements)
                     .ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                if(list != null)
+                if (list != null)
                 {
                     FreeDiskSpace = list.Free;
                     TotalDiskSpace = list.Total;
@@ -2147,7 +1812,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, "printerprofiles")
                     .ConfigureAwait(false);
                 OctoPrintPrinterProfiles list = JsonConvert.DeserializeObject<OctoPrintPrinterProfiles>(result.Result);
@@ -2221,7 +1886,7 @@ namespace AndreasReitberger.API.OctoPrint
                 {
                     PingTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     PingTimer = null;
-                    IsListeningToWebsocket = false;
+                    IsListeningToWebSocket = false;
                 }
                 catch (ObjectDisposedException)
                 {
@@ -2288,7 +1953,8 @@ namespace AndreasReitberger.API.OctoPrint
                     return; // StopListening();
             }
             ConnectWebSocket();
-            Timer = new Timer(async (action) => {
+            Timer = new Timer(async (action) =>
+            {
                 // Do not check the online state ever tick
                 if (RefreshCounter > 5)
                 {
@@ -2317,7 +1983,7 @@ namespace AndreasReitberger.API.OctoPrint
             StopPingTimer();
             StopTimer();
 
-            if (IsListeningToWebsocket)
+            if (IsListeningToWebSocket)
                 DisconnectWebSocket();
             IsListening = false;
         }
@@ -2433,7 +2099,7 @@ namespace AndreasReitberger.API.OctoPrint
             {
                 string currentPrinter = GetActivePrinterSlug();
                 if (string.IsNullOrEmpty(currentPrinter)) return string.Empty;
-                return $"{FullWebAddress}/webcam/?action=stream?t={API}";
+                return $"{FullWebAddress}/webcam/?action=stream?t={ApiKey}";
             }
             catch (Exception exc)
             {
@@ -2507,7 +2173,7 @@ namespace AndreasReitberger.API.OctoPrint
                 if (IsOnline)
                 {
                     CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, Timeout));
-                    OctoPrintApiRequestRespone respone = 
+                    OctoPrintApiRequestRespone respone =
                         await SendOnlineCheckRestApiRequestAsync(OctoPrintCommandBase.api, "version", cts)
                         .ConfigureAwait(false);
                     if (respone.HasAuthenticationError)
@@ -2573,7 +2239,7 @@ namespace AndreasReitberger.API.OctoPrint
                 return
                     !(ServerAddress == temp.ServerAddress &&
                         Port == temp.Port &&
-                        API == temp.API &&
+                        ApiKey == temp.ApiKey &&
                         IsSecure == temp.IsSecure
                         );
             }
@@ -2584,7 +2250,7 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
         #endregion
-       
+
         #region VersionInformation
         public async Task<OctoPrintVersionInfo> GetVersionInfoAsync()
         {
@@ -2649,7 +2315,7 @@ namespace AndreasReitberger.API.OctoPrint
                         autoconnect = autoconnect
                     };
                 }
-                else if(string.IsNullOrEmpty(port))
+                else if (string.IsNullOrEmpty(port))
                 {
                     parameter = new
                     {
@@ -2848,9 +2514,10 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
-                object parameter = new { 
-                    command = "copy", 
-                    destination = destination 
+                object parameter = new
+                {
+                    command = "copy",
+                    destination = destination
                 };
 
                 OctoPrintApiRequestRespone result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Copy, command, parameter)
@@ -2870,9 +2537,10 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
-                object parameter = new { 
-                    command = "move", 
-                    destination = destination 
+                object parameter = new
+                {
+                    command = "move",
+                    destination = destination
                 };
 
                 OctoPrintApiRequestRespone result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
@@ -2968,7 +2636,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 OctoPrintApiRequestRespone result = await SendMultipartFormDataFolderRestApiRequestAsync(name, location, path);
-                if(result != null)
+                if (result != null)
                     return result.Succeeded;
                 else return false;
             }
@@ -3003,7 +2671,7 @@ namespace AndreasReitberger.API.OctoPrint
                     urlSegements.Add("exclude", sb.ToString());
                 }
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegements)
                     .ConfigureAwait(false);
                 OctoPrintPrinterState respone = JsonConvert.DeserializeObject<OctoPrintPrinterState>(result.Result);
@@ -3044,13 +2712,14 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = "printer/printhead";
-                object parameter = new { 
-                    command = "jog", 
-                    x = double.IsInfinity(X) ? 0 : X, 
-                    y = double.IsInfinity(Y) ? 0 : Y, 
-                    z = double.IsInfinity(Z) ? 0 : Z, 
+                object parameter = new
+                {
+                    command = "jog",
+                    x = double.IsInfinity(X) ? 0 : X,
+                    y = double.IsInfinity(Y) ? 0 : Y,
+                    z = double.IsInfinity(Z) ? 0 : Z,
                     speed = Speed,
-                    absolute = absolute ? "true" : "false" 
+                    absolute = absolute ? "true" : "false"
                 };
 
                 // no content for this result
@@ -3073,7 +2742,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "jog", x = x, y = y, z = z, absolute = absolute };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3097,7 +2766,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "home", axes = axes };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3117,7 +2786,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "feedrate", factor = feedRate };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 LastFeedRate = feedRate;
@@ -3138,7 +2807,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "feedrate", factor = feedRate };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 LastFeedRate = feedRate;
@@ -3163,7 +2832,7 @@ namespace AndreasReitberger.API.OctoPrint
                 if (limit > 0)
                     urlSegements.Add("limit", limit.ToString());
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegements)
                     .ConfigureAwait(false);
                 OctoPrintToolState respone = JsonConvert.DeserializeObject<OctoPrintToolState>(result.Result);
@@ -3186,7 +2855,7 @@ namespace AndreasReitberger.API.OctoPrint
 
                 string command = "printer/tool";
                 object parameter = null;
-                if(tool0 != int.MinValue && tool1 != int.MinValue)
+                if (tool0 != int.MinValue && tool1 != int.MinValue)
                     parameter = new { command = "target", targets = new { tool0 = tool0, tool1 = tool1 } };
                 else if (tool0 != int.MinValue)
                     parameter = new { command = "target", targets = new { tool0 = tool0 } };
@@ -3194,7 +2863,7 @@ namespace AndreasReitberger.API.OctoPrint
                     parameter = new { command = "target", targets = new { tool1 = tool1 } };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3214,7 +2883,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "offset", offsets = new { tool0 = tool0, tool1 = tool1 } };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3233,7 +2902,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "select", tool = string.Format("tool{0}", tool) };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3252,7 +2921,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "extrude", amount = length, speed = speed };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3275,7 +2944,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "flowrate", factor = flowRate };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 LastFlowRate = flowRate;
@@ -3295,7 +2964,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "flowrate", factor = flowRate };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 LastFlowRate = flowRate;
@@ -3320,7 +2989,7 @@ namespace AndreasReitberger.API.OctoPrint
                 if (limit > 0)
                     urlSegements.Add("limit", limit.ToString());
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, jsonObject: null, cts: default, urlSegements)
                     .ConfigureAwait(false);
                 OctoPrintBedState respone = JsonConvert.DeserializeObject<OctoPrintBedState>(result.Result);
@@ -3344,7 +3013,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "target", target = target };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return string.IsNullOrEmpty(result.Result);
@@ -3363,7 +3032,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "offset", offset = offset };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3389,7 +3058,7 @@ namespace AndreasReitberger.API.OctoPrint
                 if (limit > 0)
                     urlSegements.Add("limit", limit.ToString());
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, jsonObject: null, cts: default, urlSegements)
                     .ConfigureAwait(false);
                 OctoPrintChamberState respone = JsonConvert.DeserializeObject<OctoPrintChamberState>(result.Result);
@@ -3413,7 +3082,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "target", target = target };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3432,7 +3101,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "offset", offset = offset };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3458,7 +3127,7 @@ namespace AndreasReitberger.API.OctoPrint
                 if (limit > 0)
                     urlSegements.Add("limit", limit.ToString());
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegements)
                     .ConfigureAwait(false);
                 OctoPrintPrinterStateSd respone = JsonConvert.DeserializeObject<OctoPrintPrinterStateSd>(result.Result);
@@ -3478,7 +3147,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "init" };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3497,7 +3166,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "refresh" };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3539,7 +3208,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = cmd };
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 return true;
@@ -3655,7 +3324,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "start" };
                 //string parameter = string.Format("{{\"command\":{0}}}", "start");
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result?.Result);
@@ -3675,7 +3344,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "cancel" };
                 //string parameter = string.Format("{{\"command\":{0}}}", "cancel");
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
@@ -3695,7 +3364,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "restart" };
                 //string parameter = string.Format("{{\"command\":{0}}}", "restart");
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
@@ -3715,7 +3384,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "pause", action = "pause" };
                 //string parameter = string.Format("{{\"command\":{0}, \"action\":{1}}}", "pause", "pause");
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
@@ -3735,7 +3404,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "pause", action = "resume" };
                 //string parameter = string.Format("{{\"command\":{0}, \"action\":{1}}}", "pause", "resume");
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
@@ -3774,7 +3443,7 @@ namespace AndreasReitberger.API.OctoPrint
             {
                 string command = "job";
 
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command)
                     .ConfigureAwait(false);
                 OctoPrintJobInfo list = JsonConvert.DeserializeObject<OctoPrintJobInfo>(result.Result);
@@ -3841,7 +3510,7 @@ namespace AndreasReitberger.API.OctoPrint
                 string command = "settings";
 
                 // no content for this result
-                OctoPrintApiRequestRespone result = 
+                OctoPrintApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, SettingsTreeObject)
                     .ConfigureAwait(false);
                 OctoPrintSettings respone = JsonConvert.DeserializeObject<OctoPrintSettings>(result.Result);
