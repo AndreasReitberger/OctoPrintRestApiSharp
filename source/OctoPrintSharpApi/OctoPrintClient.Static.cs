@@ -8,7 +8,6 @@ namespace AndreasReitberger.API.OctoPrint
 {
     public partial class OctoPrintClient
     {
-
         #region Static
         public static string ConvertStackToPath(Stack<string> stack, string separator)
         {
