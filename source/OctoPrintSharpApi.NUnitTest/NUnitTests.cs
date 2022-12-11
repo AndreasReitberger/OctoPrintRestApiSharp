@@ -1,21 +1,14 @@
 using AndreasReitberger.API.OctoPrint;
 using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.Core.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace OctoPrintSharpApiTest
+namespace OctoPrintSharpApi.NUnitTest
 {
-    [TestClass]
-    public class OctoPrintSharpApiTest
+    public class Tests
     {
         // https://docs.microsoft.com/en-us/dotnet/core/tutorials/testing-library-with-visual-studio
 
@@ -28,10 +21,14 @@ namespace OctoPrintSharpApiTest
         private bool _skipOnlineTests = false;
         private bool _skipPrinterActionTests = true;
 
-        [TestMethod]
+        [SetUp]
+        public void Setup()
+        {
+        }
+
+        [Test]
         public void SerializeJsonTest()
         {
-
             var dir = @"TestResults\Serialization\";
             Directory.CreateDirectory(dir);
             string serverConfig = Path.Combine(dir, "server.xml");
@@ -43,11 +40,12 @@ namespace OctoPrintSharpApiTest
                 {
                     FreeDiskSpace = 1523165212,
                     TotalDiskSpace = 65621361616161,
+                    ServerName = "My OctoPrint Server"
                 };
                 OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
-                var serializedString = JsonSerializer.Serialize(OctoPrintClient.Instance);
-                var serializedObject = JsonSerializer.Deserialize<OctoPrintClient>(serializedString);
+                var serializedString = System.Text.Json.JsonSerializer.Serialize(OctoPrintClient.Instance);
+                var serializedObject = System.Text.Json.JsonSerializer.Deserialize<OctoPrintClient>(serializedString);
                 Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
 
             }
@@ -57,7 +55,36 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
+        public void SerializeJsonNewtonSoftTest()
+        {
+            var dir = @"TestResults\Serialization\";
+            Directory.CreateDirectory(dir);
+            string serverConfig = Path.Combine(dir, "server.xml");
+            if (File.Exists(serverConfig)) File.Delete(serverConfig);
+            try
+            {
+
+                OctoPrintClient.Instance = new OctoPrintClient(_host, _api, _port, _ssl)
+                {
+                    FreeDiskSpace = 1523165212,
+                    TotalDiskSpace = 65621361616161,
+                    ServerName = "My OctoPrint Server"
+                };
+                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
+
+                var serializedString = JsonConvert.SerializeObject(OctoPrintClient.Instance);
+                var serializedObject = JsonConvert.DeserializeObject<OctoPrintClient>(serializedString);
+                Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
+
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
         public void SerializeXmlTest()
         {
 
@@ -74,6 +101,7 @@ namespace OctoPrintSharpApiTest
                     {
                         FreeDiskSpace = 1523165212,
                         TotalDiskSpace = 65621361616161,
+                        ServerName = "My OctoPrint Server"
                     };
                     OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
@@ -94,7 +122,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task ServerInitTest()
         {
             try
@@ -118,7 +146,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task FetchPrinterProfilesTest()
         {
             try
@@ -142,7 +170,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task FetchPrintModelsTest()
         {
             try
@@ -166,7 +194,7 @@ namespace OctoPrintSharpApiTest
             }
         }
         /**/
-        [TestMethod]
+        [Test]
         public async Task OnlineTest()
         {
             if (_skipOnlineTests) return;
@@ -196,7 +224,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task DownloadModelTest()
         {
             string _modelPath = "http://192.168.10.44/downloads/files/local/babygroot_0.6n_0.15mm_PLA_MK3S_1d2h57m.gcode";
@@ -220,7 +248,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task WebsocketTest()
         {
             try
@@ -279,7 +307,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task SetHeatedbedTest()
         {
             //if (_skipPrinterActionTests) return;
@@ -362,7 +390,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task SetExtruderTest()
         {
             //if (_skipPrinterActionTests) return;
@@ -445,7 +473,7 @@ namespace OctoPrintSharpApiTest
             }
         }
 
-        [TestMethod]
+        [Test]
         public async Task ConnectionBuilderTest()
         {
             string host = "192.168.10.112";

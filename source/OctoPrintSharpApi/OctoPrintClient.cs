@@ -1,4 +1,6 @@
-﻿using AndreasReitberger.Core.Utilities;
+﻿//#define UseMvvm
+
+using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.API.OctoPrint.Enum;
 using AndreasReitberger.API.OctoPrint.Interfaces;
 using AndreasReitberger.API.OctoPrint.Models;
@@ -22,6 +24,7 @@ using System.Xml.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
+
 
 namespace AndreasReitberger.API.OctoPrint
 {
@@ -104,9 +107,28 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region RefreshTimer
-        [JsonIgnore, XmlIgnore]
+        // For now, this fails XML / JSON serialization
+#if UseMvvm
         [ObservableProperty]
+        [field: JsonIgnore]
+        [field: XmlIgnore]
+#else
+        [JsonIgnore, XmlIgnore]
+#endif
         Timer _timer;
+#if !UseMvvm
+        [JsonIgnore, XmlIgnore]
+        public Timer Timer
+        {
+            get => _timer;
+            set
+            {
+                if (_timer == value) return;
+                _timer = value;
+                OnPropertyChanged();
+            }
+        }
+#endif 
 
         [JsonProperty(nameof(RefreshInterval))]
         int _refreshInterval = 3;
@@ -124,7 +146,6 @@ namespace AndreasReitberger.API.OctoPrint
                     StartListening();
                 }
                 OnPropertyChanged();
-
             }
         }
 
@@ -152,7 +173,6 @@ namespace AndreasReitberger.API.OctoPrint
         [ObservableProperty]
         bool _initialDataFetched = false;
 
-
         #endregion
 
         #region Properties
@@ -164,33 +184,33 @@ namespace AndreasReitberger.API.OctoPrint
         string _sessionId = string.Empty;
 
 
-        [JsonProperty(nameof(ServerName))]
+        //[JsonProperty(nameof(ServerName))]
         [ObservableProperty]
 
         string _serverName = string.Empty;
 
-        [JsonProperty(nameof(ServerAddress))]
+        //[JsonProperty(nameof(ServerAddress))]
         [ObservableProperty]
         string _serverAddress = string.Empty;
 
-        [JsonProperty(nameof(IsSecure))]
+        //[JsonProperty(nameof(IsSecure))]
         [ObservableProperty]
         bool _isSecure = false;
 
-        [JsonProperty(nameof(AndreasReitberger.API))]
+        //[JsonProperty(nameof(ApiKey))]
         [ObservableProperty]
         string _apiKey = string.Empty;
 
-        [JsonProperty(nameof(Port))]
+        //[JsonProperty(nameof(Port))]
         [ObservableProperty]
         int _port = 80;
 
-        [JsonProperty(nameof(DefaultTimeout))]
+        //[JsonProperty(nameof(DefaultTimeout))]
         [ObservableProperty]
         int _defaultTimeout = 10000;
 
-        [JsonProperty(nameof(OverrideValidationRules))]
-        [XmlAttribute(nameof(OverrideValidationRules))]
+        //[JsonProperty(nameof(OverrideValidationRules))]
+        //[XmlAttribute(nameof(OverrideValidationRules))]
         [ObservableProperty]
         bool _overrideValidationRules = false;
 
@@ -224,24 +244,24 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        [JsonProperty(nameof(IsConnecting))]
-        [XmlAttribute(nameof(IsConnecting))]
+        //[JsonProperty(nameof(IsConnecting))]
+        //[XmlAttribute(nameof(IsConnecting))]
         [ObservableProperty]
 
         bool _isConnecting = false;
 
-        [JsonProperty(nameof(AuthenticationFailed))]
-        [XmlAttribute(nameof(AuthenticationFailed))]
+        //[JsonProperty(nameof(AuthenticationFailed))]
+        //[XmlAttribute(nameof(AuthenticationFailed))]
         [ObservableProperty]
         bool _authenticationFailed = false;
 
-        [JsonProperty(nameof(IsRefreshing))]
-        [XmlAttribute(nameof(IsRefreshing))]
+        //[JsonProperty(nameof(IsRefreshing))]
+        //[XmlAttribute(nameof(IsRefreshing))]
         [ObservableProperty]
         bool _isRefreshing = false;
 
-        [JsonProperty(nameof(RetriesWhenOffline))]
-        [XmlAttribute(nameof(RetriesWhenOffline))]
+        //[JsonProperty(nameof(RetriesWhenOffline))]
+        //[XmlAttribute(nameof(RetriesWhenOffline))]
         [ObservableProperty]
         int _retriesWhenOffline = 2;
         #endregion
@@ -306,65 +326,56 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        [JsonProperty(nameof(SecureProxyConnection))]
-        [XmlAttribute(nameof(SecureProxyConnection))]
+        //[JsonProperty(nameof(SecureProxyConnection))]
+        //[XmlAttribute(nameof(SecureProxyConnection))]
         [ObservableProperty]
         bool _secureProxyConnection = true;
 
-        [JsonProperty(nameof(ProxyAddress))]
-        [XmlAttribute(nameof(ProxyAddress))]
+        //[JsonProperty(nameof(ProxyAddress))]
+        //[XmlAttribute(nameof(ProxyAddress))]
         [ObservableProperty]
         string _proxyAddress = string.Empty;
 
-        [JsonProperty(nameof(ProxyPort))]
-        [XmlAttribute(nameof(ProxyPort))]
+        //[JsonProperty(nameof(ProxyPort))]
+        //[XmlAttribute(nameof(ProxyPort))]
         [ObservableProperty]
         int _proxyPort = 443;
 
-        [JsonProperty(nameof(ProxyUser))]
-        [XmlAttribute(nameof(ProxyUser))]
+        //[JsonProperty(nameof(ProxyUser))]
+        //[XmlAttribute(nameof(ProxyUser))]
         [ObservableProperty]
-
         string _proxyUser = string.Empty;
 
 
-        [JsonProperty(nameof(ProxyPassword))]
-        [XmlAttribute(nameof(ProxyPassword))]
+        //[JsonProperty(nameof(ProxyPassword))]
+        //[XmlAttribute(nameof(ProxyPassword))]
         [ObservableProperty]
-
         SecureString _proxyPassword;
 
         #endregion
 
         #region DiskSpace
-        [JsonProperty(nameof(FreeDiskSpace))]
+        //[JsonProperty(nameof(FreeDiskSpace))]
         [ObservableProperty]
-
         long _freeDiskSpace = 0;
-        [JsonIgnore]
 
-
-        [JsonProperty(nameof(TotalDiskSpace))]
+        //[JsonProperty(nameof(TotalDiskSpace))]
         [ObservableProperty]
-
         long _totalDiskSpace = 0;
 
         #endregion
 
         #region PrinterStateInformation
-        [JsonProperty(nameof(LastFlowRate))]
+        //[JsonProperty(nameof(LastFlowRate))]
         [ObservableProperty]
-
         double _lastFlowRate = 100;
 
-        [JsonProperty(nameof(LastFeedRate))]
+        //[JsonProperty(nameof(LastFeedRate))]
         [ObservableProperty]
-
         double _lastFeedRate = 100;
 
-        [JsonProperty(nameof(CurrentFileLocation))]
+        //[JsonProperty(nameof(CurrentFileLocation))]
         [ObservableProperty]
-
         OctoPrintFileLocations _currentFileLocation = OctoPrintFileLocations.local;
         #endregion
 
@@ -566,14 +577,49 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region WebSocket
-        [JsonIgnore, XmlIgnore]
+#if UseMvvm
         [ObservableProperty]
+        [field: JsonIgnore]
+        [field: XmlIgnore]
+#else
+        [JsonIgnore, XmlIgnore]
+#endif
         WebSocket _webSocket;
-
+#if !UseMvvm
         [JsonIgnore, XmlIgnore]
-        [ObservableProperty]
+        public WebSocket WebSocket
+        {
+            get => _webSocket;
+            set
+            {
+                if (_webSocket == value) return;
+                _webSocket = value;
+                OnPropertyChanged();
+            }
+        }
+#endif
 
+#if UseMvvm
+        [ObservableProperty]
+        [field: JsonIgnore]
+        [field: XmlIgnore]
+#else
+        [JsonIgnore, XmlIgnore]
+#endif
         Timer _pingTimer;
+#if !UseMvvm
+        [JsonIgnore, XmlIgnore]
+        public Timer PingTimer
+        {
+            get => _pingTimer;
+            set
+            {
+                if (_pingTimer == value) return;
+                _pingTimer = value;
+                OnPropertyChanged();
+            }
+        }
+#endif
 
         [JsonIgnore, XmlIgnore]
         [ObservableProperty]
@@ -588,7 +634,7 @@ namespace AndreasReitberger.API.OctoPrint
         [JsonIgnore, XmlIgnore]
         [ObservableProperty]
 
-        bool _IsListeningToWebSocket = false;
+        bool _isListeningToWebSocket = false;
 
         #endregion
 
@@ -2046,7 +2092,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        #endregion       
+        #endregion
 
         #region CurrentFileLocation
         public async Task SwitchFileLocationAsync(OctoPrintFileLocations newLocation)
