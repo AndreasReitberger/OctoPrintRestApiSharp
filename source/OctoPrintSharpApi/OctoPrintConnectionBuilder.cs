@@ -25,7 +25,7 @@
 
             public OctoPrintConnectionBuilder WithApiKey(string apiKey)
             {
-                _client.API = apiKey;
+                _client.ApiKey = apiKey;
                 return this;
             }
 
