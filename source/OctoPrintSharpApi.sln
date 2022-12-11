@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30406.217
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoPrintSharpApi", "OctoPrintSharpApi\OctoPrintSharpApi.csproj", "{FAA9B62D-38C9-4A60-88E0-F40A3B710AE8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoPrintSharpApiTest", "OctoPrintSharpApiTest\OctoPrintSharpApiTest.csproj", "{6708E84D-966D-450E-8CE2-0C585AE349C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoPrintSharpApi.NUnitTest", "OctoPrintSharpApi.NUnitTest\OctoPrintSharpApi.NUnitTest.csproj", "{1F6D27D0-1017-4421-8281-0265A627B408}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{FAA9B62D-38C9-4A60-88E0-F40A3B710AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAA9B62D-38C9-4A60-88E0-F40A3B710AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAA9B62D-38C9-4A60-88E0-F40A3B710AE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6708E84D-966D-450E-8CE2-0C585AE349C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6708E84D-966D-450E-8CE2-0C585AE349C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6708E84D-966D-450E-8CE2-0C585AE349C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6708E84D-966D-450E-8CE2-0C585AE349C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F6D27D0-1017-4421-8281-0265A627B408}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F6D27D0-1017-4421-8281-0265A627B408}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F6D27D0-1017-4421-8281-0265A627B408}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F6D27D0-1017-4421-8281-0265A627B408}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
