@@ -1,19 +1,16 @@
-﻿//#define UseMvvm
-
-using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.API.OctoPrint.Enum;
+﻿using AndreasReitberger.API.OctoPrint.Enum;
 using AndreasReitberger.API.OctoPrint.Interfaces;
 using AndreasReitberger.API.OctoPrint.Models;
+using AndreasReitberger.Core.Utilities;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Security;
 using System.Security.Authentication;
 using System.Text;
@@ -21,7 +18,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using CommunityToolkit.Mvvm.ComponentModel;
 using WebSocket4Net;
 using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 
@@ -108,27 +104,11 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region RefreshTimer
         // For now, this fails XML / JSON serialization
-#if UseMvvm
+
         [ObservableProperty]
-        [field: JsonIgnore]
-        [field: XmlIgnore]
-#else
-        [JsonIgnore, XmlIgnore]
-#endif
+        [property: JsonIgnore]
+        [property: XmlIgnore]
         Timer _timer;
-#if !UseMvvm
-        [JsonIgnore, XmlIgnore]
-        public Timer Timer
-        {
-            get => _timer;
-            set
-            {
-                if (_timer == value) return;
-                _timer = value;
-                OnPropertyChanged();
-            }
-        }
-#endif 
 
         [JsonProperty(nameof(RefreshInterval))]
         int _refreshInterval = 3;
@@ -182,7 +162,6 @@ namespace AndreasReitberger.API.OctoPrint
         [JsonIgnore, XmlIgnore]
         [ObservableProperty]
         string _sessionId = string.Empty;
-
 
         //[JsonProperty(nameof(ServerName))]
         [ObservableProperty]
@@ -577,49 +556,16 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region WebSocket
-#if UseMvvm
-        [ObservableProperty]
-        [field: JsonIgnore]
-        [field: XmlIgnore]
-#else
-        [JsonIgnore, XmlIgnore]
-#endif
-        WebSocket _webSocket;
-#if !UseMvvm
-        [JsonIgnore, XmlIgnore]
-        public WebSocket WebSocket
-        {
-            get => _webSocket;
-            set
-            {
-                if (_webSocket == value) return;
-                _webSocket = value;
-                OnPropertyChanged();
-            }
-        }
-#endif
 
-#if UseMvvm
         [ObservableProperty]
-        [field: JsonIgnore]
-        [field: XmlIgnore]
-#else
-        [JsonIgnore, XmlIgnore]
-#endif
+        [property: JsonIgnore]
+        [property: XmlIgnore]
+        WebSocket _webSocket;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [property: XmlIgnore]
         Timer _pingTimer;
-#if !UseMvvm
-        [JsonIgnore, XmlIgnore]
-        public Timer PingTimer
-        {
-            get => _pingTimer;
-            set
-            {
-                if (_pingTimer == value) return;
-                _pingTimer = value;
-                OnPropertyChanged();
-            }
-        }
-#endif
 
         [JsonIgnore, XmlIgnore]
         [ObservableProperty]
