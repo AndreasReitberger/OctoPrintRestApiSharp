@@ -1,4 +1,6 @@
-﻿namespace AndreasReitberger.API.OctoPrint
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace AndreasReitberger.API.OctoPrint
 {
     public partial class OctoPrintClient
     {

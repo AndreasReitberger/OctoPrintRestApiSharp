@@ -29,16 +29,6 @@ namespace AndreasReitberger.API.OctoPrint
     [ObservableObject]
     public partial class OctoPrintClient : IPrintServerClient
     {
-        #region INotifyPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
         #region Variables
         RestClient restClient;
         HttpClient httpClient;
