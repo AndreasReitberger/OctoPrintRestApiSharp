@@ -8,7 +8,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Properties
         public string Message { get; set; } = string.Empty;
         public int CallbackId { get; set; } = -1;
-        public string SessonId { get; set; } = string.Empty;
+        public string SessionId { get; set; } = string.Empty;
         public string Printer { get; set; } = string.Empty;
         #endregion
 

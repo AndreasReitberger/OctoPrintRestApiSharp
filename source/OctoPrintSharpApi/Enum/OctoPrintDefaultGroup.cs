@@ -4,6 +4,6 @@
     {
         Admins,
         Readonly,
-        USers,
+        Users,
     }
 }

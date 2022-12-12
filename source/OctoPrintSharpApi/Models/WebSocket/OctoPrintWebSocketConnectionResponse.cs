@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintWebSocketConnectionRespone
+    public partial class OctoPrintWebSocketConnectionResponse
     {
         #region Properties
         [JsonProperty("connected")]

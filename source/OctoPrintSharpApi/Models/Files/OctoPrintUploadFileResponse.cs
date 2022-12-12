@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintUploadFileRespone
+    public partial class OctoPrintUploadFileResponse
     {
         #region Properties
         [JsonProperty("done", NullValueHandling = NullValueHandling.Ignore)]
