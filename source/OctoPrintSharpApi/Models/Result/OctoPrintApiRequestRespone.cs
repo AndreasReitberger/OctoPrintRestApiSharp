@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintApiRequestRespone
+    public class OctoPrintApiRequestResponse
     {
         #region Properties
         public string Result { get; set; } = string.Empty;

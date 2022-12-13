@@ -8,6 +8,6 @@
         Closed,
         Offline,
 
-        Unkown = 99,
+        Unknown = 99,
     }
 }

@@ -25,10 +25,10 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintConnectionStates state = OctoPrintConnectionStates.Unkown;
+                OctoPrintConnectionStates state = OctoPrintConnectionStates.Unknown;
                 string cropped = ConnectionState.Replace(" ", string.Empty);
                 System.Enum.TryParse(cropped, out state);
-                if (state == OctoPrintConnectionStates.Unkown)
+                if (state == OctoPrintConnectionStates.Unknown)
                 {
                     // Just for debugging
                 }
@@ -36,7 +36,7 @@ namespace AndreasReitberger.API.OctoPrint
             }
             catch (Exception)
             {
-                return OctoPrintConnectionStates.Unkown;
+                return OctoPrintConnectionStates.Unknown;
             }
         }
         #endregion
