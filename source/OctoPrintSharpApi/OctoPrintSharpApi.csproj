@@ -1,14 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;net472;net5;net6;net7</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net472;net6;net7</TargetFrameworks>
         <RootNamespace>AndreasReitberger.API.OctoPrint</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Andreas Reitberger</Authors>
         <Company>Andreas Reitberger</Company>
         <Description>A simple Rest-API-Client for interacting with a OctoPrint instance from any C# project.</Description>
-        <AssemblyVersion>1.2.0.0</AssemblyVersion>
-        <FileVersion>1.2.0.0</FileVersion>
-        <Version>1.2.0</Version>
+        <Version>1.2.1</Version>
         <Copyright>Andreas Reitberger</Copyright>
         <RepositoryUrl>https://github.com/AndreasReitberger/OctoPrintSharpApi</RepositoryUrl>
         <PackageTags>OctoPrint, Server, API, Rest, Sharp, Csharp, Web, Client</PackageTags>
@@ -18,7 +16,7 @@
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0-preview1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="RCoreSharp" Version="1.0.8" />
 		<PackageReference Include="RestSharp" Version="108.0.3" />
