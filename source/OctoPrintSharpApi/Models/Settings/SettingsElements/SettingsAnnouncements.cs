@@ -19,7 +19,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         public List<string> EnabledChannels { get; set; } = new();
 
         [JsonProperty("forced_channels", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> ForcedChannels { get; set; } = new(); 
+        public List<string> ForcedChannels { get; set; } = new();
 
         [JsonProperty("summary_limit", NullValueHandling = NullValueHandling.Ignore)]
         public long? SummaryLimit { get; set; }

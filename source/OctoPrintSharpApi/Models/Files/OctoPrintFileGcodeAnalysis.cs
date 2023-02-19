@@ -25,16 +25,16 @@ namespace AndreasReitberger.API.OctoPrint.Models
             get
             {
                 double filamentUsed = 0;
-                if(Filament != null)
+                if (Filament != null)
                 {
-                    foreach(KeyValuePair<string, OctoPrintFilament> pair in Filament)
+                    foreach (KeyValuePair<string, OctoPrintFilament> pair in Filament)
                     {
                         try
                         {
                             if (pair.Value != null)
                                 filamentUsed += pair.Value.Volume;
                         }
-                        catch(Exception)
+                        catch (Exception)
                         { continue; }
                     }
                 }
@@ -47,16 +47,16 @@ namespace AndreasReitberger.API.OctoPrint.Models
             get
             {
                 double filamentUsed = 0;
-                if(Filament != null)
+                if (Filament != null)
                 {
-                    foreach(KeyValuePair<string, OctoPrintFilament> pair in Filament)
+                    foreach (KeyValuePair<string, OctoPrintFilament> pair in Filament)
                     {
                         try
                         {
                             if (pair.Value != null)
                                 filamentUsed += pair.Value.Length;
                         }
-                        catch(Exception)
+                        catch (Exception)
                         { continue; }
                     }
                 }
