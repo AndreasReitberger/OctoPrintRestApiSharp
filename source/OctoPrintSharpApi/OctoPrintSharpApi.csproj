@@ -17,7 +17,7 @@
     </PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="RCoreSharp" Version="1.0.8" />
 		<PackageReference Include="RestSharp" Version="108.0.3" />
 		<PackageReference Include="System.Memory" Version="4.5.5" />
