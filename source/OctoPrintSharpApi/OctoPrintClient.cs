@@ -25,8 +25,7 @@ using ErrorEventArgs = SuperSocket.ClientEngine.ErrorEventArgs;
 namespace AndreasReitberger.API.OctoPrint
 {
     //http://docs.octoprint.org/en/master/api/
-    [ObservableObject]
-    public partial class OctoPrintClient : IPrintServerClient
+    public partial class OctoPrintClient : ObservableObject, IPrintServerClient
     {
         #region Variables
         RestClient restClient;
