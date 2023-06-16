@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;net472;net6;net7</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net472;net6</TargetFrameworks>
         <RootNamespace>AndreasReitberger.API.OctoPrint</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Andreas Reitberger</Authors>
         <Company>Andreas Reitberger</Company>
         <Description>A simple Rest-API-Client for interacting with a OctoPrint instance from any C# project.</Description>
-        <Version>1.2.1</Version>
+        <Version>1.2.2</Version>
         <Copyright>Andreas Reitberger</Copyright>
         <RepositoryUrl>https://github.com/AndreasReitberger/OctoPrintSharpApi</RepositoryUrl>
         <PackageTags>OctoPrint, Server, API, Rest, Sharp, Csharp, Web, Client</PackageTags>
