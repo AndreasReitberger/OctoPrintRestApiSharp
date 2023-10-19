@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
+using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
+    [Obsolete("Use IRestApiRequestResponse instead")]
     public class OctoPrintApiRequestResponse
     {
         #region Properties

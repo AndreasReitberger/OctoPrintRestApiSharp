@@ -258,7 +258,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 Dictionary<DateTime, string> websocketMessages = new Dictionary<DateTime, string>();
                 OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
                 await _server.SetPrinterActiveAsync(0);
-                _server.StartListening();
+                await _server.StartListeningAsync();
 
                 _server.Error += (o, args) =>
                 {
@@ -296,7 +296,7 @@ namespace OctoPrintSharpApi.NUnitTest
                     await Task.Delay(10000);
                     await _server.CheckOnlineAsync();
                 } while (_server.IsOnline && !cts.IsCancellationRequested);
-                _server.StopListening();
+                await _server.StopListeningAsync();
 
 
                 Assert.IsTrue(cts.IsCancellationRequested);
