@@ -2,6 +2,7 @@ using AndreasReitberger.API.OctoPrint;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
+using RepetierServerSharpApiTest;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Xml.Serialization;
@@ -12,9 +13,11 @@ namespace OctoPrintSharpApi.NUnitTest
     {
         // https://docs.microsoft.com/en-us/dotnet/core/tutorials/testing-library-with-visual-studio
 
-        private static string _api = "A1FE2CC8FCCE4BD59910D8865ABBDAE5";
-        private static string _host = "192.168.10.44";
-        private static int _port = 80;
+        private readonly string _host = SecretAppSettingReader.ReadSection<SecretAppSetting>("TestSetup").Ip ?? "";
+        private readonly string _user = SecretAppSettingReader.ReadSection<SecretAppSetting>("TestSetup").User ?? "";
+        private readonly string _pw = SecretAppSettingReader.ReadSection<SecretAppSetting>("TestSetup").Password ?? "";
+        private readonly int _port = 80;
+        private readonly string _api = SecretAppSettingReader.ReadSection<SecretAppSetting>("TestSetup").ApiKey ?? "";
         private static bool _ssl = false;
 
         private bool _skipWebSocketTests = true;
@@ -44,8 +47,8 @@ namespace OctoPrintSharpApi.NUnitTest
                 };
                 OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
-                var serializedString = System.Text.Json.JsonSerializer.Serialize(OctoPrintClient.Instance);
-                var serializedObject = System.Text.Json.JsonSerializer.Deserialize<OctoPrintClient>(serializedString);
+                var serializedString = System.Text.Json.JsonSerializer.Serialize(OctoPrintClient.Instance, OctoPrintClient.DefaultJsonSerializerSettings);
+                var serializedObject = System.Text.Json.JsonSerializer.Deserialize<OctoPrintClient>(serializedString, OctoPrintClient.DefaultJsonSerializerSettings);
                 Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
 
             }
@@ -73,8 +76,8 @@ namespace OctoPrintSharpApi.NUnitTest
                 };
                 OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
-                var serializedString = JsonConvert.SerializeObject(OctoPrintClient.Instance);
-                var serializedObject = JsonConvert.DeserializeObject<OctoPrintClient>(serializedString);
+                var serializedString = JsonConvert.SerializeObject(OctoPrintClient.Instance, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
+                var serializedObject = JsonConvert.DeserializeObject<OctoPrintClient>(serializedString, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
                 Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
 
             }
