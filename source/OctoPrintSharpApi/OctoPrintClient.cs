@@ -332,7 +332,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region RestApi
 
-        async Task<OctoPrintApiRequestResponse> SendRestApiRequestAsyncOld(
+        async Task<IRestApiRequestRespone> SendRestApiRequestAsyncOld(
             OctoPrintCommandBase commandBase,
             Method method,
             string command,
@@ -342,7 +342,7 @@ namespace AndreasReitberger.API.OctoPrint
             string requestTargetUri = ""
             )
         {
-            OctoPrintApiRequestResponse apiRequestResponse = new() { IsOnline = IsOnline };
+            IRestApiRequestRespone apiRequestResponse = new RestApiRequestRespone() { IsOnline = IsOnline };
             if (!IsOnline) return apiRequestResponse;
 
             try
@@ -415,104 +415,8 @@ namespace AndreasReitberger.API.OctoPrint
             return apiRequestResponse;
         }
 
-        async Task<OctoPrintApiRequestResponse> SendOnlineCheckRestApiRequestAsyncOld(
-            OctoPrintCommandBase commandBase,
-            string command,
-            CancellationTokenSource cts,
-            string requestTargetUri = ""
-            )
-        {
-            OctoPrintApiRequestResponse apiResponseResult = new() { IsOnline = false };
-            try
-            {
-                if (cts == default)
-                {
-                    cts = new(DefaultTimeout);
-                }
-                // https://github.com/Arksine/moonraker/blob/master/docs/web_api.md
-                if (restClient == null)
-                {
-                    UpdateRestClientInstance();
-                }
-                RestRequest request = new(
-                    $"{(string.IsNullOrEmpty(requestTargetUri) ? commandBase.ToString() : requestTargetUri)}/{command}")
-                {
-                    RequestFormat = DataFormat.Json,
-                    Method = Method.Get
-                };
-
-                request.AddHeader("X-Api-Key", ApiKey);
-
-                Uri fullUri = restClient.BuildUri(request);
-                try
-                {
-                    RestResponse response = await restClient.ExecuteAsync(request, cts.Token).ConfigureAwait(false);
-                    apiResponseResult = ValidateResponse(response, fullUri);
-                    /*
-                    if (response.StatusCode == HttpStatusCode.OK && response.ResponseStatus == ResponseStatus.Completed)
-                    {
-                        apiResponseResult.IsOnline = true;
-                        AuthenticationFailed = false;
-                        apiResponseResult.Result = response.Content;
-                        apiResponseResult.Succeeded = true;
-                        apiResponseResult.EventArgs = new OctoPrintRestEventArgs()
-                        {
-                            Status = response.ResponseStatus.ToString(),
-                            Exception = response.ErrorException,
-                            Message = response.ErrorMessage,
-                            Uri = fullUri,
-                        };
-                    }
-                    else if (response.StatusCode == HttpStatusCode.NonAuthoritativeInformation
-                        || response.StatusCode == HttpStatusCode.Forbidden
-                        || response.StatusCode == HttpStatusCode.Unauthorized
-                        )
-                    {
-                        apiResponseResult.IsOnline = true;
-                        apiResponseResult.HasAuthenticationError = true;
-                        apiResponseResult.EventArgs = new OctoPrintRestEventArgs()
-                        {
-                            Status = response.ResponseStatus.ToString(),
-                            Exception = response.ErrorException,
-                            Message = response.ErrorMessage,
-                            Uri = fullUri,
-                        };
-                    }
-                    else
-                    {
-                        OnRestApiError(new OctoPrintRestEventArgs()
-                        {
-                            Status = response.ResponseStatus.ToString(),
-                            Exception = response.ErrorException,
-                            Message = response.ErrorMessage,
-                            Uri = fullUri,
-                        });
-                        //throw response.ErrorException;
-                    }
-                    */
-                }
-                catch (TaskCanceledException)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                }
-                catch (HttpRequestException)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                }
-                catch (TimeoutException)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                }
-
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-            return apiResponseResult;
-        }
-
-        async Task<OctoPrintApiRequestResponse> SendMultipartFormDataFileRestApiRequestAsync(
+        [Obsolete("Use method from Core library instead")]
+        async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
             string filePath,
             string location,
             string path,
@@ -521,7 +425,7 @@ namespace AndreasReitberger.API.OctoPrint
             int timeout = 100000
             )
         {
-            OctoPrintApiRequestResponse apiResponseResult = new();
+            IRestApiRequestRespone apiResponseResult = null;
             if (!IsOnline) return apiResponseResult;
 
             try
@@ -584,20 +488,18 @@ namespace AndreasReitberger.API.OctoPrint
             return apiResponseResult;
         }
 
-        async Task<OctoPrintApiRequestResponse> SendMultipartFormDataFileRestApiRequestAsync(
+        [Obsolete("Use method from Core library instead")]
+        Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
             string filePath,
             OctoPrintFileLocation location,
             string path,
             bool selectFile = false,
             bool printFile = false,
             int timeout = 100000
-            )
-        {
-            return await SendMultipartFormDataFileRestApiRequestAsync(filePath, location.Location, path, selectFile, printFile, timeout)
-                .ConfigureAwait(false);
-        }
+            ) => SendMultipartFormDataFileRestApiRequestAsync(filePath, location.Location, path, selectFile, printFile, timeout);
 
-        async Task<OctoPrintApiRequestResponse> SendMultipartFormDataFileRestApiRequestAsync(
+        [Obsolete("Use method from Core library instead")]
+        async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
             byte[] file,
             string fileName,
             string location,
@@ -607,7 +509,7 @@ namespace AndreasReitberger.API.OctoPrint
             int timeout = 100000
             )
         {
-            OctoPrintApiRequestResponse apiResponseResult = new();
+            IRestApiRequestRespone apiResponseResult = new RestApiRequestRespone();
             if (!IsOnline) return apiResponseResult;
 
             try
@@ -670,7 +572,8 @@ namespace AndreasReitberger.API.OctoPrint
             return apiResponseResult;
         }
 
-        async Task<OctoPrintApiRequestResponse> SendMultipartFormDataFileRestApiRequestAsync(
+        [Obsolete("Use method from Core library instead")]
+        Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
             byte[] file,
             string fileName,
             OctoPrintFileLocation location,
@@ -678,20 +581,18 @@ namespace AndreasReitberger.API.OctoPrint
             bool selectFile = false,
             bool printFile = false,
             int timeout = 100000
-            )
-        {
-            return await SendMultipartFormDataFileRestApiRequestAsync(file, fileName, location.Location, path, selectFile, printFile, timeout)
-                .ConfigureAwait(false);
-        }
+            ) => SendMultipartFormDataFileRestApiRequestAsync(file, fileName, location.Location, path, selectFile, printFile, timeout);
 
-        async Task<OctoPrintApiRequestResponse> SendMultipartFormDataFolderRestApiRequestAsync(
+
+        [Obsolete("Use method from Core library instead")]
+        async Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsync(
             string folderName,
             string location,
             string path,
             int timeout = 100000
             )
         {
-            OctoPrintApiRequestResponse apiResponseResult = new();
+            IRestApiRequestRespone apiResponseResult = new RestApiRequestRespone();
             if (!IsOnline) return apiResponseResult;
 
             try
@@ -752,16 +653,14 @@ namespace AndreasReitberger.API.OctoPrint
             return apiResponseResult;
         }
 
-        async Task<OctoPrintApiRequestResponse> SendMultipartFormDataFolderRestApiRequestAsync(
+
+        [Obsolete("Use method from Core library instead")]
+        Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsync(
             string folderName,
             OctoPrintFileLocation location,
             string path,
             int timeout = 100000
-            )
-        {
-            return await SendMultipartFormDataFolderRestApiRequestAsync(folderName, location.Location, path, timeout)
-                .ConfigureAwait(false);
-        }
+            ) => SendMultipartFormDataFolderRestApiRequestAsync(folderName, location.Location, path, timeout);
         #endregion
 
         #region Download
@@ -877,9 +776,22 @@ namespace AndreasReitberger.API.OctoPrint
                     { "recursive", recursive ? "true" : "false" }
                 };
 
+                string targetUri = $"{OctoPrintCommands.Api}";
+                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                       requestTargetUri: targetUri,
+                       method: Method.Get,
+                       command: files,
+                       jsonObject: null,
+                       authHeaders: AuthHeaders,
+                       urlSegments: urlSegments,
+                       cts: default
+                       )
+                    .ConfigureAwait(false);
+                /*
                 OctoPrintApiRequestResponse result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, files, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
+                */
                 OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
                 if (list != null)
                 {
@@ -912,10 +824,10 @@ namespace AndreasReitberger.API.OctoPrint
                     collectedFiles.Add(new OctoPrintModel()
                     {
                         File = file,
-                        Name = file.Name,
+                        Name = file.FileName,
                         Type = file.Type,
                         Location = file.Origin,
-                        Path = file.Path,
+                        Path = file.FilePath,
 
                     });
                     fileStack.Push(file);
@@ -930,10 +842,10 @@ namespace AndreasReitberger.API.OctoPrint
                             collectedFiles.Add(new OctoPrintModel()
                             {
                                 File = f,
-                                Name = f.Name,
+                                Name = f.FileName,
                                 Type = f.Type,
                                 Location = f.Origin,
-                                Path = f.Path,
+                                Path = f.FilePath,
 
                             });
                             fileStack.Push(f);
@@ -956,9 +868,22 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintApiRequestResponse result =
+                string targetUri = $"{OctoPrintCommands.Api}";
+                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                       requestTargetUri: targetUri,
+                       method: Method.Get,
+                       command: "printerprofiles",
+                       jsonObject: null,
+                       authHeaders: AuthHeaders,
+                       //urlSegments: urlSegments,
+                       cts: default
+                       )
+                    .ConfigureAwait(false);
+                /*
+                IRestApiRequestRespone result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, "printerprofiles")
                     .ConfigureAwait(false);
+                */
                 OctoPrintPrinterProfiles list = JsonConvert.DeserializeObject<OctoPrintPrinterProfiles>(result.Result);
                 return list;
             }
@@ -1039,7 +964,7 @@ namespace AndreasReitberger.API.OctoPrint
             {
                 if (RefreshPrinterList)
                     await RefreshPrinterListAsync().ConfigureAwait(false);
-                OctoPrintPrinter printer = Printers.FirstOrDefault(prt => prt.Id == Id);
+                IPrinter3d printer = Printers.FirstOrDefault(prt => prt.Slug == Id);
                 if (printer != null && ActivePrinter != printer)
                 {
                     ActivePrinter = printer;
@@ -1062,24 +987,6 @@ namespace AndreasReitberger.API.OctoPrint
                 if (CurrentFileLocation == newLocation) return;
                 CurrentFileLocation = newLocation;
                 await RefreshFilesAsync(CurrentFileLocation);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-        }
-        #endregion
-
-        #region Cancel
-        public void CancelCurrentRequests()
-        {
-            try
-            {
-                if (httpClient != null)
-                {
-                    httpClient.CancelPendingRequests();
-                    UpdateRestClientInstance();
-                }
             }
             catch (Exception exc)
             {
@@ -1126,11 +1033,24 @@ namespace AndreasReitberger.API.OctoPrint
         #region CheckForUpdates
         public async Task CheckForServerUpdateAsync()
         {
-            OctoPrintApiRequestResponse result = new();
+            IRestApiRequestRespone result = new RestApiRequestRespone();
             try
             {
+                string targetUri = $"{OctoPrintCommands.Api}";
+                result = await SendRestApiRequestAsync(
+                       requestTargetUri: targetUri,
+                       method: Method.Get,
+                       command: "checkForUpdates",
+                       jsonObject: null,
+                       authHeaders: AuthHeaders,
+                       //urlSegments: urlSegments,
+                       cts: default
+                       )
+                    .ConfigureAwait(false);
+                /*
                 result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, "checkForUpdates")
                     .ConfigureAwait(false);
+                */
             }
             catch (JsonException jecx)
             {
@@ -1451,7 +1371,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
+                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
                 object parameter = new { command = "select", print = startPrint ? "true" : "false" };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
@@ -1505,7 +1425,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
+                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
                 object parameter = new
                 {
                     command = "copy",
@@ -1541,7 +1461,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
+                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
                 object parameter = new
                 {
                     command = "move",
@@ -1577,7 +1497,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
+                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone result = await SendRestApiRequestAsync(
@@ -1608,7 +1528,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintApiRequestResponse result =
+                IRestApiRequestRespone result =
                     await SendMultipartFormDataFileRestApiRequestAsync(filePath, location, target, select, print)
                     .ConfigureAwait(false);
                 if (result != null)
@@ -1629,7 +1549,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintApiRequestResponse result =
+                IRestApiRequestRespone result =
                     await SendMultipartFormDataFileRestApiRequestAsync(file, fileName, location, target, select, print)
                     .ConfigureAwait(false);
                 if (result != null)
@@ -1654,7 +1574,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintApiRequestResponse result = await SendMultipartFormDataFolderRestApiRequestAsync(name, location, path);
+                IRestApiRequestRespone result = await SendMultipartFormDataFolderRestApiRequestAsync(name, location, path);
                 if (result != null)
                     return result.Succeeded;
                 else return false;
@@ -2630,27 +2550,27 @@ namespace AndreasReitberger.API.OctoPrint
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        public async Task<ObservableCollection<OctoPrintPrinter>> GetAllPrinterProfilesAsync()
+        public async Task<ObservableCollection<IPrinter3d>> GetAllPrinterProfilesAsync()
         {
             try
             {
                 OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                ObservableCollection<OctoPrintPrinter> profile = new ObservableCollection<OctoPrintPrinter>(result.Profiles.Select(pair => pair.Value));
+                ObservableCollection<IPrinter3d> profile = new(result.Profiles.Select(pair => pair.Value));
                 return profile;
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new ObservableCollection<OctoPrintPrinter>();
+                return new ObservableCollection<IPrinter3d>();
             }
         }
 
-        public async Task<OctoPrintPrinter> GetPrinterProfileAsync(string Id)
+        public async Task<IPrinter3d> GetPrinterProfileAsync(string slug)
         {
             try
             {
                 OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                OctoPrintPrinter profile = new ObservableCollection<OctoPrintPrinter>(result.Profiles.Select(pair => pair.Value)).FirstOrDefault(prof => prof.Id == Id);
+                IPrinter3d profile = new ObservableCollection<IPrinter3d>(result.Profiles.Select(pair => pair.Value)).FirstOrDefault(prof => prof.Slug == slug);
                 return profile;
             }
             catch (Exception exc)
