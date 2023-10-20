@@ -1,5 +1,5 @@
 using AndreasReitberger.API.OctoPrint;
-using AndreasReitberger.API.OctoPrint.Models;
+using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
@@ -158,7 +158,7 @@ namespace OctoPrintSharpApi.NUnitTest
                     if (_server.ActivePrinter == null)
                         await _server.SetPrinterActiveAsync(0, true);
 
-                    ObservableCollection<OctoPrintPrinter> printers = await _server.GetAllPrinterProfilesAsync();
+                    ObservableCollection<IPrinter3d> printers = await _server.GetAllPrinterProfilesAsync();
                     Assert.IsTrue(printers != null && printers.Count > 0);
                 }
                 else
