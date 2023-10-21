@@ -28,6 +28,7 @@ namespace AndreasReitberger.API.OctoPrint
                 // Map the converters
                 new AbstractConverter<AuthenticationHeader, IAuthenticationHeader>(),
                 new AbstractConverter<OctoPrintPrinter, IPrinter3d>(),
+                new AbstractConverter<OctoPrintFile, IGcode>(),
             }
         };
         #endregion
@@ -42,7 +43,9 @@ namespace AndreasReitberger.API.OctoPrint
             Converters =
             {
                 // Map the converters
-                new AbstractConverter<KlipperGcodeMetaResult, IGcodeMeta>(),
+                new AbstractConverter<AuthenticationHeader, IAuthenticationHeader>(),
+                new AbstractConverter<OctoPrintPrinter, IPrinter3d>(),
+                new AbstractConverter<OctoPrintFile, IGcode>(),
             }
         };
         #endregion

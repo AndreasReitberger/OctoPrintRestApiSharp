@@ -17,7 +17,8 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         [ObservableProperty]
         [JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
-        List<OctoPrintFile> children = new();
+        List<IGcode> children = new();
+        //List<OctoPrintFile> children = new();
 
         [ObservableProperty]
         [JsonProperty("date")]
@@ -86,6 +87,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
         double filament;
+   
+        [ObservableProperty, JsonIgnore]
+        [property: JsonIgnore]
+        double printTime;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]

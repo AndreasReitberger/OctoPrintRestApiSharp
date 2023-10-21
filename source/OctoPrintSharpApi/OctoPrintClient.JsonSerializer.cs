@@ -14,6 +14,7 @@ namespace AndreasReitberger.API.OctoPrint
         #region Debug
 
         [ObservableProperty]
+        [property: Newtonsoft.Json.JsonIgnore, JsonIgnore, XmlIgnore]
         JsonSerializerOptions jsonSerializerSettings = DefaultJsonSerializerSettings;
 
         public new static JsonSerializerOptions DefaultJsonSerializerSettings = new()
@@ -27,6 +28,7 @@ namespace AndreasReitberger.API.OctoPrint
                 // Map the converters
                 new TypeMappingConverter<IAuthenticationHeader, AuthenticationHeader>(),
                 new TypeMappingConverter<IPrinter3d, OctoPrintPrinter>(),
+                new TypeMappingConverter<IGcode, OctoPrintFile>(),
             }
         };
         #endregion
@@ -40,9 +42,8 @@ namespace AndreasReitberger.API.OctoPrint
             {                     
                 // Map the converters
                 new TypeMappingConverter<IAuthenticationHeader, AuthenticationHeader>(),
-                new TypeMappingConverter<IGcodeMeta, KlipperGcodeMetaResult>(),
-                new TypeMappingConverter<IGcodeImage, KlipperGcodeThumbnail>(),
-                new TypeMappingConverter<IPrint3dJob, KlipperJobQueueItem>(),
+                new TypeMappingConverter<IPrinter3d, OctoPrintPrinter>(),
+                new TypeMappingConverter<IGcode, OctoPrintFile>(),
             }
         };
         #endregion

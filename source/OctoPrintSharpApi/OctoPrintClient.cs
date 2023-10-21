@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -179,6 +180,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Models
+        /* */
         [JsonIgnore, XmlIgnore]
         ObservableCollection<OctoPrintModel> _models = new();
         [JsonIgnore, XmlIgnore]
@@ -199,9 +201,12 @@ namespace AndreasReitberger.API.OctoPrint
                 OnPropertyChanged();
             }
         }
+       
         #endregion
 
         #region ReadOnly
+
+        [JsonIgnore, System.Text.Json.Serialization.JsonIgnore, XmlIgnore]
         public new bool IsReady
         {
             get
@@ -230,6 +235,7 @@ namespace AndreasReitberger.API.OctoPrint
             Id = Guid.NewGuid();
             Target = Print3dServerTarget.OctoPrint;
             ApiKeyRegexPattern = "";
+            WebSocketTarget = "/sockjs/websocket";
             WebSocketMessageReceived += Client_WebSocketMessageReceived;
             UpdateRestClientInstance();
         }
@@ -238,6 +244,7 @@ namespace AndreasReitberger.API.OctoPrint
             Id = Guid.NewGuid();
             Target = Print3dServerTarget.OctoPrint;
             ApiKeyRegexPattern = "";
+            WebSocketTarget = "/sockjs/websocket";
             WebSocketMessageReceived += Client_WebSocketMessageReceived;
             InitInstance(serverAddress, api, port, isSecure);
             UpdateRestClientInstance();
@@ -799,9 +806,9 @@ namespace AndreasReitberger.API.OctoPrint
                 return new OctoPrintFiles();
             }
         }
-        ObservableCollection<OctoPrintModel> IterateOctoPrintFileStack(OctoPrintFile[] files) =>  IterateOctoPrintFileStack(files.ToList());      
+        ObservableCollection<OctoPrintModel> IterateOctoPrintFileStack(IGcode[] files) =>  IterateOctoPrintFileStack(files.ToList());      
 
-        ObservableCollection<OctoPrintModel> IterateOctoPrintFileStack(List<OctoPrintFile> files)
+        ObservableCollection<OctoPrintModel> IterateOctoPrintFileStack(List<IGcode> files)
         {
             ObservableCollection<OctoPrintModel> collectedFiles = new();
             try
@@ -894,17 +901,18 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Refresh
 
-        public Task StartListeningAsync(bool stopActiveListening = false) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, new()
+        public new Task StartListeningAsync(bool stopActiveListening = false) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, new()
         {
             RefreshPrinterStateAsync(),
             RefreshCurrentPrintInfosAsync(),
             RefreshConnectionSettingsAsync(),
         });
 
-        public async Task RefreshAllAsync()
+        public new async Task RefreshAllAsync()
         {
             try
             {
+                await base.RefreshAllAsync().ConfigureAwait(false);
                 // Avoid multiple calls
                 if (IsRefreshing) return;
                 IsRefreshing = true;
@@ -929,7 +937,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region ActivePrinter
-        public async Task SetPrinterActiveAsync(int Index = -1, bool RefreshPrinterList = true)
+        public new async Task SetPrinterActiveAsync(int Index = -1, bool RefreshPrinterList = true)
         {
             try
             {
@@ -951,7 +959,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        public async Task SetPrinterActiveAsync(string Id, bool RefreshPrinterList = true)
+        public new async Task SetPrinterActiveAsync(string Id, bool RefreshPrinterList = true)
         {
             try
             {
@@ -1261,6 +1269,11 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region File operations
 
+        public new async Task<ObservableCollection<IGcode>> GetFilesAsync()
+        {
+            ObservableCollection<OctoPrintModel> models = await GetAllFilesAsync(location: OctoPrintFileLocations.local.ToString()).ConfigureAwait(false);
+            return new(models?.Select(gcode => gcode.File));
+        }
         public async Task<ObservableCollection<OctoPrintModel>> GetAllFilesAsync(string location, string path = "", bool recursive = true)
         {
             try
@@ -1320,12 +1333,7 @@ namespace AndreasReitberger.API.OctoPrint
                 Models = new ObservableCollection<OctoPrintModel>();
             }
         }
-        //public async Task RefreshFilesAsync(OctoPrintFileLocations Location, IProgress<int> Prog = null)
-        public async Task RefreshFilesAsync(OctoPrintFileLocations Location)
-        {
-            await RefreshFilesAsync(Location.ToString());
-            //await RefreshFilesAsync(Location.ToString(), Prog);
-        }
+        public Task RefreshFilesAsync(OctoPrintFileLocations Location) => RefreshFilesAsync(Location.ToString());
 
 
         public async Task<OctoPrintFile> GetFileAsync(string location, string filename)
@@ -2536,7 +2544,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                Printers = await GetAllPrinterProfilesAsync().ConfigureAwait(false);
+                Printers = await GetPrintersAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
@@ -2557,6 +2565,8 @@ namespace AndreasReitberger.API.OctoPrint
                 return new ObservableCollection<IPrinter3d>();
             }
         }
+
+        public new Task<ObservableCollection<IPrinter3d>> GetPrintersAsync() => GetAllPrinterProfilesAsync();
 
         public async Task<IPrinter3d> GetPrinterProfileAsync(string slug)
         {
