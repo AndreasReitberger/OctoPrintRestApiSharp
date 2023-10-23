@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -901,12 +900,16 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Refresh
 
-        public new Task StartListeningAsync(bool stopActiveListening = false) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, new()
+        public new Task StartListeningAsync(bool stopActiveListening = false) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, () => Task.Run(async() =>
         {
-            RefreshPrinterStateAsync(),
-            RefreshCurrentPrintInfosAsync(),
-            RefreshConnectionSettingsAsync(),
-        });
+            List<Task> tasks = new()
+            {
+                RefreshPrinterStateAsync(),
+                RefreshCurrentPrintInfosAsync(),
+                RefreshConnectionSettingsAsync(),
+            };
+            await Task.WhenAll(tasks).ConfigureAwait(false);
+        }));
 
         public new async Task RefreshAllAsync()
         {
@@ -917,14 +920,14 @@ namespace AndreasReitberger.API.OctoPrint
                 if (IsRefreshing) return;
                 IsRefreshing = true;
 
-                List<Task> task = new()
+                List<Task> tasks = new()
                 {
                     RefreshConnectionSettingsAsync(),
                     RefreshCurrentPrintInfosAsync(),
                     RefreshPrinterStateAsync(),
                     RefreshFilesAsync(CurrentFileLocation),
                 };
-                await Task.WhenAll(task).ConfigureAwait(false);
+                await Task.WhenAll(tasks).ConfigureAwait(false);
                 if (!InitialDataFetched)
                     InitialDataFetched = true;
             }
