@@ -16,10 +16,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
         public List<OctoPrintPrinterStateHistory> History { get; set; } = new();
 
         [JsonProperty("tool0", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateTemperatureInfo Tool0 { get; set; }
+        public OctoPrintPrinterStateToolheadInfo Tool0 { get; set; }
 
         [JsonProperty("tool1", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateTemperatureInfo Tool1 { get; set; }
+        public OctoPrintPrinterStateToolheadInfo Tool1 { get; set; }
         #endregion
 
         #region Overrides

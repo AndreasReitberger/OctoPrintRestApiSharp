@@ -1,6 +1,5 @@
 ﻿using AndreasReitberger.API.OctoPrint.Models;
 using System;
-using System.IO;
 
 namespace AndreasReitberger.API.OctoPrint
 {
@@ -8,7 +7,6 @@ namespace AndreasReitberger.API.OctoPrint
     {
 
         #region EventHandlerss
-
 
         #region ServerStateChanges
         public event EventHandler<OctoPrintMessagesChangedEventArgs> MessagesChanged;

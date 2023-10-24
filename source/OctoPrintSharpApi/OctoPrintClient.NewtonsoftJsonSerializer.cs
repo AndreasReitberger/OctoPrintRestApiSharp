@@ -29,6 +29,8 @@ namespace AndreasReitberger.API.OctoPrint
                 new AbstractConverter<AuthenticationHeader, IAuthenticationHeader>(),
                 new AbstractConverter<OctoPrintPrinter, IPrinter3d>(),
                 new AbstractConverter<OctoPrintFile, IGcode>(),
+                new AbstractConverter<OctoPrintPrinterStateTemperatureInfo, IHeaterComponent>(),
+                new AbstractConverter<OctoPrintPrinterStateToolheadInfo, IToolhead>(),
             }
         };
         #endregion
@@ -46,6 +48,8 @@ namespace AndreasReitberger.API.OctoPrint
                 new AbstractConverter<AuthenticationHeader, IAuthenticationHeader>(),
                 new AbstractConverter<OctoPrintPrinter, IPrinter3d>(),
                 new AbstractConverter<OctoPrintFile, IGcode>(),
+                new AbstractConverter<OctoPrintPrinterStateTemperatureInfo, IHeaterComponent>(),
+                new AbstractConverter<OctoPrintPrinterStateToolheadInfo, IToolhead>(),
             }
         };
         #endregion

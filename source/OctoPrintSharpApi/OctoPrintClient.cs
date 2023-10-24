@@ -64,28 +64,28 @@ namespace AndreasReitberger.API.OctoPrint
         #region PrinterStateInformation
         //[JsonProperty(nameof(LastFlowRate))]
         [ObservableProperty]
-        double _lastFlowRate = 100;
+        double lastFlowRate = 100;
 
         //[JsonProperty(nameof(LastFeedRate))]
         [ObservableProperty]
-        double _lastFeedRate = 100;
+        double lastFeedRate = 100;
 
         //[JsonProperty(nameof(CurrentFileLocation))]
         [ObservableProperty]
-        OctoPrintFileLocations _currentFileLocation = OctoPrintFileLocations.local;
+        OctoPrintFileLocations currentFileLocation = OctoPrintFileLocations.local;
         #endregion
 
         #region State & Config
         [JsonIgnore, XmlIgnore]
-        OctoPrintSettings _config;
+        OctoPrintSettings config;
         [JsonIgnore, XmlIgnore]
         public OctoPrintSettings Config
         {
-            get => _config;
+            get => config;
             set
             {
-                if (_config == value) return;
-                _config = value;
+                if (config == value) return;
+                config = value;
                 OnOctoPrintPrinterConfigChanged(new OctoPrintPrinterConfigChangedEventArgs()
                 {
                     NewConfiguration = value,
@@ -99,15 +99,15 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [JsonIgnore, XmlIgnore]
-        OctoPrintConnectionSettings _connectionSettings;
+        OctoPrintConnectionSettings connectionSettings;
         [JsonIgnore, XmlIgnore]
         public OctoPrintConnectionSettings ConnectionSettings
         {
-            get => _connectionSettings;
+            get => connectionSettings;
             set
             {
-                if (_connectionSettings == value) return;
-                _connectionSettings = value;
+                if (connectionSettings == value) return;
+                connectionSettings = value;
                 OnOctoPrintConnectionSettingsChanged(new OctoPrintConnectionSettingsChangedEventArgs()
                 {
                     NewConnectionSettings = value,
@@ -121,15 +121,15 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [JsonIgnore, XmlIgnore]
-        OctoPrintPrinterState _state;
+        OctoPrintPrinterState state;
         [JsonIgnore, XmlIgnore]
         public OctoPrintPrinterState State
         {
-            get => _state;
+            get => state;
             set
             {
-                if (_state == value) return;
-                _state = value;
+                if (state == value) return;
+                state = value;
                 OnOctoPrintPrinterStateChanged(new OctoPrintPrinterStateChangedEventArgs()
                 {
                     NewPrinterState = value,
@@ -143,15 +143,15 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [JsonIgnore, XmlIgnore]
-        OctoPrintJobInfo _activePrintInfo;
+        OctoPrintJobInfo activePrintInfo;
         [JsonIgnore, XmlIgnore]
         public OctoPrintJobInfo ActivePrintInfo
         {
-            get => _activePrintInfo;
+            get => activePrintInfo;
             set
             {
-                if (_activePrintInfo == value) return;
-                _activePrintInfo = value;
+                if (activePrintInfo == value) return;
+                activePrintInfo = value;
                 OnPrintInfoChanged(new OctoPrintActivePrintInfoChangedEventArgs()
                 {
                     SessionId = SessionId,
@@ -162,20 +162,17 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        [JsonIgnore, XmlIgnore]
+        [JsonIgnore, XmlIgnore, Obsolete("Use Toolheads instead")]
         [ObservableProperty]
+        ObservableCollection<OctoPrintPrinterStateToolheadInfo> extruders = new();
 
-        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _extruders = new();
-
-        [JsonIgnore, XmlIgnore]
+        [JsonIgnore, XmlIgnore, Obsolete("Use base.HeatedBeds instead")]
         [ObservableProperty]
+        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> heatedBeds = new();
 
-        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedBeds = new();
-
-        [JsonIgnore, XmlIgnore]
+        [JsonIgnore, XmlIgnore, Obsolete("Use base.HeatedChambers instead")]
         [ObservableProperty]
-
-        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> _heatedChambers = new();
+        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> heatedChambers = new();
         #endregion
 
         #region Models
@@ -330,89 +327,6 @@ namespace AndreasReitberger.API.OctoPrint
         #region Private
 
         #region RestApi
-
-        async Task<IRestApiRequestRespone> SendRestApiRequestAsyncOld(
-            OctoPrintCommandBase commandBase,
-            Method method,
-            string command,
-            object jsonObject = null,
-            CancellationTokenSource cts = default,
-            Dictionary<string, string> urlSegments = null,
-            string requestTargetUri = ""
-            )
-        {
-            IRestApiRequestRespone apiRequestResponse = new RestApiRequestRespone() { IsOnline = IsOnline };
-            if (!IsOnline) return apiRequestResponse;
-
-            try
-            {
-                if (cts == default)
-                {
-                    cts = new(DefaultTimeout);
-                }
-                if (restClient == null)
-                {
-                    UpdateRestClientInstance();
-                }
-                RestRequest request = new(
-                    $"{(string.IsNullOrEmpty(requestTargetUri) ? commandBase.ToString() : requestTargetUri)}/{command}")
-                {
-                    RequestFormat = DataFormat.Json,
-                    Method = method
-                };
-
-                request.AddHeader("X-Api-Key", ApiKey);
-
-                if (urlSegments != null)
-                {
-                    foreach (KeyValuePair<string, string> pair in urlSegments)
-                    {
-                        request.AddParameter(pair.Key, pair.Value, ParameterType.QueryString);
-                    }
-                }
-
-                if (jsonObject != null)
-                {
-                    request.AddJsonBody(jsonObject, "application/json");
-                }
-
-                Uri fullUri = restClient.BuildUri(request);
-                try
-                {
-                    RestResponse response = await restClient.ExecuteAsync(request, cts.Token).ConfigureAwait(false);
-                    apiRequestResponse = ValidateResponse(response, fullUri);
-                }
-                catch (TaskCanceledException texp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(texp, false));
-                    }
-                }
-                catch (HttpRequestException hexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(hexp, false));
-                    }
-                }
-                catch (TimeoutException toexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(toexp, false));
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-            return apiRequestResponse;
-        }
 
         [Obsolete("Use method from Core library instead")]
         async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
@@ -663,6 +577,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Download
+        [Obsolete("Check if can be replaced by base method")]
         public async Task<byte[]> DownloadFileFromUriAsync(string path, int timeout = 100000)
         {
             try
@@ -862,38 +777,6 @@ namespace AndreasReitberger.API.OctoPrint
         }
         #endregion
 
-        #region Printers
-        async Task<OctoPrintPrinterProfiles> GetPrinterProfilesAsync()
-        {
-            try
-            {
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Get,
-                       command: "printerprofiles",
-                       jsonObject: null,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                /*
-                IRestApiRequestRespone result =
-                    await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, "printerprofiles")
-                    .ConfigureAwait(false);
-                */
-                OctoPrintPrinterProfiles list = JsonConvert.DeserializeObject<OctoPrintPrinterProfiles>(result.Result);
-                return list;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new OctoPrintPrinterProfiles() { Profiles = new Dictionary<string, OctoPrintPrinter>() };
-            }
-        }
-        #endregion
-
         #endregion
 
         #region Public
@@ -939,50 +822,6 @@ namespace AndreasReitberger.API.OctoPrint
         }
         #endregion
 
-        #region ActivePrinter
-        public new async Task SetPrinterActiveAsync(int Index = -1, bool RefreshPrinterList = true)
-        {
-            try
-            {
-                if (RefreshPrinterList)
-                    await RefreshPrinterListAsync().ConfigureAwait(false);
-                if (Printers.Count > Index && Index >= 0)
-                    ActivePrinter = Printers[Index];
-                else
-                {
-                    // If no index is provided, or it's out of bound, the first online printer is used
-                    ActivePrinter = Printers.FirstOrDefault(printer => printer.IsOnline);
-                    // If no online printers is found, however there is at least one printer configured, use this one
-                    if (ActivePrinter == null && Printers.Count > 0)
-                        ActivePrinter = Printers[0];
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-        }
-        public new async Task SetPrinterActiveAsync(string Id, bool RefreshPrinterList = true)
-        {
-            try
-            {
-                if (RefreshPrinterList)
-                    await RefreshPrinterListAsync().ConfigureAwait(false);
-                IPrinter3d printer = Printers.FirstOrDefault(prt => prt.Slug == Id);
-                if (printer != null && ActivePrinter != printer)
-                {
-                    ActivePrinter = printer;
-                    //Disconnect
-                    //Connect
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-        }
-        #endregion
-
         #region CurrentFileLocation
         public async Task SwitchFileLocationAsync(OctoPrintFileLocations newLocation)
         {
@@ -997,24 +836,6 @@ namespace AndreasReitberger.API.OctoPrint
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        #endregion
-
-        #region WebCam
-        public string GetWebCamUri()
-        {
-            try
-            {
-                string currentPrinter = GetActivePrinterSlug();
-                if (string.IsNullOrEmpty(currentPrinter)) return string.Empty;
-                return $"{FullWebAddress}/webcam/?action=stream?t={ApiKey}";
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return "";
-            }
-        }
-
         #endregion
 
         #region CheckOnline
@@ -1269,395 +1090,9 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
         #endregion
-
-        #region File operations
-
-        public new async Task<ObservableCollection<IGcode>> GetFilesAsync()
-        {
-            ObservableCollection<OctoPrintModel> models = await GetAllFilesAsync(location: OctoPrintFileLocations.local.ToString()).ConfigureAwait(false);
-            return new(models?.Select(gcode => gcode.File));
-        }
-        public async Task<ObservableCollection<OctoPrintModel>> GetAllFilesAsync(string location, string path = "", bool recursive = true)
-        {
-            try
-            {
-                OctoPrintFiles models = await GetFilesAsync(location, path, recursive).ConfigureAwait(false);
-                if (models != null)
-                {
-                    //return IterateOctoPrintFileStack(models.Children ?? models.Files);
-                    return IterateOctoPrintFileStack(models?.Children?.Count > 0 ? models?.Children : models?.Files);
-                }
-                else
-                {
-                    return new ObservableCollection<OctoPrintModel>();
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new ObservableCollection<OctoPrintModel>();
-            }
-        }
-        //public async Task RefreshFilesAsync(IProgress<int> Prog = null)
-        public async Task RefreshFilesAsync()
-        {
-            try
-            {
-                ObservableCollection<OctoPrintModel> modelData = new();
-                if (!IsReady || ActivePrinter == null)
-                {
-                    Models = modelData;
-                    return;
-                }
-                Models = await GetAllFilesAsync(CurrentFileLocation.ToString()).ConfigureAwait(false);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                Models = new ObservableCollection<OctoPrintModel>();
-            }
-        }
-        //public async Task RefreshFilesAsync(string Location, IProgress<int> Prog = null)
-        public async Task RefreshFilesAsync(string Location)
-        {
-            try
-            {
-                ObservableCollection<OctoPrintModel> modelData = new();
-                if (!IsReady || ActivePrinter == null)
-                {
-                    Models = modelData;
-                    return;
-                }
-                Models = await GetAllFilesAsync(Location).ConfigureAwait(false);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                Models = new ObservableCollection<OctoPrintModel>();
-            }
-        }
-        public Task RefreshFilesAsync(OctoPrintFileLocations Location) => RefreshFilesAsync(Location.ToString());
-
-
-        public async Task<OctoPrintFile> GetFileAsync(string location, string filename)
-        {
-            try
-            {
-                string command = string.Format("files/{0}/{1}", location, filename);
-
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: null,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                // no content for this result
-                /*
-                OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command)
-                    .ConfigureAwait(false);
-                */
-                OctoPrintFile response = JsonConvert.DeserializeObject<OctoPrintFile>(result.Result);
-                return response;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new OctoPrintFile();
-            }
-        }
-
-        public async Task<bool> SelectFileAsync(OctoPrintFile file, bool startPrint = false)
-        {
-            try
-            {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
-                object parameter = new { command = "select", print = startPrint ? "true" : "false" };
-
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: parameter,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                // no content for this result
-                /*
-                OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
-                    .ConfigureAwait(false);
-                */
-                return string.IsNullOrEmpty(result.Result);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-        /*
-        public async Task<bool> SliceFileAsync(OctoPrintFile file, bool startPrint = false)
-        {
-            try
-            {
-                throw new NotImplementedException();
-                
-                string command = string.Format("files/{0}/{1}", file.Origin, file.Path);
-                object parameter = new { command = "select", print = startPrint ? "true" : "false" };
-
-                var result = await sendRestAPIRequestAsync(command, Method.Post, parameter);
-                var response = JsonConvert.DeserializeObject<OctoPrintFileActionRespond>(result);
-                return result.Succeeded;
-                
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-        */
-
-        public async Task<bool> CopyFileAsync(OctoPrintFile file, string destination)
-        {
-            try
-            {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
-                object parameter = new
-                {
-                    command = "copy",
-                    destination = destination
-                };
-
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: parameter,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                /*
-                OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Copy, command, parameter)
-                    .ConfigureAwait(false);
-                */
-                OctoPrintFileActionRespond response = JsonConvert.DeserializeObject<OctoPrintFileActionRespond>(result.Result);
-                return result.Succeeded;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-
-        public async Task<bool> MoveFileAsync(OctoPrintFile file, string destination)
-        {
-            try
-            {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
-                object parameter = new
-                {
-                    command = "move",
-                    destination = destination
-                };
-
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: parameter,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                /*
-                OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
-                    .ConfigureAwait(false);
-                */
-                OctoPrintFileActionRespond response = JsonConvert.DeserializeObject<OctoPrintFileActionRespond>(result.Result);
-                return result.Succeeded;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteFileAsync(OctoPrintFile file)
-        {
-            try
-            {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
-
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: null,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                //no result
-                /*
-                OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Delete, command)
-                    .ConfigureAwait(false);
-                */
-                return string.IsNullOrEmpty(result.Result);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-
-        public async Task<bool> UploadFileAsync(OctoPrintFileLocation location, string target, string filePath, bool select = false, bool print = false)
-        {
-            try
-            {
-                IRestApiRequestRespone result =
-                    await SendMultipartFormDataFileRestApiRequestAsync(filePath, location, target, select, print)
-                    .ConfigureAwait(false);
-                if (result != null)
-                {
-                    OctoPrintUploadFileResponse response = JsonConvert.DeserializeObject<OctoPrintUploadFileResponse>(result.Result);
-                    return response.Done;
-                }
-                else return false;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-
-        public async Task<bool> UploadFileAsync(OctoPrintFileLocation location, string target, byte[] file, string fileName, bool select = false, bool print = false)
-        {
-            try
-            {
-                IRestApiRequestRespone result =
-                    await SendMultipartFormDataFileRestApiRequestAsync(file, fileName, location, target, select, print)
-                    .ConfigureAwait(false);
-                if (result != null)
-                {
-                    OctoPrintUploadFileResponse response = JsonConvert.DeserializeObject<OctoPrintUploadFileResponse>(result.Result);
-                    return response.Done;
-                }
-                else return false;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-
-        public Task<byte[]> DownloadFileAsync(string downloadUri, int timeout = 100000) => DownloadFileFromUriAsync(downloadUri, timeout);
-        #endregion
-
-        #region Folders
-        public async Task<bool> CreateNewFolderAsync(string location, string path, string name)
-        {
-            try
-            {
-                IRestApiRequestRespone result = await SendMultipartFormDataFolderRestApiRequestAsync(name, location, path);
-                if (result != null)
-                    return result.Succeeded;
-                else return false;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
-
-        #endregion
-
+     
         #region PrinterOperations
-        public async Task<OctoPrintPrinterState> GetCurrentPrinterStateAsync(bool includeHistory, int limit = 0, string[] excludes = null)
-        {
-            try
-            {
-                string command = "printer";
-                Dictionary<string, string> urlSegments = new()
-                {
-                    { "history", includeHistory ? "true" : "false" }
-                };
-                if (limit > 0)
-                    urlSegments.Add("limit", limit.ToString());
-                if (excludes != null && excludes.Length > 0)
-                {
-                    StringBuilder sb = new();
-                    for (int i = 0; i < excludes.Length; i++)
-                    {
-                        sb.Append(excludes[i]);
-                        if (i < excludes.Length - 1)
-                            sb.Append(",");
-                    }
-                    urlSegments.Add("exclude", sb.ToString());
-                }
-
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: null,
-                       authHeaders: AuthHeaders,
-                       urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                /*
-                OctoPrintApiRequestResponse result =
-                    await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegments)
-                    .ConfigureAwait(false);
-                */
-                OctoPrintPrinterState response = JsonConvert.DeserializeObject<OctoPrintPrinterState>(result.Result);
-                return response;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new OctoPrintPrinterState();
-            }
-        }
-
-        public async Task RefreshPrinterStateAsync(bool IncludeHistory = false)
-        {
-            try
-            {
-                if (!IsReady)
-                {
-                    return;
-                }
-                State = await GetCurrentPrinterStateAsync(IncludeHistory).ConfigureAwait(false);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-        }
-
+       
         #region PrintHead
         public async Task<bool> JogPrinterAsync(
             double Speed = 100,
@@ -2539,52 +1974,6 @@ namespace AndreasReitberger.API.OctoPrint
         }*/
         #endregion
 
-        #endregion
-
-        #region Printer profile operations
-
-        public async Task RefreshPrinterListAsync()
-        {
-            try
-            {
-                Printers = await GetPrintersAsync().ConfigureAwait(false);
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-        }
-        public async Task<ObservableCollection<IPrinter3d>> GetAllPrinterProfilesAsync()
-        {
-            try
-            {
-                OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                ObservableCollection<IPrinter3d> profile = new(result.Profiles.Select(pair => pair.Value));
-                return profile;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new ObservableCollection<IPrinter3d>();
-            }
-        }
-
-        public new Task<ObservableCollection<IPrinter3d>> GetPrintersAsync() => GetAllPrinterProfilesAsync();
-
-        public async Task<IPrinter3d> GetPrinterProfileAsync(string slug)
-        {
-            try
-            {
-                OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                IPrinter3d profile = new ObservableCollection<IPrinter3d>(result.Profiles.Select(pair => pair.Value)).FirstOrDefault(prof => prof.Slug == slug);
-                return profile;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new OctoPrintPrinter();
-            }
-        }
         #endregion
 
         #region Job operations
