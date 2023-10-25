@@ -1,5 +1,4 @@
 ﻿using AndreasReitberger.API.OctoPrint.Enum;
-using AndreasReitberger.API.OctoPrint.Interfaces;
 using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.OctoPrint.Structs;
 using AndreasReitberger.API.Print3dServer.Core;
@@ -13,7 +12,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,7 +20,7 @@ using System.Threading.Tasks;
 namespace AndreasReitberger.API.OctoPrint
 {
     //http://docs.octoprint.org/en/master/api/
-    public partial class OctoPrintClient : Print3dServerClient, IPrintServerClient
+    public partial class OctoPrintClient : Print3dServerClient, IPrint3dServerClient
     {
 
         #region Instance
