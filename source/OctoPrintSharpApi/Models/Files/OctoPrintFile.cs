@@ -1,8 +1,10 @@
 ﻿using AndreasReitberger.API.Print3dServer.Core.Enums;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
+using AndreasReitberger.API.Print3dServer.Core.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace AndreasReitberger.API.OctoPrint.Models
@@ -15,61 +17,89 @@ namespace AndreasReitberger.API.OctoPrint.Models
         [property: JsonIgnore]
         Guid id;
 
+        [ObservableProperty, JsonIgnore]
+        [property: JsonIgnore]
+        GcodeTimeBaseTarget timeBaseTarget = GcodeTimeBaseTarget.LongSeconds;
+
         [ObservableProperty]
         [JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         List<IGcode> children = new();
-        //List<OctoPrintFile> children = new();
 
         [ObservableProperty]
         [JsonProperty("date")]
+        [property: JsonIgnore]
         long date;
 
         [ObservableProperty]
         [JsonProperty("display", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         string display;
 
-        [ObservableProperty]
-        [JsonProperty("gcodeAnalysis", NullValueHandling = NullValueHandling.Ignore)]
+        [ObservableProperty, JsonIgnore]
+        [NotifyPropertyChangedFor(nameof(PrintTime))]
+        [NotifyPropertyChangedFor(nameof(Volume))]
+        [NotifyPropertyChangedFor(nameof(Filament))]
+        [property: JsonProperty("gcodeAnalysis", NullValueHandling = NullValueHandling.Ignore)]
         OctoPrintFileGcodeAnalysis gcodeAnalysis;
+        partial void OnGcodeAnalysisChanged(OctoPrintFileGcodeAnalysis value)
+        {
+            if (value is not null)
+            {
+                PrintTime = value.EstimatedPrintTime;
+                Volume = value.TotalFilamentVolume;
+                Filament = value.TotalFilamentLength;
+            }
+        }
 
         [ObservableProperty]
         [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         string hash;
 
         [ObservableProperty]
         [JsonProperty("name")]
+        [property: JsonIgnore]
         string fileName;
 
         [ObservableProperty]
         [JsonProperty("origin")]
+        [property: JsonIgnore]
         string origin;
 
         [ObservableProperty]
         [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         string filePath;
 
         [ObservableProperty]
         [JsonProperty("prints")]
+        [property: JsonIgnore]
         OctoPrintFilePrints prints;
 
         [ObservableProperty]
         [JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         OctoPrintFileChildRefs refs;
 
         [ObservableProperty]
         [JsonProperty("size")]
+        [property: JsonIgnore]
         long size;
 
         [ObservableProperty]
         [JsonProperty("statistics")]
+        [property: JsonIgnore]
         OctoPrintFileStatistics statistics;
 
         [ObservableProperty]
         [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         string type;
 
         [ObservableProperty]
         [JsonProperty("typePath", NullValueHandling = NullValueHandling.Ignore)]
+        [property: JsonIgnore]
         List<string> typePath = new();
 
         #endregion
@@ -91,6 +121,13 @@ namespace AndreasReitberger.API.OctoPrint.Models
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
         double printTime;
+        partial void OnPrintTimeChanged(double value)
+        {
+            PrintTimeGeneralized = TimeBaseConvertHelper.FromLongSeconds(value);
+        }
+
+        [ObservableProperty]
+        TimeSpan? printTimeGeneralized;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
