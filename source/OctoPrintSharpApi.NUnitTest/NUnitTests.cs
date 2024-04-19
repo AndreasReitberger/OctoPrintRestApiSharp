@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Xml.Serialization;
+using AndreasReitberger.API.OctoPrint.Models;
 
 namespace OctoPrintSharpApi.NUnitTest
 {
@@ -52,7 +53,7 @@ namespace OctoPrintSharpApi.NUnitTest
 
                 var serializedString = System.Text.Json.JsonSerializer.Serialize(OctoPrintClient.Instance, OctoPrintClient.DefaultJsonSerializerSettings);
                 var serializedObject = System.Text.Json.JsonSerializer.Deserialize<OctoPrintClient>(serializedString, OctoPrintClient.DefaultJsonSerializerSettings);
-                Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
+                Assert.That(serializedObject is OctoPrintClient server && server != null);
 
             }
             catch (Exception exc)
@@ -81,7 +82,7 @@ namespace OctoPrintSharpApi.NUnitTest
 
                 var serializedString = JsonConvert.SerializeObject(OctoPrintClient.Instance, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
                 var serializedObject = JsonConvert.DeserializeObject<OctoPrintClient>(serializedString, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
-                Assert.IsTrue(serializedObject is OctoPrintClient server && server != null);
+                Assert.That(serializedObject is OctoPrintClient server && server != null);
 
             }
             catch (Exception exc)
@@ -226,7 +227,7 @@ namespace OctoPrintSharpApi.NUnitTest
                     OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
 
                     xmlSerializer.Serialize(fileStream, OctoPrintClient.Instance);
-                    Assert.IsTrue(File.Exists(Path.Combine(dir, "server.xml")));
+                    Assert.That(File.Exists(Path.Combine(dir, "server.xml")));
                 }
 
                 xmlSerializer = new XmlSerializer(typeof(OctoPrintClient));
@@ -255,7 +256,7 @@ namespace OctoPrintSharpApi.NUnitTest
                         await _server.SetPrinterActiveAsync(0, true);
 
                     await _server.RefreshAllAsync();
-                    Assert.IsTrue(_server.InitialDataFetched);
+                    Assert.That(_server.InitialDataFetched);
                 }
                 else
                     Assert.Fail($"Server {_server.FullWebAddress} is offline.");
@@ -271,7 +272,7 @@ namespace OctoPrintSharpApi.NUnitTest
         {
             try
             {
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -279,7 +280,7 @@ namespace OctoPrintSharpApi.NUnitTest
                         await _server.SetPrinterActiveAsync(0, true);
 
                     ObservableCollection<IPrinter3d> printers = await _server.GetAllPrinterProfilesAsync();
-                    Assert.IsTrue(printers != null && printers.Count > 0);
+                    Assert.That(printers != null && printers.Count > 0);
                 }
                 else
                     Assert.Fail($"Server {_server.FullWebAddress} is offline.");
@@ -295,7 +296,7 @@ namespace OctoPrintSharpApi.NUnitTest
         {
             try
             {
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 await _server.CheckOnlineAsync();
                 if (_server.IsOnline)
                 {
@@ -303,7 +304,7 @@ namespace OctoPrintSharpApi.NUnitTest
                         await _server.SetPrinterActiveAsync(0, true);
 
                     var models = await _server.GetAllFilesAsync("local");
-                    Assert.IsTrue(models != null && models.Count > 0);
+                    Assert.That(models != null && models.Count > 0);
                 }
                 else
                     Assert.Fail($"Server {_server.FullWebAddress} is offline.");
@@ -320,23 +321,23 @@ namespace OctoPrintSharpApi.NUnitTest
             if (_skipOnlineTests) return;
             try
             {
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 _server.Error += (o, args) =>
                 {
-                    Assert.Fail(args.ToString());
+                    Assert.Fail(args?.ToString());
                 };
                 _server.ServerWentOffline += (o, args) =>
                 {
                     Assert.Fail(args.ToString());
                 };
                 // Wait 10 minutes
-                CancellationTokenSource cts = new CancellationTokenSource(new TimeSpan(0, 10, 0));
+                CancellationTokenSource cts = new(new TimeSpan(0, 10, 0));
                 do
                 {
                     await Task.Delay(5000);
                     await _server.CheckOnlineAsync();
                 } while (_server.IsOnline && !cts.IsCancellationRequested);
-                Assert.IsTrue(cts.IsCancellationRequested);
+                Assert.That(cts.IsCancellationRequested);
             }
             catch (Exception exc)
             {
@@ -350,7 +351,7 @@ namespace OctoPrintSharpApi.NUnitTest
             string _modelPath = "http://192.168.10.44/downloads/files/local/babygroot_0.6n_0.15mm_PLA_MK3S_1d2h57m.gcode";
             try
             {
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 _server.Error += (o, args) =>
                 {
                     Assert.Fail(args.ToString());
@@ -359,8 +360,8 @@ namespace OctoPrintSharpApi.NUnitTest
                 {
                     Assert.Fail(args.ToString());
                 };
-                byte[] file = await _server.DownloadFileFromUriAsync(_modelPath);
-                Assert.IsNotNull(file);
+                byte[]? file = await _server.DownloadFileFromUriAsync(_modelPath);
+                Assert.That(file is not null);
             }
             catch (Exception exc)
             {
@@ -375,8 +376,8 @@ namespace OctoPrintSharpApi.NUnitTest
             {
                 if (_skipWebSocketTests) return;
 
-                Dictionary<DateTime, string> websocketMessages = new Dictionary<DateTime, string>();
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                Dictionary<DateTime, string> websocketMessages = new();
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 await _server.SetPrinterActiveAsync(0);
                 await _server.StartListeningAsync();
 
@@ -404,7 +405,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 };
 
                 // Wait 10 minutes
-                CancellationTokenSource cts = new CancellationTokenSource(new TimeSpan(0, 10, 0));
+                CancellationTokenSource cts = new(new TimeSpan(0, 10, 0));
                 _server.WebSocketDisconnected += (o, args) =>
                 {
                     if (!cts.IsCancellationRequested)
@@ -419,7 +420,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 await _server.StopListeningAsync();
 
 
-                Assert.IsTrue(cts.IsCancellationRequested);
+                Assert.That(cts.IsCancellationRequested);
             }
             catch (Exception exc)
             {
@@ -433,7 +434,7 @@ namespace OctoPrintSharpApi.NUnitTest
             //if (_skipPrinterActionTests) return;
             try
             {
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 _server.Error += (s, e) =>
                 {
                     Assert.Fail($"Error occured: {e?.ToString()}");
@@ -454,7 +455,7 @@ namespace OctoPrintSharpApi.NUnitTest
                         // Wait till temp rises
                         while (temp < 23)
                         {
-                            var state = await _server.GetCurrentBedStateAsync(true);
+                            OctoPrintBedState state = await _server.GetCurrentBedStateAsync(true);
                             if (state != null && state.Bed != null)
                             {
                                 var bed = state.Bed;
@@ -463,10 +464,10 @@ namespace OctoPrintSharpApi.NUnitTest
                                     Assert.Fail("No heated bed found");
                                     break;
                                 }
-                                temp = bed.Actual;
+                                temp = bed.TempRead;
                             }
                         }
-                        Assert.IsTrue(temp >= 23);
+                        Assert.That(temp >= 23);
                         // Turn off bed
                         result = await _server.SetBedTemperatureAsync(0);
                         // Set timeout to 5 minutes
@@ -485,10 +486,10 @@ namespace OctoPrintSharpApi.NUnitTest
                                         Assert.Fail("No heated bed found");
                                         break;
                                     }
-                                    temp = bed.Actual;
+                                    temp = bed.TempRead;
                                 }
                             }
-                            Assert.IsTrue(temp <= 23);
+                            Assert.That(temp <= 23);
                         }
                         else
                             Assert.Fail("Command failed to be sent.");
@@ -516,7 +517,7 @@ namespace OctoPrintSharpApi.NUnitTest
             //if (_skipPrinterActionTests) return;
             try
             {
-                OctoPrintClient _server = new OctoPrintClient(_host, _api, _port, _ssl);
+                OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 _server.Error += (s, e) =>
                 {
                     Assert.Fail($"Error occured: {e?.ToString()}");
@@ -546,10 +547,10 @@ namespace OctoPrintSharpApi.NUnitTest
                                     Assert.Fail("No extrudes available");
                                     break;
                                 }
-                                extruderTemp = extruder.Actual;
+                                extruderTemp = extruder.TempRead;
                             }
                         }
-                        Assert.IsTrue(extruderTemp >= 28);
+                        Assert.That(extruderTemp >= 28);
                         // Turn off extruder
                         result = await _server.SetToolTemperatureAsync(0);
                         // Set timeout to 3 minutes
@@ -568,10 +569,10 @@ namespace OctoPrintSharpApi.NUnitTest
                                         Assert.Fail("No extrudes available");
                                         break;
                                     }
-                                    extruderTemp = extruder.Actual;
+                                    extruderTemp = extruder.TempRead;
                                 }
                             }
-                            Assert.IsTrue(extruderTemp <= 28);
+                            Assert.That(extruderTemp <= 28);
                         }
                         else
                             Assert.Fail("Command failed to be sent.");
@@ -604,7 +605,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 .WithApiKey(api)
                 .Build();
             await client.CheckOnlineAsync();
-            Assert.IsTrue(client?.IsOnline ?? false);
+            Assert.That(client?.IsOnline ?? false);
         }
     }
 }

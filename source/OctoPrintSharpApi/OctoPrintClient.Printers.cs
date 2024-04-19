@@ -61,7 +61,7 @@ namespace AndreasReitberger.API.OctoPrint
                     // If no index is provided, or it's out of bound, the first online printer is used
                     ActivePrinter = Printers.FirstOrDefault(printer => printer.IsOnline);
                     // If no online printers is found, however there is at least one printer configured, use this one
-                    if (ActivePrinter == null && Printers.Count > 0)
+                    if (ActivePrinter is null && Printers.Count > 0)
                         ActivePrinter = Printers[0];
                 }
             }
@@ -94,29 +94,30 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                Printers = await GetPrintersAsync().ConfigureAwait(false);
+                List<IPrinter3d> printers = await GetPrintersAsync().ConfigureAwait(false);
+                Printers = [.. printers];
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        public async Task<ObservableCollection<IPrinter3d>> GetAllPrinterProfilesAsync()
+        public async Task<List<IPrinter3d>> GetAllPrinterProfilesAsync()
         {
             try
             {
                 OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                ObservableCollection<IPrinter3d> profile = new(result.Profiles.Select(pair => pair.Value));
+                List<IPrinter3d> profile = new(result.Profiles.Select(pair => pair.Value));
                 return profile;
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new ObservableCollection<IPrinter3d>();
+                return [];
             }
         }
 
-        public override Task<ObservableCollection<IPrinter3d>> GetPrintersAsync() => GetAllPrinterProfilesAsync();
+        public override Task<List<IPrinter3d>> GetPrintersAsync() => GetAllPrinterProfilesAsync();
 
         public async Task<IPrinter3d> GetPrinterProfileAsync(string slug)
         {

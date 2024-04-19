@@ -18,7 +18,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                if (e.Message == null)
+                if (e.Message is null)
                     return;
                 if (e.Message.StartsWith("{\"connected\":"))
                 {

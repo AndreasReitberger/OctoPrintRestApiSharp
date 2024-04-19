@@ -52,7 +52,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Methods
         OctoPrintCurrentToolState GetCurrentState()
         {
-            if (TempSet == null || TempSet < 0 || TempRead == null || TempRead < 0)
+            if (TempSet is null || TempSet < 0 || TempRead is null || TempRead < 0)
                 return OctoPrintCurrentToolState.Error;
             else
             {

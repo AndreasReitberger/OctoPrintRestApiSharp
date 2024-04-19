@@ -261,26 +261,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Init
-        public void InitInstance()
-        {
-            try
-            {
-                Instance = this;
-                if (Instance != null)
-                {
-                    Instance.UpdateInstance = false;
-                    Instance.IsInitialized = true;
-                }
-                UpdateInstance = false;
-                IsInitialized = true;
-            }
-            catch (Exception exc)
-            {
-                //UpdateInstance = true;
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                IsInitialized = false;
-            }
-        }
+
         public static void UpdateSingleInstance(OctoPrintClient Inst)
         {
             try
@@ -327,7 +308,7 @@ namespace AndreasReitberger.API.OctoPrint
         #region RestApi
 
         [Obsolete("Use method from Core library instead")]
-        async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
+        async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
             string filePath,
             string location,
             string path,
@@ -341,7 +322,7 @@ namespace AndreasReitberger.API.OctoPrint
 
             try
             {
-                if (restClient == null)
+                if (restClient is null)
                 {
                     UpdateRestClientInstance();
                 }
@@ -400,17 +381,17 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [Obsolete("Use method from Core library instead")]
-        Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
+        Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
             string filePath,
             OctoPrintFileLocation location,
             string path,
             bool selectFile = false,
             bool printFile = false,
             int timeout = 100000
-            ) => SendMultipartFormDataFileRestApiRequestAsync(filePath, location.Location, path, selectFile, printFile, timeout);
+            ) => SendMultipartFormDataFileRestApiRequestAsyncOld(filePath, location.Location, path, selectFile, printFile, timeout);
 
         [Obsolete("Use method from Core library instead")]
-        async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
+        internal async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
             byte[] file,
             string fileName,
             string location,
@@ -425,7 +406,7 @@ namespace AndreasReitberger.API.OctoPrint
 
             try
             {
-                if (restClient == null)
+                if (restClient is null)
                 {
                     UpdateRestClientInstance();
                 }
@@ -484,7 +465,7 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [Obsolete("Use method from Core library instead")]
-        Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsync(
+        internal Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
             byte[] file,
             string fileName,
             OctoPrintFileLocation location,
@@ -492,11 +473,11 @@ namespace AndreasReitberger.API.OctoPrint
             bool selectFile = false,
             bool printFile = false,
             int timeout = 100000
-            ) => SendMultipartFormDataFileRestApiRequestAsync(file, fileName, location.Location, path, selectFile, printFile, timeout);
+            ) => SendMultipartFormDataFileRestApiRequestAsyncOld(file, fileName, location.Location, path, selectFile, printFile, timeout);
 
 
         [Obsolete("Use method from Core library instead")]
-        async Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsync(
+        internal async Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsyncOld(
             string folderName,
             string location,
             string path,
@@ -508,7 +489,7 @@ namespace AndreasReitberger.API.OctoPrint
 
             try
             {
-                if (restClient == null)
+                if (restClient is null)
                 {
                     UpdateRestClientInstance();
                 }
@@ -566,21 +547,21 @@ namespace AndreasReitberger.API.OctoPrint
 
 
         [Obsolete("Use method from Core library instead")]
-        Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsync(
+        internal Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsync(
             string folderName,
             OctoPrintFileLocation location,
             string path,
             int timeout = 100000
-            ) => SendMultipartFormDataFolderRestApiRequestAsync(folderName, location.Location, path, timeout);
+            ) => SendMultipartFormDataFolderRestApiRequestAsyncOld(folderName, location.Location, path, timeout);
         #endregion
 
         #region Download
         [Obsolete("Check if can be replaced by base method")]
-        public async Task<byte[]> DownloadFileFromUriAsync(string path, int timeout = 100000)
+        internal async Task<byte[]> DownloadFileFromUriAsyncOld(string path, int timeout = 100000)
         {
             try
             {
-                if (restClient == null)
+                if (restClient is null)
                 {
                     UpdateRestClientInstance();
                 }
@@ -618,12 +599,12 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                if (newState == null || newState?.Temperature == null)
+                if (newState is null || newState?.Temperature is null)
                 {
                     return;
                 }
 
-                Extruders = newState.Temperature?.Tool1 == null ? new()
+                Extruders = newState.Temperature?.Tool1 is null ? new()
                 {
                     newState.Temperature?.Tool0,
                 } :
@@ -653,7 +634,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                if (newConfig == null) return;
+                if (newConfig is null) return;
 
             }
             catch (Exception exc)
@@ -665,7 +646,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                if (newConnectionSettings == null) return;
+                if (newConnectionSettings is null) return;
 
             }
             catch (Exception exc)
@@ -681,7 +662,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string files = string.IsNullOrEmpty(path) ? string.Format("files/{0}", location) : string.Format("files/{0}/{1}", location, path);
+                string files = string.IsNullOrEmpty(path) ? $"files/{location}" : $"files/{location}/{path}";
                 Dictionary<string, string> urlSegments = new()
                 {
                     //get all files & folders 
@@ -718,19 +699,18 @@ namespace AndreasReitberger.API.OctoPrint
                 return new OctoPrintFiles();
             }
         }
-        ObservableCollection<OctoPrintModel> IterateOctoPrintFileStack(IGcode[] files) =>  IterateOctoPrintFileStack(files.ToList());      
+        protected List<OctoPrintModel> IterateOctoPrintFileStack(IGcode[] files) =>  IterateOctoPrintFileStack(files.ToList());
 
-        ObservableCollection<OctoPrintModel> IterateOctoPrintFileStack(List<IGcode> files)
+        protected List<OctoPrintModel> IterateOctoPrintFileStack(List<IGcode>? files)
         {
-            ObservableCollection<OctoPrintModel> collectedFiles = new();
+            List<OctoPrintModel> collectedFiles = [];
             try
             {
-                if (files == null)
+                if (files is null)
                 {
                     return collectedFiles;
                 }
-
-                foreach (OctoPrintFile file in files)
+                foreach (OctoPrintFile file in files.Cast<OctoPrintFile>())
                 {
                     Stack<OctoPrintFile> fileStack = new();
                     collectedFiles.Add(new OctoPrintModel()
@@ -743,13 +723,11 @@ namespace AndreasReitberger.API.OctoPrint
 
                     });
                     fileStack.Push(file);
-
                     while (fileStack.Count > 0)
                     {
                         OctoPrintFile currentFile = fileStack.Pop();
-                        if (currentFile.Children == null) continue;
-
-                        foreach (OctoPrintFile f in currentFile.Children)
+                        if (currentFile.Children is null) continue;
+                        foreach (OctoPrintFile f in currentFile.Children.Cast<OctoPrintFile>())
                         {
                             collectedFiles.Add(new OctoPrintModel()
                             {

@@ -70,7 +70,7 @@ await _server.CheckOnlineAsync();
 if (_server.IsOnline)
 {
     // Sets the first printer active
-    if (_server.ActivePrinter == null)
+    if (_server.ActivePrinter is null)
         await _server.SetPrinterActiveAsync(0, true);
 
     await _server.RefreshAllAsync();
