@@ -2,44 +2,56 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsSoftwareUpdate
+    public partial class SettingsSoftwareUpdate : ObservableObject
     {
         #region Properties
-        [JsonProperty("cache_ttl", NullValueHandling = NullValueHandling.Ignore)]
-        public long? CacheTtl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("cache_ttl", NullValueHandling = NullValueHandling.Ignore)]
+        long? cacheTtl;
 
-        [JsonProperty("ignore_throttled", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IgnoreThrottled { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ignore_throttled", NullValueHandling = NullValueHandling.Ignore)]
+        bool? ignoreThrottled;
 
-        [JsonProperty("notify_users", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? NotifyUsers { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("notify_users", NullValueHandling = NullValueHandling.Ignore)]
+        bool? notifyUsers;
 
-        [JsonProperty("octoprint_branch_mappings", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsOctoprintBranchMapping[] OctoprintBranchMappings { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_branch_mappings", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsOctoprintBranchMapping[] octoprintBranchMappings = [];
 
-        [JsonProperty("octoprint_checkout_folder")]
-        public object OctoprintCheckoutFolder { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_checkout_folder")]
+        object? octoprintCheckoutFolder;
 
-        [JsonProperty("octoprint_method", NullValueHandling = NullValueHandling.Ignore)]
-        public string OctoprintMethod { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_method", NullValueHandling = NullValueHandling.Ignore)]
+        string octoprintMethod = string.Empty;
 
-        [JsonProperty("octoprint_pip_target", NullValueHandling = NullValueHandling.Ignore)]
-        public string OctoprintPipTarget { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_pip_target", NullValueHandling = NullValueHandling.Ignore)]
+        string octoprintPipTarget = string.Empty;
 
-        [JsonProperty("octoprint_release_channel", NullValueHandling = NullValueHandling.Ignore)]
-        public string OctoprintReleaseChannel { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_release_channel", NullValueHandling = NullValueHandling.Ignore)]
+        string octoprintReleaseChannel = string.Empty;
 
-        [JsonProperty("octoprint_tracked_branch")]
-        public object OctoprintTrackedBranch { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_tracked_branch")]
+        object? octoprintTrackedBranch;
 
-        [JsonProperty("octoprint_type", NullValueHandling = NullValueHandling.Ignore)]
-        public string OctoprintType { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("octoprint_type", NullValueHandling = NullValueHandling.Ignore)]
+        string octoprintType = string.Empty;
 
-        [JsonProperty("pip_command")]
-        public object PipCommand { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pip_command")]
+        object? pipCommand;
 
-        [JsonProperty("pip_enable_check", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? PipEnableCheck { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pip_enable_check", NullValueHandling = NullValueHandling.Ignore)]
+        bool? pipEnableCheck;
         #endregion
 
         #region Overrides

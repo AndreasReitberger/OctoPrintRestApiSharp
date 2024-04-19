@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintChamberStateHistory
+    public partial class OctoPrintChamberStateHistory : ObservableObject
     {
         #region Properties
-        [JsonProperty("time", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Time { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("time", NullValueHandling = NullValueHandling.Ignore)]
+        long? time;
 
-        [JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateTemperatureInfo Bed { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintPrinterStateTemperatureInfo? bed;
         #endregion
 
         #region Overrides

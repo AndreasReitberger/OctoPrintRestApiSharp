@@ -4,20 +4,26 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFileGcodeAnalysis
+    public partial class OctoPrintFileGcodeAnalysis : ObservableObject
     {
         #region Properties
-        [JsonProperty("dimensions")]
-        public OctoPrintFileDimensions Dimensions { get; set; } = new OctoPrintFileDimensions() { Depth = 0, Height = 0, Width = 0 };
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("dimensions")]
+        OctoPrintFileDimensions dimensions = new() { Depth = 0, Height = 0, Width = 0 };
 
-        [JsonProperty("estimatedPrintTime")]
-        public double EstimatedPrintTime { get; set; } = 0;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("estimatedPrintTime")]
+        double estimatedPrintTime = 0;
 
-        [JsonProperty("filament")]
-        public Dictionary<string, OctoPrintFilament> Filament { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [NotifyPropertyChangedFor(nameof(TotalFilamentLength))]
+        [NotifyPropertyChangedFor(nameof(TotalFilamentVolume))]
+        [property: JsonProperty("filament")]
+        Dictionary<string, OctoPrintFilament> filament = [];
 
-        [JsonProperty("printingArea")]
-        public Dictionary<string, double> PrintingArea { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printingArea")]
+        Dictionary<string, double> printingArea = [];
 
         [JsonIgnore]
         public double TotalFilamentVolume
@@ -41,6 +47,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
                 return filamentUsed;
             }
         }
+
         [JsonIgnore]
         public double TotalFilamentLength
         {

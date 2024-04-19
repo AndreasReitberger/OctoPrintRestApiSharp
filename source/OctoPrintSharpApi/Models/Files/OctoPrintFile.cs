@@ -14,35 +14,31 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Properties
 
         [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
         Guid id;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
         GcodeTimeBaseTarget timeBaseTarget = GcodeTimeBaseTarget.LongSeconds;
 
-        [ObservableProperty]
-        [JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        List<IGcode> children = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
+        List<IGcode> children = [];
 
-        [ObservableProperty]
-        [JsonProperty("date")]
-        [property: JsonIgnore]
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("date")]
         long date;
 
-        [ObservableProperty]
-        [JsonProperty("display", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        string display;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("display", NullValueHandling = NullValueHandling.Ignore)]
+        string display = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [NotifyPropertyChangedFor(nameof(PrintTime))]
         [NotifyPropertyChangedFor(nameof(Volume))]
         [NotifyPropertyChangedFor(nameof(Filament))]
         [property: JsonProperty("gcodeAnalysis", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintFileGcodeAnalysis gcodeAnalysis;
-        partial void OnGcodeAnalysisChanged(OctoPrintFileGcodeAnalysis value)
+        OctoPrintFileGcodeAnalysis? gcodeAnalysis;
+        partial void OnGcodeAnalysisChanged(OctoPrintFileGcodeAnalysis? value)
         {
             if (value is not null)
             {
@@ -52,55 +48,45 @@ namespace AndreasReitberger.API.OctoPrint.Models
             }
         }
 
-        [ObservableProperty]
-        [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        string hash;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
+        string hash = string.Empty;
 
-        [ObservableProperty]
-        [JsonProperty("name")]
-        [property: JsonIgnore]
-        string fileName;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name")]
+        string fileName = string.Empty;
 
-        [ObservableProperty]
-        [JsonProperty("origin")]
-        [property: JsonIgnore]
-        string origin;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("origin")]
+        string origin = string.Empty;
 
-        [ObservableProperty]
-        [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        string filePath;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
+        string filePath = string.Empty;
 
-        [ObservableProperty]
-        [JsonProperty("prints")]
-        [property: JsonIgnore]
-        OctoPrintFilePrints prints;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("prints")]
+        OctoPrintFilePrints? prints;
 
-        [ObservableProperty]
-        [JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        OctoPrintFileChildRefs refs;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintFileChildRefs? refs;
 
-        [ObservableProperty]
-        [JsonProperty("size")]
-        [property: JsonIgnore]
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("size")]
         long size;
 
-        [ObservableProperty]
-        [JsonProperty("statistics")]
-        [property: JsonIgnore]
-        OctoPrintFileStatistics statistics;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("statistics")]
+        OctoPrintFileStatistics? statistics;
 
-        [ObservableProperty]
-        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        string type;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+        string type = string.Empty;
 
-        [ObservableProperty]
-        [JsonProperty("typePath", NullValueHandling = NullValueHandling.Ignore)]
-        [property: JsonIgnore]
-        List<string> typePath = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("typePath", NullValueHandling = NullValueHandling.Ignore)]
+        List<string> typePath = [];
 
         #endregion
 
@@ -126,20 +112,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
             PrintTimeGeneralized = TimeBaseConvertHelper.FromLongSeconds(value);
         }
 
-        [ObservableProperty]
+        [ObservableProperty, JsonIgnore]
         TimeSpan? printTimeGeneralized;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
-        string permissions;
+        string permissions = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
-        string group;
+        string group = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
-        IGcodeMeta meta;
+        IGcodeMeta? meta;
         #endregion
 
         #region JsonIgnore
@@ -150,38 +136,29 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
-        string printerName;
+        string printerName = string.Empty;
 
-        [ObservableProperty]
-        [JsonIgnore]
+        [ObservableProperty, JsonIgnore]
         bool isVisible;
 
-        [ObservableProperty]
-        [JsonIgnore]
+        [ObservableProperty, JsonIgnore]
         bool isLoadingImage = false;
 
-        [ObservableProperty]
-        [JsonIgnore]
-        byte[] image = Array.Empty<byte>();
+        [ObservableProperty, JsonIgnore]
+        byte[] image = [];
 
-        [ObservableProperty]
-        [JsonIgnore]
-        byte[] thumbnail = Array.Empty<byte>();
+        [ObservableProperty, JsonIgnore]
+        byte[] thumbnail = [];
 
-        [ObservableProperty]
-        [JsonIgnore]
+        [ObservableProperty, JsonIgnore]
         GcodeImageType imageType = GcodeImageType.Thumbnail;
 
         [JsonIgnore]
-        public bool IsAnalysed
-        {
-            get => GcodeAnalysis != null;
-        }
+        public bool IsAnalysed => GcodeAnalysis is not null;
+        
         [JsonIgnore]
-        public bool Printed
-        {
-            get => Statistics != null;
-        }
+        public bool Printed => Statistics is not null;
+        
         #endregion
 
         #region Methods

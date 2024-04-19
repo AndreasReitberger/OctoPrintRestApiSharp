@@ -2,17 +2,20 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintVersionInfo
+    public partial class OctoPrintVersionInfo : ObservableObject
     {
         #region Properties
-        [JsonProperty("api")]
-        public string Api { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("api")]
+        string api = string.Empty;
 
-        [JsonProperty("server")]
-        public string Server { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("server")]
+        string server = string.Empty;
 
-        [JsonProperty("text")]
-        public string Text { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("text")]
+        string text = string.Empty;
         #endregion
 
         #region Overrides

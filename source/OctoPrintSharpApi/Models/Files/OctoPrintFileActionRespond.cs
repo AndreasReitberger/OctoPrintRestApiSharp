@@ -2,20 +2,24 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFileActionRespond
+    public partial class OctoPrintFileActionRespond : ObservableObject
     {
         #region Properties
-        [JsonProperty("origin", NullValueHandling = NullValueHandling.Ignore)]
-        public string Origin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("origin", NullValueHandling = NullValueHandling.Ignore)]
+        string origin;
 
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        string name;
 
-        [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
-        public string Path { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
+        string path;
 
-        [JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintFileActionRespondRefs Refs { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintFileActionRespondRefs? refs;
         #endregion
 
         #region Overrides

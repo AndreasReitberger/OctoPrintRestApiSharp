@@ -2,11 +2,12 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintWebSocketConnectionResponse
+    public partial class OctoPrintWebSocketConnectionResponse : ObservableObject
     {
         #region Properties
-        [JsonProperty("connected")]
-        public OctoPrintWebSocketConnectionInfo Connected { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("connected")]
+        OctoPrintWebSocketConnectionInfo? connected;
         #endregion
 
         #region Overrides

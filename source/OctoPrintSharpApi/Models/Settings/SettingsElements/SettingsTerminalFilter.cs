@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsTerminalFilter
+    public partial class SettingsTerminalFilter : ObservableObject
     {
         #region Properties
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        string name = string.Empty;
 
-        [JsonProperty("regex", NullValueHandling = NullValueHandling.Ignore)]
-        public string Regex { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("regex", NullValueHandling = NullValueHandling.Ignore)]
+        string regex = string.Empty;
         #endregion
 
         #region Overrides

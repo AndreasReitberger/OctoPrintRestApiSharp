@@ -4,38 +4,48 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsPluginManager
+    public partial class SettingsPluginManager : ObservableObject
     {
         #region Properties
-        [JsonProperty("confirm_disable", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? ConfirmDisable { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("confirm_disable", NullValueHandling = NullValueHandling.Ignore)]
+        bool? confirmDisable;
 
-        [JsonProperty("dependency_links", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? DependencyLinks { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("dependency_links", NullValueHandling = NullValueHandling.Ignore)]
+        bool? dependencyLinks;
 
-        [JsonProperty("hidden", NullValueHandling = NullValueHandling.Ignore)]
-        public List<object> Hidden { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("hidden", NullValueHandling = NullValueHandling.Ignore)]
+        List<object> hidden = new();
 
-        [JsonProperty("ignore_throttled", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IgnoreThrottled { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ignore_throttled", NullValueHandling = NullValueHandling.Ignore)]
+        bool? ignoreThrottled;
 
-        [JsonProperty("notices", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Notices { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("notices", NullValueHandling = NullValueHandling.Ignore)]
+        Uri? notices;
 
-        [JsonProperty("notices_ttl", NullValueHandling = NullValueHandling.Ignore)]
-        public long? NoticesTtl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("notices_ttl", NullValueHandling = NullValueHandling.Ignore)]
+        long? noticesTtl;
 
-        [JsonProperty("pip_args")]
-        public object PipArgs { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pip_args")]
+        object? pipArgs;
 
-        [JsonProperty("pip_force_user", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? PipForceUser { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pip_force_user", NullValueHandling = NullValueHandling.Ignore)]
+        bool? pipForceUser;
 
-        [JsonProperty("repository", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Repository { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("repository", NullValueHandling = NullValueHandling.Ignore)]
+        Uri? repository;
 
-        [JsonProperty("repository_ttl", NullValueHandling = NullValueHandling.Ignore)]
-        public long? RepositoryTtl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("repository_ttl", NullValueHandling = NullValueHandling.Ignore)]
+        long? repositoryTtl;
         #endregion
 
         #region Overrides

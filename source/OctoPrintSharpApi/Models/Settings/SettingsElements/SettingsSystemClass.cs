@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsSystemClass
+    public partial class SettingsSystemClass : ObservableObject
     {
         #region Properties
-        [JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
-        public List<object> Actions { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
+        List<object> actions = new();
 
-        [JsonProperty("events")]
-        public object Events { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("events")]
+        object events;
         #endregion
 
         #region Overrides

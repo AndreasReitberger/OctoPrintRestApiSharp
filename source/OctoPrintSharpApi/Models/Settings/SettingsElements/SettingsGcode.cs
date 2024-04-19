@@ -2,17 +2,20 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsGcode
+    public partial class SettingsGcode : ObservableObject
     {
         #region Properties
-        [JsonProperty("afterPrintCancelled", NullValueHandling = NullValueHandling.Ignore)]
-        public string AfterPrintCancelled { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("afterPrintCancelled", NullValueHandling = NullValueHandling.Ignore)]
+        string afterPrintCancelled = string.Empty;
 
-        [JsonProperty("snippets/disable_bed", NullValueHandling = NullValueHandling.Ignore)]
-        public string SnippetsDisableBed { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("snippets/disable_bed", NullValueHandling = NullValueHandling.Ignore)]
+        string snippetsDisableBed = string.Empty;
 
-        [JsonProperty("snippets/disable_hotends", NullValueHandling = NullValueHandling.Ignore)]
-        public string SnippetsDisableHotends { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("snippets/disable_hotends", NullValueHandling = NullValueHandling.Ignore)]
+        string snippetsDisableHotends = string.Empty;
         #endregion
 
         #region Overrides

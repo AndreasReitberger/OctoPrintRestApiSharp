@@ -4,32 +4,40 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsDiscovery
+    public partial class SettingsDiscovery : ObservableObject
     {
         #region Properties
-        [JsonProperty("httpPassword")]
-        public object HttpPassword { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("httpPassword")]
+        object? httpPassword;
 
-        [JsonProperty("httpUsername")]
-        public object HttpUsername { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("httpUsername")]
+        object? httpUsername;
 
-        [JsonProperty("model", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsModel Model { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("model", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsModel? model;
 
-        [JsonProperty("pathPrefix")]
-        public object PathPrefix { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pathPrefix")]
+        object? pathPrefix;
 
-        [JsonProperty("publicHost")]
-        public object PublicHost { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("publicHost")]
+        object? publicHost;
 
-        [JsonProperty("publicPort", NullValueHandling = NullValueHandling.Ignore)]
-        public long? PublicPort { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("publicPort", NullValueHandling = NullValueHandling.Ignore)]
+        long? publicPort;
 
-        [JsonProperty("upnpUuid", NullValueHandling = NullValueHandling.Ignore)]
-        public Guid? UpnpUuid { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("upnpUuid", NullValueHandling = NullValueHandling.Ignore)]
+        Guid? upnpUuid;
 
-        [JsonProperty("zeroConf", NullValueHandling = NullValueHandling.Ignore)]
-        public List<object> ZeroConf { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("zeroConf", NullValueHandling = NullValueHandling.Ignore)]
+        List<object> zeroConf = [];
         #endregion
 
         #region Overrides

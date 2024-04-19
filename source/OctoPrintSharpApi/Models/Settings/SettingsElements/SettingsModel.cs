@@ -2,29 +2,36 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsModel
+    public partial class SettingsModel : ObservableObject
     {
         #region Properties
-        [JsonProperty("description")]
-        public object Description { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("description")]
+        object? description;
 
-        [JsonProperty("name")]
-        public object Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name")]
+        object? ame;
 
-        [JsonProperty("number")]
-        public object Number { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("number")]
+        object? number;
 
-        [JsonProperty("serial")]
-        public object Serial { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("serial")]
+        object? serial;
 
-        [JsonProperty("url")]
-        public object Url { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("url")]
+        object? url;
 
-        [JsonProperty("vendor")]
-        public object Vendor { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("vendor")]
+        object? vendor;
 
-        [JsonProperty("vendorUrl")]
-        public object VendorUrl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("vendorUrl")]
+        object? vendorUrl;
         #endregion
 
         #region Overrides

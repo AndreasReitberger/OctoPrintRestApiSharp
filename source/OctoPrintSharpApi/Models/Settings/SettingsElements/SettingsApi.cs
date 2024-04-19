@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsApi
+    public partial class SettingsApi : ObservableObject
     {
         #region Properties
-        [JsonProperty("allowCrossOrigin", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AllowCrossOrigin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("allowCrossOrigin", NullValueHandling = NullValueHandling.Ignore)]
+        bool? allowCrossOrigin;
 
-        [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
-        public string Key { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
+        string key = string.Empty;
         #endregion
 
         #region Overrides

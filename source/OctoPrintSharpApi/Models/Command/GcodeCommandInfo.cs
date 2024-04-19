@@ -1,83 +1,32 @@
-﻿using AndreasReitberger.Core.Utilities;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class GcodeCommandInfo : BaseModel
+    public partial class GcodeCommandInfo : ObservableObject
     {
-        #region Id
-        [JsonProperty(nameof(Id))]
-        Guid _id;
-        [JsonIgnore]
-        public Guid Id
-        {
-            get => _id;
-            set
-            {
-                if (_id == value) return;
-                _id = value;
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
         #region Properties
-        [JsonProperty(nameof(Command))]
-        string _command = string.Empty;
-        [JsonIgnore]
-        public string Command
-        {
-            get => _command;
-            set
-            {
-                if (_command == value) return;
-                _command = value;
-                OnPropertyChanged();
-            }
-        }
 
-        [JsonProperty(nameof(Sent))]
-        bool _sent = false;
-        [JsonIgnore]
-        public bool Sent
-        {
-            get => _sent;
-            set
-            {
-                if (_sent == value) return;
-                _sent = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty(nameof(Id))]
+        Guid id;
 
-        [JsonProperty(nameof(Succeeded))]
-        bool _succeeded = false;
-        [JsonIgnore]
-        public bool Succeeded
-        {
-            get => _succeeded;
-            set
-            {
-                if (_succeeded == value) return;
-                _succeeded = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty(nameof(Command))]
+        string command = string.Empty;
 
-        [JsonProperty(nameof(TimeStamp))]
-        DateTime _timeStamp = DateTime.Now;
-        [JsonIgnore]
-        public DateTime TimeStamp
-        {
-            get => _timeStamp;
-            set
-            {
-                if (_timeStamp == value) return;
-                _timeStamp = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty(nameof(Sent))]
+        bool sent = false;
+
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty(nameof(Succeeded))]
+        bool succeeded = false;
+
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty(nameof(TimeStamp))]
+        DateTime timeStamp = DateTime.Now;
+
         #endregion
 
         #region Overrides

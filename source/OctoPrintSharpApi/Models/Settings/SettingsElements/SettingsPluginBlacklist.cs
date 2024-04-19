@@ -3,17 +3,20 @@ using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsPluginBlacklist
+    public partial class SettingsPluginBlacklist : ObservableObject
     {
         #region Properties
-        [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Enabled { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
+        bool? enabled;
 
-        [JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Ttl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
+        long? ttl;
 
-        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Url { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
+        Uri? url;
         #endregion
 
         #region Overrides

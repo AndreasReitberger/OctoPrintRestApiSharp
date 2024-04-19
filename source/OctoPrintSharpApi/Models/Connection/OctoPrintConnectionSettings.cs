@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintConnectionSettings
+    public partial class OctoPrintConnectionSettings : ObservableObject
     {
         #region Properties
-        [JsonProperty("current")]
-        public OctoPrintConnectionSettingsConnection Current { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("current")]
+        OctoPrintConnectionSettingsConnection? current;
 
-        [JsonProperty("options")]
-        public OctoPrintConnectionSettingsOptions Options { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("options")]
+        OctoPrintConnectionSettingsOptions? options;
         #endregion
 
         #region Overrides

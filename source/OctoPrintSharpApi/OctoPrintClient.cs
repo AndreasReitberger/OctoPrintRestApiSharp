@@ -24,7 +24,7 @@ namespace AndreasReitberger.API.OctoPrint
     {
 
         #region Instance
-        static OctoPrintClient _instance = null;
+        static OctoPrintClient? _instance = null;
         static readonly object Lock = new();
         public new static OctoPrintClient Instance
         {
@@ -55,20 +55,17 @@ namespace AndreasReitberger.API.OctoPrint
 
         [JsonIgnore, XmlIgnore]
         [ObservableProperty]
-        object _update;
+        object? update;
 
         #endregion
 
         #region PrinterStateInformation
-        //[JsonProperty(nameof(LastFlowRate))]
         [ObservableProperty]
         double lastFlowRate = 100;
 
-        //[JsonProperty(nameof(LastFeedRate))]
         [ObservableProperty]
         double lastFeedRate = 100;
 
-        //[JsonProperty(nameof(CurrentFileLocation))]
         [ObservableProperty]
         OctoPrintFileLocations currentFileLocation = OctoPrintFileLocations.local;
         #endregion

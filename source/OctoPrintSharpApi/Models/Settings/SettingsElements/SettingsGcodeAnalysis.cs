@@ -2,11 +2,12 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsGcodeAnalysis
+    public partial class SettingsGcodeAnalysis : ObservableObject
     {
         #region Properties
-        [JsonProperty("runAt", NullValueHandling = NullValueHandling.Ignore)]
-        public string RunAt { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("runAt", NullValueHandling = NullValueHandling.Ignore)]
+        string runAt = string.Empty;
         #endregion
 
         #region Overrides

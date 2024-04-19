@@ -4,23 +4,26 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFiles
+    public partial class OctoPrintFiles : ObservableObject
     {
         #region Properties
-        [JsonProperty("files")]
-        public List<IGcode> Files { get; set; } = new();
-        //public List<OctoPrintFile> Files { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("files")]
+        List<IGcode> files = [];
+        //public List<OctoPrintFile> Files; = new();
 
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("children")]
+        List<IGcode> children = [];
+        //public List<OctoPrintFile> Children; = new();
 
-        [JsonProperty("children")]
-        public List<IGcode> Children { get; set; } = new();
-        //public List<OctoPrintFile> Children { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("free")]
+        long free;
 
-        [JsonProperty("free")]
-        public long Free { get; set; }
-
-        [JsonProperty("total")]
-        public long Total { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("total")]
+        long total;
         #endregion
 
         #region Overrides

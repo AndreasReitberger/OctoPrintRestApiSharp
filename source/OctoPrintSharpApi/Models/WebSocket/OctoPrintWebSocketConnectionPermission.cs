@@ -4,29 +4,36 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintWebSocketConnectionPermission
+    public partial class OctoPrintWebSocketConnectionPermission : ObservableObject
     {
         #region Properties
-        [JsonProperty("key")]
-        public string Key { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("key")]
+        string key = string.Empty;
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name")]
+        string name = string.Empty;
 
-        [JsonProperty("dangerous")]
-        public bool Dangerous { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("dangerous")]
+        bool dangerous;
 
-        [JsonProperty("default_groups")]
-        public List<OctoPrintDefaultGroup> DefaultGroups { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("default_groups")]
+        List<OctoPrintDefaultGroup> defaultGroups = [];
 
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("description")]
+        string description = string.Empty;
 
-        [JsonProperty("needs")]
-        public OctoPrintWebSocketConnectionNeeds Needs { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("needs")]
+        OctoPrintWebSocketConnectionNeeds? needs;
 
-        [JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
-        public string Plugin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
+        string plugin = string.Empty;
         #endregion
 
         #region Overrides

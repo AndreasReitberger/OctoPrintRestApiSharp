@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintPrinterProfiles
+    public partial class OctoPrintPrinterProfiles : ObservableObject
     {
         #region Properties
-        [JsonProperty("profiles")]
-        public Dictionary<string, OctoPrintPrinter> Profiles { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("profiles")]
+        Dictionary<string, OctoPrintPrinter> profiles = [];
         #endregion
 
         #region Overrides

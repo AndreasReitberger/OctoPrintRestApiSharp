@@ -3,29 +3,36 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintConnectionSettingsOptions
+    public partial class OctoPrintConnectionSettingsOptions : ObservableObject
     {
         #region Properties
-        [JsonProperty("baudratePreference")]
-        public object BaudratePreference { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("baudratePreference")]
+        object? baudratePreference;
 
-        [JsonProperty("baudrates")]
-        public List<long> Baudrates { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("baudrates")]
+        List<long> baudrates = [];
 
-        [JsonProperty("portPreference")]
-        public object PortPreference { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("portPreference")]
+        object? portPreference;
 
-        [JsonProperty("ports")]
-        public List<string> Ports { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ports")]
+        List<string> ports = [];
 
-        [JsonProperty("printerProfilePreference")]
-        public string PrinterProfilePreference { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printerProfilePreference")]
+        string printerProfilePreference = string.Empty;
 
-        [JsonProperty("autoconnect", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Autoconnect { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("autoconnect", NullValueHandling = NullValueHandling.Ignore)]
+        bool? autoconnect;
 
-        [JsonProperty("printerProfiles")]
-        public List<OctoPrintConnectionSettingsPrinterProfile> PrinterProfiles { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printerProfiles")]
+        List<OctoPrintConnectionSettingsPrinterProfile> printerProfiles = [];
         #endregion
 
         #region Overrides

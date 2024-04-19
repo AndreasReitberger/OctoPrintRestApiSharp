@@ -1,36 +1,42 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintWebSocketConnectionInfo
+    public partial class OctoPrintWebSocketConnectionInfo : ObservableObject
     {
         #region Properties
-        [JsonProperty("version")]
-        public string Version { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("version")]
+        string version = string.Empty;
 
-        [JsonProperty("display_version")]
-        public string DisplayVersion { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("display_version")]
+        string displayVersion = string.Empty;
 
-        [JsonProperty("branch")]
-        public string Branch { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("branch")]
+        string branch = string.Empty;
 
-        [JsonProperty("plugin_hash")]
-        public string PluginHash { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("plugin_hash")]
+        string pluginHash = string.Empty;
 
-        [JsonProperty("config_hash")]
-        public string ConfigHash { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("config_hash")]
+        string configHash = string.Empty;
 
-        [JsonProperty("debug")]
-        public bool Debug { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("debug")]
+        bool debug;
 
-        [JsonProperty("safe_mode")]
-        public object SafeMode { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("safe_mode")]
+        object? safeMode;
 
-        [JsonProperty("permissions")]
-        public List<OctoPrintWebSocketConnectionPermission> Permissions { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("permissions")]
+        List<OctoPrintWebSocketConnectionPermission> permissions = new();
         #endregion
 
         #region Overrides

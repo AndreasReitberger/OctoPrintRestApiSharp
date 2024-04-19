@@ -2,170 +2,224 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsSerial
+    public partial class SettingsSerial : ObservableObject
     {
         #region Properties
-        [JsonProperty("abortHeatupOnCancel", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AbortHeatupOnCancel { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("abortHeatupOnCancel", NullValueHandling = NullValueHandling.Ignore)]
+        bool? abortHeatupOnCancel;
 
-        [JsonProperty("ackMax", NullValueHandling = NullValueHandling.Ignore)]
-        public long? AckMax { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ackMax", NullValueHandling = NullValueHandling.Ignore)]
+        long? ackMax;
 
-        [JsonProperty("additionalBaudrates", NullValueHandling = NullValueHandling.Ignore)]
-        public object[] AdditionalBaudrates { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("additionalBaudrates", NullValueHandling = NullValueHandling.Ignore)]
+        object[] additionalBaudrates = [];
 
-        [JsonProperty("additionalPorts", NullValueHandling = NullValueHandling.Ignore)]
-        public object[] AdditionalPorts { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("additionalPorts", NullValueHandling = NullValueHandling.Ignore)]
+        object[] additionalPorts = [];
 
-        [JsonProperty("alwaysSendChecksum", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AlwaysSendChecksum { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("alwaysSendChecksum", NullValueHandling = NullValueHandling.Ignore)]
+        bool? alwaysSendChecksum;
 
-        [JsonProperty("autoconnect", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Autoconnect { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("autoconnect", NullValueHandling = NullValueHandling.Ignore)]
+        bool? autoconnect;
 
-        [JsonProperty("baudrate", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Baudrate { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("baudrate", NullValueHandling = NullValueHandling.Ignore)]
+        long? baudrate;
 
-        [JsonProperty("baudrateOptions", NullValueHandling = NullValueHandling.Ignore)]
-        public long[] BaudrateOptions { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("baudrateOptions", NullValueHandling = NullValueHandling.Ignore)]
+        long[] baudrateOptions = [];
 
-        [JsonProperty("blockWhileDwelling", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? BlockWhileDwelling { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("blockWhileDwelling", NullValueHandling = NullValueHandling.Ignore)]
+        bool? blockWhileDwelling;
 
-        [JsonProperty("blockedCommands", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] BlockedCommands { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("blockedCommands", NullValueHandling = NullValueHandling.Ignore)]
+        string[] blockedCommands = [];
 
-        [JsonProperty("capAutoreportSdStatus", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? CapAutoreportSdStatus { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("capAutoreportSdStatus", NullValueHandling = NullValueHandling.Ignore)]
+        bool? capAutoreportSdStatus;
 
-        [JsonProperty("capAutoreportTemp", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? CapAutoreportTemp { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("capAutoreportTemp", NullValueHandling = NullValueHandling.Ignore)]
+        bool? capAutoreportTemp;
 
-        [JsonProperty("capBusyProtocol", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? CapBusyProtocol { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("capBusyProtocol", NullValueHandling = NullValueHandling.Ignore)]
+        bool? capBusyProtocol;
 
-        [JsonProperty("capEmergencyParser", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? CapEmergencyParser { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("capEmergencyParser", NullValueHandling = NullValueHandling.Ignore)]
+        bool? capEmergencyParser;
 
-        [JsonProperty("checksumRequiringCommands", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] ChecksumRequiringCommands { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("checksumRequiringCommands", NullValueHandling = NullValueHandling.Ignore)]
+        string[] checksumRequiringCommands = [];
 
-        [JsonProperty("disconnectOnErrors", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? DisconnectOnErrors { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("disconnectOnErrors", NullValueHandling = NullValueHandling.Ignore)]
+        bool? disconnectOnErrors;
 
-        [JsonProperty("emergencyCommands", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] EmergencyCommands { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("emergencyCommands", NullValueHandling = NullValueHandling.Ignore)]
+        string[] emergencyCommands = [];
 
-        [JsonProperty("exclusive", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Exclusive { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("exclusive", NullValueHandling = NullValueHandling.Ignore)]
+        bool? exclusive;
 
-        [JsonProperty("externalHeatupDetection", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? ExternalHeatupDetection { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("externalHeatupDetection", NullValueHandling = NullValueHandling.Ignore)]
+        bool? externalHeatupDetection;
 
-        [JsonProperty("firmwareDetection", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? FirmwareDetection { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("firmwareDetection", NullValueHandling = NullValueHandling.Ignore)]
+        bool? firmwareDetection;
 
-        [JsonProperty("helloCommand", NullValueHandling = NullValueHandling.Ignore)]
-        public string HelloCommand { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("helloCommand", NullValueHandling = NullValueHandling.Ignore)]
+        string helloCommand = string.Empty;
 
-        [JsonProperty("ignoreErrorsFromFirmware", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IgnoreErrorsFromFirmware { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ignoreErrorsFromFirmware", NullValueHandling = NullValueHandling.Ignore)]
+        bool? ignoreErrorsFromFirmware;
 
-        [JsonProperty("ignoreIdenticalResends", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? IgnoreIdenticalResends { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ignoreIdenticalResends", NullValueHandling = NullValueHandling.Ignore)]
+        bool? ignoreIdenticalResends;
 
-        [JsonProperty("log", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Log { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("log", NullValueHandling = NullValueHandling.Ignore)]
+        bool? log;
 
-        [JsonProperty("logPositionOnCancel", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? LogPositionOnCancel { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("logPositionOnCancel", NullValueHandling = NullValueHandling.Ignore)]
+        bool? logPositionOnCancel;
 
-        [JsonProperty("logPositionOnPause", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? LogPositionOnPause { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("logPositionOnPause", NullValueHandling = NullValueHandling.Ignore)]
+        bool? logPositionOnPause;
 
-        [JsonProperty("longRunningCommands", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] LongRunningCommands { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("longRunningCommands", NullValueHandling = NullValueHandling.Ignore)]
+        string[] longRunningCommands = [];
 
-        [JsonProperty("maxTimeoutsIdle", NullValueHandling = NullValueHandling.Ignore)]
-        public long? MaxTimeoutsIdle { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("maxTimeoutsIdle", NullValueHandling = NullValueHandling.Ignore)]
+        long? maxTimeoutsIdle;
 
-        [JsonProperty("maxTimeoutsLong", NullValueHandling = NullValueHandling.Ignore)]
-        public long? MaxTimeoutsLong { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("maxTimeoutsLong", NullValueHandling = NullValueHandling.Ignore)]
+        long? maxTimeoutsLong;
 
-        [JsonProperty("maxTimeoutsPrinting", NullValueHandling = NullValueHandling.Ignore)]
-        public long? MaxTimeoutsPrinting { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("maxTimeoutsPrinting", NullValueHandling = NullValueHandling.Ignore)]
+        long? maxTimeoutsPrinting;
 
-        [JsonProperty("neverSendChecksum", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? NeverSendChecksum { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("neverSendChecksum", NullValueHandling = NullValueHandling.Ignore)]
+        bool? neverSendChecksum;
 
-        [JsonProperty("pausingCommands", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] PausingCommands { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pausingCommands", NullValueHandling = NullValueHandling.Ignore)]
+        string[] pausingCommands = [];
 
-        [JsonProperty("port", NullValueHandling = NullValueHandling.Ignore)]
-        public string Port { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("port", NullValueHandling = NullValueHandling.Ignore)]
+        string port = string.Empty;
 
-        [JsonProperty("portOptions", NullValueHandling = NullValueHandling.Ignore)]
-        public string[] PortOptions { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("portOptions", NullValueHandling = NullValueHandling.Ignore)]
+        string[] portOptions = [];
 
-        [JsonProperty("repetierTargetTemp", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? RepetierTargetTemp { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("repetierTargetTemp", NullValueHandling = NullValueHandling.Ignore)]
+        bool? repetierTargetTemp;
 
-        [JsonProperty("sdAlwaysAvailable", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? SdAlwaysAvailable { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sdAlwaysAvailable", NullValueHandling = NullValueHandling.Ignore)]
+        bool? sdAlwaysAvailable;
 
-        [JsonProperty("sdRelativePath", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? SdRelativePath { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sdRelativePath", NullValueHandling = NullValueHandling.Ignore)]
+        bool? sdRelativePath;
 
-        [JsonProperty("sendM112OnError", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? SendM112OnError { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sendM112OnError", NullValueHandling = NullValueHandling.Ignore)]
+        bool? sendM112OnError;
 
-        [JsonProperty("supportResendsWithoutOk", NullValueHandling = NullValueHandling.Ignore)]
-        public string SupportResendsWithoutOk { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("supportResendsWithoutOk", NullValueHandling = NullValueHandling.Ignore)]
+        string supportResendsWithoutOk = string.Empty;
 
-        [JsonProperty("swallowOkAfterResend", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? SwallowOkAfterResend { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("swallowOkAfterResend", NullValueHandling = NullValueHandling.Ignore)]
+        bool? swallowOkAfterResend;
 
-        [JsonProperty("timeoutBaudrateDetectionPause", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutBaudrateDetectionPause { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutBaudrateDetectionPause", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutBaudrateDetectionPause;
 
-        [JsonProperty("timeoutCommunication", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutCommunication { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutCommunication", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutCommunication;
 
-        [JsonProperty("timeoutCommunicationBusy", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutCommunicationBusy { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutCommunicationBusy", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutCommunicationBusy;
 
-        [JsonProperty("timeoutConnection", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutConnection { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutConnection", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutConnection;
 
-        [JsonProperty("timeoutDetection", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutDetection { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutDetection", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutDetection;
 
-        [JsonProperty("timeoutPositionLogWait", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutPositionLogWait { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutPositionLogWait", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutPositionLogWait;
 
-        [JsonProperty("timeoutSdStatus", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutSdStatus { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutSdStatus", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutSdStatus;
 
-        [JsonProperty("timeoutSdStatusAutoreport", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutSdStatusAutoreport { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutSdStatusAutoreport", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutSdStatusAutoreport;
 
-        [JsonProperty("timeoutTemperature", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutTemperature { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutTemperature", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutTemperature;
 
-        [JsonProperty("timeoutTemperatureAutoreport", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutTemperatureAutoreport { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutTemperatureAutoreport", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutTemperatureAutoreport;
 
-        [JsonProperty("timeoutTemperatureTargetSet", NullValueHandling = NullValueHandling.Ignore)]
-        public long? TimeoutTemperatureTargetSet { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timeoutTemperatureTargetSet", NullValueHandling = NullValueHandling.Ignore)]
+        long? timeoutTemperatureTargetSet;
 
-        [JsonProperty("triggerOkForM29", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? TriggerOkForM29 { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("triggerOkForM29", NullValueHandling = NullValueHandling.Ignore)]
+        bool? triggerOkForM29;
 
-        [JsonProperty("useParityWorkaround", NullValueHandling = NullValueHandling.Ignore)]
-        public string UseParityWorkaround { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("useParityWorkaround", NullValueHandling = NullValueHandling.Ignore)]
+        string useParityWorkaround = string.Empty;
 
-        [JsonProperty("waitForStart", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? WaitForStart { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("waitForStart", NullValueHandling = NullValueHandling.Ignore)]
+        bool? waitForStart;
         #endregion
 
         #region Overrides
