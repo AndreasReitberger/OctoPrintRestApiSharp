@@ -8,6 +8,7 @@ using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -129,17 +130,7 @@ namespace AndreasReitberger.API.OctoPrint
             });
         }
 
-        [JsonIgnore, XmlIgnore, Obsolete("Use Toolheads instead")]
-        [ObservableProperty]
-        ObservableCollection<OctoPrintPrinterStateToolheadInfo> extruders = new();
 
-        [JsonIgnore, XmlIgnore, Obsolete("Use base.HeatedBeds instead")]
-        [ObservableProperty]
-        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> heatedBeds = new();
-
-        [JsonIgnore, XmlIgnore, Obsolete("Use base.HeatedChambers instead")]
-        [ObservableProperty]
-        ObservableCollection<OctoPrintPrinterStateTemperatureInfo> heatedChambers = new();
         #endregion
 
         #region Models
@@ -267,307 +258,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Private
 
-        #region RestApi
-
-        [Obsolete("Use method from Core library instead")]
-        async Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
-            string filePath,
-            string location,
-            string path,
-            bool selectFile = false,
-            bool printFile = false,
-            int timeout = 100000
-            )
-        {
-            IRestApiRequestRespone? apiResponseResult = null;
-            if (!IsOnline) return apiResponseResult;
-
-            try
-            {
-                if (restClient is null)
-                {
-                    UpdateRestClientInstance();
-                }
-                CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, timeout));
-                RestRequest request = new($"/api/files/{location}");
-
-                request.AddHeader("X-Api-Key", ApiKey);
-
-                request.RequestFormat = DataFormat.Json;
-                request.Method = Method.Post;
-                request.AlwaysMultipartFormData = true;
-
-                //Multiform
-                request.AddHeader("Content-Type", "multipart/form-data");
-                request.AddFile("file", filePath, "application/octet-stream");
-                request.AddParameter("select", selectFile ? "true" : "false", ParameterType.GetOrPost);
-                request.AddParameter("print", printFile ? "true" : "false", ParameterType.GetOrPost);
-                request.AddParameter("path", path, ParameterType.GetOrPost);
-
-                Uri? fullUri = restClient?.BuildUri(request);
-                try
-                {
-                    if (restClient is not null)
-                    {
-                        RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
-                        apiResponseResult = ValidateResponse(response, fullUri);
-                    }
-                }
-                catch (TaskCanceledException texp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(texp, false));
-                    }
-                }
-                catch (HttpRequestException hexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(hexp, false));
-                    }
-                }
-                catch (TimeoutException toexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(toexp, false));
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-            return apiResponseResult;
-        }
-
-        [Obsolete("Use method from Core library instead")]
-        Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
-            string filePath,
-            OctoPrintFileLocation location,
-            string path,
-            bool selectFile = false,
-            bool printFile = false,
-            int timeout = 100000
-            ) => SendMultipartFormDataFileRestApiRequestAsyncOld(filePath, location.Location, path, selectFile, printFile, timeout);
-
-        [Obsolete("Use method from Core library instead")]
-        internal async Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
-            byte[] file,
-            string fileName,
-            string location,
-            string path = "",
-            bool selectFile = false,
-            bool printFile = false,
-            int timeout = 100000
-            )
-        {
-            IRestApiRequestRespone apiResponseResult = new RestApiRequestRespone();
-            if (!IsOnline) return apiResponseResult;
-
-            try
-            {
-                if (restClient is null)
-                {
-                    UpdateRestClientInstance();
-                }
-                CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, timeout));
-                RestRequest request = new($"/api/files/{location}");
-
-                request.AddHeader("X-Api-Key", ApiKey);
-
-                request.RequestFormat = DataFormat.Json;
-                request.Method = Method.Post;
-                request.AlwaysMultipartFormData = true;
-
-                //Multiform
-                request.AddHeader("Content-Type", "multipart/form-data");
-                request.AddFile("file", file, fileName, "application/octet-stream");
-                request.AddParameter("select", selectFile ? "true" : "false", ParameterType.GetOrPost);
-                request.AddParameter("print", printFile ? "true" : "false", ParameterType.GetOrPost);
-                request.AddParameter("path", path, ParameterType.GetOrPost);
-
-                Uri? fullUri = restClient?.BuildUri(request);
-                try
-                {
-                    if (restClient is not null)
-                    {
-                        RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
-                        apiResponseResult = ValidateResponse(response, fullUri);
-                    }
-                }
-                catch (TaskCanceledException texp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(texp, false));
-                    }
-                }
-                catch (HttpRequestException hexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(hexp, false));
-                    }
-                }
-                catch (TimeoutException toexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(toexp, false));
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-            return apiResponseResult;
-        }
-
-        [Obsolete("Use method from Core library instead")]
-        internal Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
-            byte[] file,
-            string fileName,
-            OctoPrintFileLocation location,
-            string path = "",
-            bool selectFile = false,
-            bool printFile = false,
-            int timeout = 100000
-            ) => SendMultipartFormDataFileRestApiRequestAsyncOld(file, fileName, location.Location, path, selectFile, printFile, timeout);
-
-
-        [Obsolete("Use method from Core library instead")]
-        internal async Task<IRestApiRequestRespone?> SendMultipartFormDataFolderRestApiRequestAsyncOld(
-            string folderName,
-            string location,
-            string path,
-            int timeout = 100000
-            )
-        {
-            IRestApiRequestRespone? apiResponseResult = new RestApiRequestRespone();
-            if (!IsOnline) return apiResponseResult;
-
-            try
-            {
-                if (restClient is null)
-                {
-                    UpdateRestClientInstance();
-                }
-                CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, timeout));
-                RestRequest request = new($"/api/files/{location}");
-
-                request.AddHeader("X-Api-Key", ApiKey);
-
-                request.RequestFormat = DataFormat.Json;
-                request.Method = Method.Post;
-                request.AlwaysMultipartFormData = true;
-
-                //Multiform
-                request.AddHeader("Content-Type", "multipart/form-data");
-                request.AddParameter("foldername", folderName, ParameterType.GetOrPost);
-                request.AddParameter("path", path, ParameterType.GetOrPost);
-
-                Uri? fullUri = restClient?.BuildUri(request);
-                try
-                {
-                    if (restClient is not null)
-                    {
-                        RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
-                        apiResponseResult = ValidateResponse(response, fullUri);
-                    }
-                }
-                catch (TaskCanceledException texp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(texp, false));
-                    }
-                }
-                catch (HttpRequestException hexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(hexp, false));
-                    }
-                }
-                catch (TimeoutException toexp)
-                {
-                    // Throws exception on timeout, not actually an error but indicates if the server is not reachable.
-                    if (!IsOnline)
-                    {
-                        OnError(new UnhandledExceptionEventArgs(toexp, false));
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-            return apiResponseResult;
-        }
-
-
-        [Obsolete("Use method from Core library instead")]
-        internal Task<IRestApiRequestRespone?> SendMultipartFormDataFolderRestApiRequestAsync(
-            string folderName,
-            OctoPrintFileLocation location,
-            string path,
-            int timeout = 100000
-            ) => SendMultipartFormDataFolderRestApiRequestAsyncOld(folderName, location.Location, path, timeout);
-        #endregion
-
         #region Download
-        [Obsolete("Check if can be replaced by base method")]
-        internal async Task<byte[]?> DownloadFileFromUriAsyncOld(string path, int timeout = 100000)
-        {
-            try
-            {
-                if (restClient is null)
-                {
-                    UpdateRestClientInstance();
-                }
-                RestRequest request = new(path);
-                request.AddHeader("X-Api-Key", ApiKey);
-
-                request.RequestFormat = DataFormat.Json;
-                request.Method = Method.Get;
-                request.Timeout = timeout;
-
-                Uri? fullUrl = restClient?.BuildUri(request);
-                CancellationTokenSource cts = new(timeout);
-                if (restClient is not null)
-                {
-                    byte[]? response = await restClient.DownloadDataAsync(request, cts.Token)
-                        .ConfigureAwait(false)
-                        ;
-
-                    return response;
-                }
-                else return null;
-                /*
-                // Workaround, because the RestClient returns bad requests
-                using WebClient client = new();
-                byte[] bytes = await client.DownloadDataTaskAsync(fullUrl);
-                return bytes;
-                */
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return null;
-            }
-        }
-
         public Task<byte[]?> DownloadFileFromUriAsync(string path)
             => DownloadFileFromUriAsync(path: path, authHeaders: AuthHeaders, urlSegments: null, timeout: 100000);
         public Task<byte[]?> DownloadFileFromUriAsync(string path, int timeout = 100000)
@@ -583,45 +274,34 @@ namespace AndreasReitberger.API.OctoPrint
                 {
                     return;
                 }
+                ConcurrentDictionary<int, IToolhead> toolheads = [];
+                if (newState.Temperature?.Tool0 is not null) toolheads.TryAdd(0, newState.Temperature.Tool0);
+                if (newState.Temperature?.Tool1 is not null) toolheads.TryAdd(1, newState.Temperature.Tool1);
+                Toolheads = toolheads;
+                /*
                 List<OctoPrintPrinterStateToolheadInfo> extruders = [];
                 if (newState.Temperature?.Tool0 is not null) extruders.Add(newState.Temperature.Tool0);
                 if (newState.Temperature?.Tool1 is not null) extruders.Add(newState.Temperature.Tool1);
                 Extruders = [.. extruders];
+                */
 
+                ConcurrentDictionary<int, IHeaterComponent> heatedBeds = [];
+                if (newState.Temperature?.Bed is not null) heatedBeds.TryAdd(0, newState.Temperature.Bed);
+                HeatedBeds = heatedBeds;
+                /*
                 List<OctoPrintPrinterStateTemperatureInfo> heatedBeds = [];
                 if (newState.Temperature?.Bed is not null) heatedBeds.Add(newState.Temperature.Bed);
                 HeatedBeds = [..  heatedBeds];
+                */
 
+                ConcurrentDictionary<int, IHeaterComponent> heatedChambers = [];
+                if (newState.Temperature?.Chamber is not null) heatedChambers.TryAdd(0, newState.Temperature.Chamber);
+                HeatedChambers = heatedChambers;
+                /*
                 List<OctoPrintPrinterStateTemperatureInfo> heatedChambers = [];
                 if (newState.Temperature?.Chamber is not null) heatedChambers.Add(newState.Temperature.Chamber);
                 HeatedChambers = [.. heatedChambers];
-
-                /*
-                Extruders = newState.Temperature?.Tool1 is null ? new()
-                {
-                    newState.Temperature?.Tool0,
-                } :
-                new()
-                {
-                    newState.Temperature?.Tool0,
-                    newState.Temperature?.Tool1,
-                };
-                */
-
-                /*
-                HeatedBeds = newState.Temperature?.Bed is not null ? new()
-                {
-                    newState.Temperature?.Bed,
-                } :
-                new();
-                */
-                /*
-                HeatedChambers = newState.Temperature?.Chamber is not null ? new()
-                {
-                    newState.Temperature?.Chamber,
-                } :
-                new();
-                */
+                */             
             }
             catch (Exception exc)
             {
@@ -1106,39 +786,7 @@ namespace AndreasReitberger.API.OctoPrint
                 return false;
             }
         }
-        [Obsolete]
-        public async Task<bool> JogPrinterAsync(double x, double y, double z, int speed = -1, bool absolute = false)
-        {
-            try
-            {
-                string command = "printer/printhead";
-                object parameter = new { command = "jog", x = x, y = y, z = z, absolute = absolute };
 
-                string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
-                       requestTargetUri: targetUri,
-                       method: Method.Post,
-                       command: command,
-                       jsonObject: parameter,
-                       authHeaders: AuthHeaders,
-                       //urlSegments: urlSegments,
-                       cts: default
-                       )
-                    .ConfigureAwait(false);
-                // no content for this result
-                /*
-                OctoPrintApiRequestResponse result =
-                    await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
-                    .ConfigureAwait(false);
-                */
-                return result?.Succeeded ?? false;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return false;
-            }
-        }
         public async Task<bool> HomePrinterAsync(bool x, bool y, bool z)
         {
             try
