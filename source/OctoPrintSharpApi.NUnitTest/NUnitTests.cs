@@ -279,7 +279,7 @@ namespace OctoPrintSharpApi.NUnitTest
                     if (_server.ActivePrinter == null)
                         await _server.SetPrinterActiveAsync(0, true);
 
-                    ObservableCollection<IPrinter3d> printers = await _server.GetAllPrinterProfilesAsync();
+                    List<IPrinter3d> printers = await _server.GetAllPrinterProfilesAsync();
                     Assert.That(printers != null && printers.Count > 0);
                 }
                 else

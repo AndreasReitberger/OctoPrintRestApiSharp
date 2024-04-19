@@ -592,6 +592,11 @@ namespace AndreasReitberger.API.OctoPrint
                 return null;
             }
         }
+
+        public Task<byte[]?> DownloadFileFromUriAsync(string path)
+            => DownloadFileFromUriAsync(path: path, authHeaders: AuthHeaders, urlSegments: null, timeout: 100000);
+        public Task<byte[]?> DownloadFileFromUriAsync(string path, int timeout = 100000)
+            => DownloadFileFromUriAsync(path: path, authHeaders: AuthHeaders, urlSegments: null, timeout: timeout);
         #endregion
 
         #region StateUpdates
