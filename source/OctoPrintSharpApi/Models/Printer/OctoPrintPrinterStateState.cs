@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintPrinterStateState
+    public partial class OctoPrintPrinterStateState : ObservableObject
     {
         #region Properties
-        [JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
-        public string Text { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
+        string text = string.Empty;
 
-        [JsonProperty("flags", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, bool> Flags { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("flags", NullValueHandling = NullValueHandling.Ignore)]
+        Dictionary<string, bool> flags = [];
         #endregion
 
         #region Overrides

@@ -2,26 +2,32 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models.Printer
 {
-    public partial class OctoPrintPrinterCustomBox
+    public partial class OctoPrintPrinterCustomBox : ObservableObject
     {
         #region Properties
-        [JsonProperty("x_max", NullValueHandling = NullValueHandling.Ignore)]
-        public long? XMax { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("x_max", NullValueHandling = NullValueHandling.Ignore)]
+        long? xMax;
 
-        [JsonProperty("x_min", NullValueHandling = NullValueHandling.Ignore)]
-        public long? XMin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("x_min", NullValueHandling = NullValueHandling.Ignore)]
+        long? xMin;
 
-        [JsonProperty("y_max", NullValueHandling = NullValueHandling.Ignore)]
-        public long? YMax { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("y_max", NullValueHandling = NullValueHandling.Ignore)]
+        long? yMax;
 
-        [JsonProperty("y_min", NullValueHandling = NullValueHandling.Ignore)]
-        public long? YMin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("y_min", NullValueHandling = NullValueHandling.Ignore)]
+        long? yMin;
 
-        [JsonProperty("z_max", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ZMax { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("z_max", NullValueHandling = NullValueHandling.Ignore)]
+        long? zMax;
 
-        [JsonProperty("z_min", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ZMin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("z_min", NullValueHandling = NullValueHandling.Ignore)]
+        long? zMin;
         #endregion
 
         #region Overrides

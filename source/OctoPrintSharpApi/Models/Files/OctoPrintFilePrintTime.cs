@@ -2,11 +2,12 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFilePrintTime
+    public partial class OctoPrintFilePrintTime : ObservableObject
     {
         #region Properties
-        [JsonProperty("_default")]
-        public double Default { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("_default")]
+        double defaultValue;
         #endregion
 
         #region Overrides

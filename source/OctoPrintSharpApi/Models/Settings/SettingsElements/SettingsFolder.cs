@@ -2,23 +2,28 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsFolder
+    public partial class SettingsFolder : ObservableObject
     {
         #region Properties
-        [JsonProperty("logs", NullValueHandling = NullValueHandling.Ignore)]
-        public string Logs { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("logs", NullValueHandling = NullValueHandling.Ignore)]
+        string logs = string.Empty;
 
-        [JsonProperty("timelapse", NullValueHandling = NullValueHandling.Ignore)]
-        public string Timelapse { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timelapse", NullValueHandling = NullValueHandling.Ignore)]
+        string timelapse = string.Empty;
 
-        [JsonProperty("timelapseTmp", NullValueHandling = NullValueHandling.Ignore)]
-        public string TimelapseTmp { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("timelapseTmp", NullValueHandling = NullValueHandling.Ignore)]
+        string timelapseTmp = string.Empty;
 
-        [JsonProperty("uploads", NullValueHandling = NullValueHandling.Ignore)]
-        public string Uploads { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("uploads", NullValueHandling = NullValueHandling.Ignore)]
+        string uploads = string.Empty;
 
-        [JsonProperty("watched", NullValueHandling = NullValueHandling.Ignore)]
-        public string Watched { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("watched", NullValueHandling = NullValueHandling.Ignore)]
+        string watched = string.Empty;
         #endregion
 
         #region Overrides

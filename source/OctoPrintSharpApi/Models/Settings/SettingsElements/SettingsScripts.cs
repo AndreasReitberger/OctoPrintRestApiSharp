@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsScripts
+    public partial class SettingsScripts : ObservableObject
     {
         #region Properties
-        [JsonProperty("gcode", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, string> Gcode { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("gcode", NullValueHandling = NullValueHandling.Ignore)]
+        Dictionary<string, string> gcode = [];
         #endregion
 
         #region Overrides

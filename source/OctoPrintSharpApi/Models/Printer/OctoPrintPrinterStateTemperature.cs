@@ -3,23 +3,28 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintPrinterStateTemperature
+    public partial class OctoPrintPrinterStateTemperature : ObservableObject
     {
         #region Properties
-        [JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateTemperatureInfo Bed { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintPrinterStateTemperatureInfo? bed;
 
-        [JsonProperty("chamber", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateTemperatureInfo Chamber { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("chamber", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintPrinterStateTemperatureInfo? chamber;
 
-        [JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
-        public List<OctoPrintPrinterStateHistory> History { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
+        List<OctoPrintPrinterStateHistory> history = [];
 
-        [JsonProperty("tool0", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateToolheadInfo Tool0 { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("tool0", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintPrinterStateToolheadInfo? tool0;
 
-        [JsonProperty("tool1", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateToolheadInfo Tool1 { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("tool1", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintPrinterStateToolheadInfo? tool1;
         #endregion
 
         #region Overrides

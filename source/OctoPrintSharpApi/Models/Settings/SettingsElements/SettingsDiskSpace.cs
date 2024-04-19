@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsDiskSpace
+    public partial class SettingsDiskSpace : ObservableObject
     {
         #region Properties
-        [JsonProperty("critical", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Critical { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("critical", NullValueHandling = NullValueHandling.Ignore)]
+        long? critical;
 
-        [JsonProperty("warning", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Warning { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("warning", NullValueHandling = NullValueHandling.Ignore)]
+        long? warning;
         #endregion
 
         #region Overrides

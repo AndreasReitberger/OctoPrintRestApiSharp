@@ -2,11 +2,12 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsPrinter
+    public partial class SettingsPrinter : ObservableObject
     {
         #region Properties
-        [JsonProperty("defaultExtrusionLength", NullValueHandling = NullValueHandling.Ignore)]
-        public long? DefaultExtrusionLength { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("defaultExtrusionLength", NullValueHandling = NullValueHandling.Ignore)]
+        long? defaultExtrusionLength;
         #endregion
 
         #region Overrides

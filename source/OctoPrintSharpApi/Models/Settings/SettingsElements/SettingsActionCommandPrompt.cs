@@ -2,20 +2,24 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsActionCommandPrompt
+    public partial class SettingsActionCommandPrompt : ObservableObject
     {
         #region Properties
-        [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
-        public string Command { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
+        string command = string.Empty;
 
-        [JsonProperty("enable", NullValueHandling = NullValueHandling.Ignore)]
-        public string Enable { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("enable", NullValueHandling = NullValueHandling.Ignore)]
+        string enable = string.Empty;
 
-        [JsonProperty("enable_emergency_sending", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? EnableEmergencySending { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("enable_emergency_sending", NullValueHandling = NullValueHandling.Ignore)]
+        bool? enableEmergencySending;
 
-        [JsonProperty("enable_signal_support", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? EnableSignalSupport { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("enable_signal_support", NullValueHandling = NullValueHandling.Ignore)]
+        bool? enableSignalSupport;
         #endregion
 
         #region Overrides

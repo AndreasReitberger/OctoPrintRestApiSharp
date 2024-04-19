@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintConnectionSettingsPrinterProfile
+    public partial class OctoPrintConnectionSettingsPrinterProfile : ObservableObject
     {
         #region Properties
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("id")]
+        string id = string.Empty;
 
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name")]
+        string name = string.Empty;
         #endregion
 
         #region Overrides

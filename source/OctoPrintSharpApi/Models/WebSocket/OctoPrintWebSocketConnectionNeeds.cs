@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintWebSocketConnectionNeeds
+    public partial class OctoPrintWebSocketConnectionNeeds : ObservableObject
     {
         #region Properties
-        [JsonProperty("role")]
-        public List<string> Role { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("role")]
+        List<string> role = [];
         #endregion
 
         #region Overrides

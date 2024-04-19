@@ -2,17 +2,20 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsSlic3R
+    public partial class SettingsSlic3R : ObservableObject
     {
         #region Properties
-        [JsonProperty("debug_logging", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? DebugLogging { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("debug_logging", NullValueHandling = NullValueHandling.Ignore)]
+        public bool? debugLogging;
 
-        [JsonProperty("default_profile")]
-        public object DefaultProfile { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("default_profile")]
+        public object? defaultProfile;
 
-        [JsonProperty("slic3r_engine")]
-        public object Slic3REngine { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("slic3r_engine")]
+        public object? slic3REngine;
         #endregion
 
         #region Overrides

@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintChamberState
+    public partial class OctoPrintChamberState : ObservableObject
     {
         #region Properties
-        [JsonProperty("chamber", NullValueHandling = NullValueHandling.Ignore)]
-        public OctoPrintPrinterStateTemperatureInfo Chamber { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("chamber", NullValueHandling = NullValueHandling.Ignore)]
+        OctoPrintPrinterStateTemperatureInfo? chamber;
 
-        [JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
-        public List<OctoPrintChamberStateHistory> History { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
+        List<OctoPrintChamberStateHistory> history = [];
         #endregion
 
         #region Overrides

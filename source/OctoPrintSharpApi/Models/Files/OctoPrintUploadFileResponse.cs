@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintUploadFileResponse
+    public partial class OctoPrintUploadFileResponse : ObservableObject
     {
         #region Properties
-        [JsonProperty("done", NullValueHandling = NullValueHandling.Ignore)]
-        public bool Done { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("done", NullValueHandling = NullValueHandling.Ignore)]
+        bool done;
 
-        [JsonProperty("files", NullValueHandling = NullValueHandling.Ignore)]
-        public Dictionary<string, OctoPrintFile> Files { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("files", NullValueHandling = NullValueHandling.Ignore)]
+        Dictionary<string, OctoPrintFile> files = [];
         #endregion
 
         #region Overrides

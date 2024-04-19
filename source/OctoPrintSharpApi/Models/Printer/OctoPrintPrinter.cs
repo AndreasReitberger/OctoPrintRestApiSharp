@@ -15,52 +15,52 @@ namespace AndreasReitberger.API.OctoPrint.Models
         Guid id;
 
         [ObservableProperty]
-        [JsonProperty("axes")]
-        OctoPrintPrinterAxes axes;
+        [property: JsonProperty("axes")]
+        OctoPrintPrinterAxes? axes;
 
         [ObservableProperty]
-        [JsonProperty("color")]
-        string color;
+        [property: JsonProperty("color")]
+        string color = string.Empty;
 
         [ObservableProperty]
-        [JsonProperty("current")]
+        [property: JsonProperty("current")]
         bool current;
 
         [ObservableProperty]
-        [JsonProperty("default")]
+        [property: JsonProperty("default")]
         bool defaultDefault;
 
         [ObservableProperty]
-        [JsonProperty("extruder")]
-        OctoPrintPrinterExtruder extruder;
+        [property: JsonProperty("extruder")]
+        OctoPrintPrinterExtruder? extruder;
 
         [ObservableProperty]
-        [JsonProperty("heatedBed")]
+        [property: JsonProperty("heatedBed")]
         bool hasHeatedBed;
 
         [ObservableProperty]
-        [JsonProperty("heatedChamber")]
+        [property: JsonProperty("heatedChamber")]
         bool hasHeatedChamber;
 
         [ObservableProperty]
-        [JsonProperty("id")]
-        string slug;
+        [property: JsonProperty("id")]
+        string slug = string.Empty;
 
         [ObservableProperty]
-        [JsonProperty("model")]
-        string model;
+        [property: JsonProperty("model")]
+        string model = string.Empty ;
 
         [ObservableProperty]
-        [JsonProperty("name")]
-        string name;
+        [property: JsonProperty("name")]
+        string name = string.Empty;
 
         [ObservableProperty]
-        [JsonProperty("resource")]
-        Uri resource;
+        [property: JsonProperty("resource")]
+        Uri? resource;
 
         [ObservableProperty]
-        [JsonProperty("volume")]
-        OctoPrintPrinterVolume volume;
+        [property: JsonProperty("volume")]
+        OctoPrintPrinterVolume? volume;
         #endregion
 
         #region Interface, unused
@@ -107,15 +107,15 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         [ObservableProperty]
         [JsonIgnore]
-        string activeJobName;
+        string activeJobName = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]
-        string activeJobId;
+        string activeJobId = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]
-        string activeJobState;
+        string activeJobState = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]
@@ -192,21 +192,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
         [ObservableProperty]
         [property: JsonIgnore]
         [JsonIgnore]
-        byte[] currentPrintImage = Array.Empty<byte>();
+        byte[] currentPrintImage = [];
 
         #endregion
 
-
         #region Methods
 
-        public Task<bool> HomeAsync(IPrint3dServerClient client, bool x, bool y, bool z) => client?.HomeAsync(x, y, z);
+        public Task<bool> HomeAsync(IPrint3dServerClient client, bool x, bool y, bool z) => client.HomeAsync(x, y, z);
 
         #endregion
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not OctoPrintPrinter item)
                 return false;

@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFileStatistics
+    public partial class OctoPrintFileStatistics : ObservableObject
     {
         #region Properties
-        [JsonProperty("averagePrintTime")]
-        public OctoPrintFilePrintTime AveragePrintTime { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("averagePrintTime")]
+        OctoPrintFilePrintTime? averagePrintTime;
 
-        [JsonProperty("lastPrintTime")]
-        public OctoPrintFilePrintTime LastPrintTime { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("lastPrintTime")]
+        OctoPrintFilePrintTime? lastPrintTime;
         #endregion
 
         #region Overrides

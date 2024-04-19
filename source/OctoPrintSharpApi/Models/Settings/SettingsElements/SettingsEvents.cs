@@ -2,38 +2,48 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsEvents
+    public partial class SettingsEvents : ObservableObject
     {
         #region Properties
-        [JsonProperty("commerror", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Commerror { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("commerror", NullValueHandling = NullValueHandling.Ignore)]
+        bool? commerror;
 
-        [JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Plugin { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
+        bool? plugin;
 
-        [JsonProperty("pong", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Pong { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pong", NullValueHandling = NullValueHandling.Ignore)]
+        bool? pong;
 
-        [JsonProperty("printer", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Printer { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printer", NullValueHandling = NullValueHandling.Ignore)]
+        bool? printer;
 
-        [JsonProperty("printer_safety_check", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? PrinterSafetyCheck { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printer_safety_check", NullValueHandling = NullValueHandling.Ignore)]
+        bool? printerSafetyCheck;
 
-        [JsonProperty("printjob", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Printjob { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printjob", NullValueHandling = NullValueHandling.Ignore)]
+        bool? printjob;
 
-        [JsonProperty("slicing", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Slicing { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("slicing", NullValueHandling = NullValueHandling.Ignore)]
+        bool? slicing;
 
-        [JsonProperty("startup", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Startup { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("startup", NullValueHandling = NullValueHandling.Ignore)]
+        bool? startup;
 
-        [JsonProperty("throttled", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Throttled { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("throttled", NullValueHandling = NullValueHandling.Ignore)]
+        bool? throttled;
 
-        [JsonProperty("update", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? Update { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("update", NullValueHandling = NullValueHandling.Ignore)]
+        bool? update;
         #endregion
 
         #region Overrides

@@ -1,27 +1,29 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsServer
+    public partial class SettingsServer : ObservableObject
     {
         #region Properties
-        [JsonProperty("allowFraming", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? AllowFraming { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("allowFraming", NullValueHandling = NullValueHandling.Ignore)]
+        bool? allowFraming;
 
-        [JsonProperty("commands", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsCommands Commands { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("commands", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsCommands? commands;
 
-        [JsonProperty("diskspace", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsDiskSpace Diskspace { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("diskspace", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsDiskSpace? diskspace;
 
-        [JsonProperty("onlineCheck", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsOnlineCheck OnlineCheck { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("onlineCheck", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsOnlineCheck? onlineCheck;
 
-        [JsonProperty("pluginBlacklist", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsPluginBlacklist PluginBlacklist { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pluginBlacklist", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsPluginBlacklist? pluginBlacklist;
         #endregion
 
         #region Overrides

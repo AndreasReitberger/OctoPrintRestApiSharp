@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsPiSupport
+    public partial class SettingsPiSupport : ObservableObject
     {
         #region Properties
-        [JsonProperty("vcgencmd_throttle_check_command", NullValueHandling = NullValueHandling.Ignore)]
-        public string VcgencmdThrottleCheckCommand { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("vcgencmd_throttle_check_command", NullValueHandling = NullValueHandling.Ignore)]
+        string vcgencmdThrottleCheckCommand = string.Empty;
 
-        [JsonProperty("vcgencmd_throttle_check_enabled", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? VcgencmdThrottleCheckEnabled { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("vcgencmd_throttle_check_enabled", NullValueHandling = NullValueHandling.Ignore)]
+        bool? vcgencmdThrottleCheckEnabled;
         #endregion
 
         #region Overrides

@@ -3,29 +3,36 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsAnnouncements
+    public partial class SettingsAnnouncements : ObservableObject
     {
         #region Properties
-        [JsonProperty("channel_order", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> ChannelOrder { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("channel_order", NullValueHandling = NullValueHandling.Ignore)]
+        List<string> channelOrder = new();
 
-        [JsonProperty("channels", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsChannels Channels { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("channels", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsChannels? channels;
 
-        [JsonProperty("display_limit", NullValueHandling = NullValueHandling.Ignore)]
-        public long? DisplayLimit { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("display_limit", NullValueHandling = NullValueHandling.Ignore)]
+        long? displayLimit;
 
-        [JsonProperty("enabled_channels", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> EnabledChannels { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("enabled_channels", NullValueHandling = NullValueHandling.Ignore)]
+        List<string> enabledChannels = new();
 
-        [JsonProperty("forced_channels", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> ForcedChannels { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("forced_channels", NullValueHandling = NullValueHandling.Ignore)]
+        List<string> forcedChannels = new();
 
-        [JsonProperty("summary_limit", NullValueHandling = NullValueHandling.Ignore)]
-        public long? SummaryLimit { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("summary_limit", NullValueHandling = NullValueHandling.Ignore)]
+        long? summaryLimit;
 
-        [JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Ttl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
+        long? ttl;
         #endregion
 
         #region Overrides

@@ -3,44 +3,56 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsFeature
+    public partial class SettingsFeature : ObservableObject
     {
         #region Properties
-        [JsonProperty("autoUppercaseBlacklist", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> AutoUppercaseBlacklist { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("autoUppercaseBlacklist", NullValueHandling = NullValueHandling.Ignore)]
+        List<string> autoUppercaseBlacklist = [];
 
-        [JsonProperty("g90InfluencesExtruder", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? G90InfluencesExtruder { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("g90InfluencesExtruder", NullValueHandling = NullValueHandling.Ignore)]
+        bool? g90InfluencesExtruder;
 
-        [JsonProperty("gcodeViewer", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? GcodeViewer { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("gcodeViewer", NullValueHandling = NullValueHandling.Ignore)]
+        bool? gcodeViewer;
 
-        [JsonProperty("keyboardControl", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? KeyboardControl { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("keyboardControl", NullValueHandling = NullValueHandling.Ignore)]
+        bool? keyboardControl;
 
-        [JsonProperty("mobileSizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
-        public long? MobileSizeThreshold { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("mobileSizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
+        long? mobileSizeThreshold;
 
-        [JsonProperty("modelSizeDetection", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? ModelSizeDetection { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("modelSizeDetection", NullValueHandling = NullValueHandling.Ignore)]
+        bool? modelSizeDetection;
 
-        [JsonProperty("pollWatched", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? PollWatched { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("pollWatched", NullValueHandling = NullValueHandling.Ignore)]
+        bool? pollWatched;
 
-        [JsonProperty("printCancelConfirmation", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? PrintCancelConfirmation { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printCancelConfirmation", NullValueHandling = NullValueHandling.Ignore)]
+        bool? printCancelConfirmation;
 
-        [JsonProperty("printStartConfirmation", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? PrintStartConfirmation { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("printStartConfirmation", NullValueHandling = NullValueHandling.Ignore)]
+        bool? printStartConfirmation;
 
-        [JsonProperty("sdSupport", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? SdSupport { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sdSupport", NullValueHandling = NullValueHandling.Ignore)]
+        bool? sdSupport;
 
-        [JsonProperty("sizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
-        public long? SizeThreshold { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
+        long? sizeThreshold;
 
-        [JsonProperty("temperatureGraph", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? TemperatureGraph { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("temperatureGraph", NullValueHandling = NullValueHandling.Ignore)]
+        bool? temperatureGraph;
         #endregion
 
         #region Overrides

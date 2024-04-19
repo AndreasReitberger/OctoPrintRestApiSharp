@@ -3,14 +3,16 @@ using Newtonsoft.Json;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFileActionRespondRefs
+    public partial class OctoPrintFileActionRespondRefs : ObservableObject
     {
         #region Properties
-        [JsonProperty("download", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Download { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("download", NullValueHandling = NullValueHandling.Ignore)]
+        Uri? download;
 
-        [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Resource { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
+        Uri? resource;
         #endregion
 
         #region Overrides

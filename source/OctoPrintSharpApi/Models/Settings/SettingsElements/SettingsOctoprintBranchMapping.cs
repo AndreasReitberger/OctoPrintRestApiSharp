@@ -3,17 +3,20 @@ using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsOctoprintBranchMapping
+    public partial class SettingsOctoprintBranchMapping : ObservableObject
     {
         #region Properties
-        [JsonProperty("branch", NullValueHandling = NullValueHandling.Ignore)]
-        public string Branch { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("branch", NullValueHandling = NullValueHandling.Ignore)]
+        string branch = string.Empty;
 
-        [JsonProperty("commitish", NullValueHandling = NullValueHandling.Ignore)]
-        public List<string> Commitish { get; set; } = new();
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("commitish", NullValueHandling = NullValueHandling.Ignore)]
+        List<string> commitish = new();
 
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        string name = string.Empty;
         #endregion
 
         #region Overrides

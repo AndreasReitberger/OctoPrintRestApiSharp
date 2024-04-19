@@ -2,20 +2,24 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsTemperature
+    public partial class SettingsTemperature : ObservableObject
     {
         #region Properties
-        [JsonProperty("cutoff", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Cutoff { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("cutoff", NullValueHandling = NullValueHandling.Ignore)]
+        long? cutoff;
 
-        [JsonProperty("profiles", NullValueHandling = NullValueHandling.Ignore)]
-        public SettingsProfile[] Profiles { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("profiles", NullValueHandling = NullValueHandling.Ignore)]
+        SettingsProfile[] profiles = [];
 
-        [JsonProperty("sendAutomatically", NullValueHandling = NullValueHandling.Ignore)]
-        public bool? SendAutomatically { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sendAutomatically", NullValueHandling = NullValueHandling.Ignore)]
+        bool? sendAutomatically;
 
-        [JsonProperty("sendAutomaticallyAfter", NullValueHandling = NullValueHandling.Ignore)]
-        public long? SendAutomaticallyAfter { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("sendAutomaticallyAfter", NullValueHandling = NullValueHandling.Ignore)]
+        long? sendAutomaticallyAfter;
         #endregion
 
         #region Overrides

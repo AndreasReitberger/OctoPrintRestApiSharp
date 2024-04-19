@@ -3,14 +3,16 @@ using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintFileChildRefs
+    public partial class OctoPrintFileChildRefs : ObservableObject
     {
         #region Properties
-        [JsonProperty("download")]
-        public Uri Download { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("download")]
+        Uri? download;
 
-        [JsonProperty("resource")]
-        public Uri Resource { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("resource")]
+        Uri? resource;
         #endregion
 
         #region Overrides

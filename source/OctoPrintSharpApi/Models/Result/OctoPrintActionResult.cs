@@ -2,11 +2,12 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintActionResult
+    public partial class OctoPrintActionResult : ObservableObject
     {
         #region Properties
-        [JsonProperty("ok")]
-        public bool Ok { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("ok")]
+        bool ok;
         #endregion
 
         #region Overrides

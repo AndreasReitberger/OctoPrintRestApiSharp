@@ -2,14 +2,16 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintPrinterAxesAttribute
+    public partial class OctoPrintPrinterAxesAttribute : ObservableObject
     {
         #region Properties
-        [JsonProperty("inverted")]
-        public bool Inverted { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("inverted")]
+        bool inverted;
 
-        [JsonProperty("speed")]
-        public long Speed { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("speed")]
+        long speed;
         #endregion
 
         #region Overrides

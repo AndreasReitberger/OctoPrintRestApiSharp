@@ -14,14 +14,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
         [property: JsonIgnore]
         Guid id;
 
-        [JsonProperty("actual", NullValueHandling = NullValueHandling.Ignore)]
-        public double? TempRead { get; set; } = 0;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("actual", NullValueHandling = NullValueHandling.Ignore)]
+        double? tempRead = 0;
 
-        [JsonProperty("target")]
-        public double? TempSet { get; set; } = 0;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("target")]
+        double? tempSet = 0;
 
-        [JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
-        public double? Offset { get; set; } = 0;
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
+        double? offset = 0;
 
         [JsonIgnore]
         public OctoPrintCurrentToolState State { get => GetCurrentState(); }
@@ -31,7 +34,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Interface, unused
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
@@ -65,7 +68,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
                     return OctoPrintCurrentToolState.Ready;
             }
         }
-        public Task<bool> SetTemperatureAsync(IPrint3dServerClient client, string command, object data) => client?.SetExtruderTemperatureAsync(command, data);
+        public Task<bool> SetTemperatureAsync(IPrint3dServerClient client, string command, object? data) => client.SetExtruderTemperatureAsync(command, data);
         #endregion
 
         #region Overrides

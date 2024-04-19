@@ -3,26 +3,32 @@ using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class SettingsBlog
+    public partial class SettingsBlog : ObservableObject
     {
         #region Properties
-        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-        public string Description { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+        string description = string.Empty;
 
-        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        public string Name { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        string name = string.Empty;
 
-        [JsonProperty("priority", NullValueHandling = NullValueHandling.Ignore)]
-        public long? Priority { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("priority", NullValueHandling = NullValueHandling.Ignore)]
+        long? priority;
 
-        [JsonProperty("read_until", NullValueHandling = NullValueHandling.Ignore)]
-        public long? ReadUntil { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("read_until", NullValueHandling = NullValueHandling.Ignore)]
+        long? readUntil;
 
-        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-        public string Type { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+        string type = string.Empty;
 
-        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
-        public Uri Url { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
+        Uri? url;
         #endregion
 
         #region Overrides

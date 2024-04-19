@@ -3,17 +3,20 @@ using Newtonsoft.Json;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintJobInfo
+    public partial class OctoPrintJobInfo : ObservableObject
     {
         #region Properties
-        [JsonProperty("job")]
-        public OctoPrintJobInfoJob Job { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("job")]
+        OctoPrintJobInfoJob? job;
 
-        [JsonProperty("progress")]
-        public OctoPrintJobInfoProgress Progress { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("progress")]
+        OctoPrintJobInfoProgress? progress;
 
-        [JsonProperty("state")]
-        public string State { get; set; }
+        [ObservableProperty, JsonIgnore]
+        [property: JsonProperty("state")]
+        string state = string.Empty;
         #endregion
 
         #region Static
