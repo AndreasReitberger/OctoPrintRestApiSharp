@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintModelGroupsChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public ObservableCollection<string> NewModelGroups { get; set; } = new();
+        public ObservableCollection<string> NewModelGroups { get; set; } = [];
         #endregion
 
         #region Overrides

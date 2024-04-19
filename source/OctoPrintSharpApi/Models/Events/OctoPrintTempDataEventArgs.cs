@@ -5,7 +5,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintTempDataEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public object TemperatureData { get; set; }
+        public object? TemperatureData;
         #endregion
 
         #region Overrides

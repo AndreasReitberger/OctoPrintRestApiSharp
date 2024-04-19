@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintActivePrintInfosChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public ObservableCollection<object> NewActivePrintInfos { get; set; } = new ObservableCollection<object>();
+        public ObservableCollection<object> NewActivePrintInfos { get; set; } = [];
         #endregion
 
         #region Overrides

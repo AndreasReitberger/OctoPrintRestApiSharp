@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AndreasReitberger.API.Print3dServer.Core.Events;
 using Newtonsoft.Json;
 using System;
 
@@ -13,7 +13,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         public bool Succeeded { get; set; } = false;
         public bool HasAuthenticationError { get; set; } = false;
 
-        public OctoPrintRestEventArgs EventArgs { get; set; }
+        public RestEventArgs? EventArgs { get; set; }
         #endregion
 
         #region Overrides

@@ -8,11 +8,11 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Properties
         [ObservableProperty, JsonIgnore]
         [property: JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
-        List<object> actions = new();
+        List<object> actions = [];
 
         [ObservableProperty, JsonIgnore]
         [property: JsonProperty("events")]
-        object events;
+        object? events;
         #endregion
 
         #region Overrides

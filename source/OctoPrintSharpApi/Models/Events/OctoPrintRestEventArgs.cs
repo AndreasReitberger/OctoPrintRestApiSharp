@@ -3,13 +3,14 @@ using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintRestEventArgs : EventArgs
+    [Obsolete("Use RestEventArgs instead")]
+    internal class OctoPrintRestEventArgs : EventArgs
     {
         #region Properties
-        public string Message { get; set; }
-        public string Status { get; set; }
-        public Uri Uri { get; set; }
-        public Exception Exception { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public Uri? Uri { get; set; }
+        public Exception? Exception { get; set; }
         #endregion
 
         #region Overrides

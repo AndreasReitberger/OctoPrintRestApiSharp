@@ -14,7 +14,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Interface, unused
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonIgnore]

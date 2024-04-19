@@ -2,23 +2,23 @@
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintFileLocation
+    public partial class OctoPrintFileLocation : ObservableObject
     {
         #region Static
-        public static List<OctoPrintFileLocation> GetList()
-        {
-            return new List<OctoPrintFileLocation>
-            {
-                new OctoPrintFileLocation() { Location = "local", Icon = "\U000f02ca" },
-                new OctoPrintFileLocation() { Location = "sdcard", Icon = "\U000f07dc" }
-            };
-        }
+        public static List<OctoPrintFileLocation> GetList() => 
+        [
+            new() { Location = "local", Icon = "\U000f02ca" },
+            new() { Location = "sdcard", Icon = "\U000f07dc" }
+        ];  
 
         #endregion
 
         #region Properties
-        public string Location { get; set; }
-        public string Icon { get; set; }
+        [ObservableProperty]
+        string location = string.Empty;
+
+        [ObservableProperty]
+        string icon = string.Empty;
         #endregion
 
         #region Constructor

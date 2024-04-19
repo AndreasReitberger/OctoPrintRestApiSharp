@@ -27,8 +27,8 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintFiles models = await GetFilesAsync(location, path, recursive).ConfigureAwait(false);
-                if (models != null)
+                OctoPrintFiles? models = await GetFilesAsync(location, path, recursive).ConfigureAwait(false);
+                if (models is not null)
                 {
                     //return IterateOctoPrintFileStack(models.Children ?? models.Files);
                     return IterateOctoPrintFileStack(models?.Children?.Count > 0 ? models?.Children : models?.Files);
@@ -86,14 +86,13 @@ namespace AndreasReitberger.API.OctoPrint
         }
         public Task RefreshFilesAsync(OctoPrintFileLocations Location) => RefreshFilesAsync(Location.ToString());
 
-        public async Task<OctoPrintFile> GetFileAsync(string location, string filename)
+        public async Task<OctoPrintFile?> GetFileAsync(string location, string filename)
         {
             try
             {
                 string command = string.Format("files/{0}/{1}", location, filename);
-
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -108,7 +107,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFile response = JsonConvert.DeserializeObject<OctoPrintFile>(result.Result);
+                OctoPrintFile? response = GetObjectFromJson<OctoPrintFile>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -126,7 +125,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "select", print = startPrint ? "true" : "false" };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -141,7 +140,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return string.IsNullOrEmpty(result.Result);
+                return string.IsNullOrEmpty(result?.Result);
             }
             catch (Exception exc)
             {
@@ -160,8 +159,8 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "select", print = startPrint ? "true" : "false" };
 
                 var result = await sendRestAPIRequestAsync(command, Method.Post, parameter);
-                var response = JsonConvert.DeserializeObject<OctoPrintFileActionRespond>(result);
-                return result.Succeeded;
+                var response = GetObjectFromJson<OctoPrintFileActionRespond>(result);
+                return result?.Succeeded ?? false;
                 
             }
             catch (Exception exc)
@@ -184,7 +183,7 @@ namespace AndreasReitberger.API.OctoPrint
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -198,8 +197,8 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Copy, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFileActionRespond response = JsonConvert.DeserializeObject<OctoPrintFileActionRespond>(result.Result);
-                return result.Succeeded;
+                OctoPrintFileActionRespond? response = GetObjectFromJson<OctoPrintFileActionRespond>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -220,7 +219,7 @@ namespace AndreasReitberger.API.OctoPrint
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -234,8 +233,8 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFileActionRespond response = JsonConvert.DeserializeObject<OctoPrintFileActionRespond>(result.Result);
-                return result.Succeeded;
+                OctoPrintFileActionRespond? response = GetObjectFromJson<OctoPrintFileActionRespond>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -251,7 +250,7 @@ namespace AndreasReitberger.API.OctoPrint
                 string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -266,7 +265,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Delete, command)
                     .ConfigureAwait(false);
                 */
-                return string.IsNullOrEmpty(result.Result);
+                return string.IsNullOrEmpty(result?.Result);
             }
             catch (Exception exc)
             {
@@ -295,10 +294,10 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendMultipartFormDataFileRestApiRequestAsyncOld(filePath, location, target, select, print)
                     .ConfigureAwait(false);
                 */
-                if (result != null)
+                if (result is not null)
                 {
-                    OctoPrintUploadFileResponse response = JsonConvert.DeserializeObject<OctoPrintUploadFileResponse>(result.Result);
-                    return response.Done;
+                    OctoPrintUploadFileResponse? response = GetObjectFromJson<OctoPrintUploadFileResponse>(result?.Result, NewtonsoftJsonSerializerSettings);
+                    return response?.Done ?? false;
                 }
                 else return false;
             }
@@ -329,10 +328,10 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendMultipartFormDataFileRestApiRequestAsyncOld(file, fileName, location, target, select, print)
                     .ConfigureAwait(false);
                 */
-                if (result != null)
+                if (result is not null)
                 {
-                    OctoPrintUploadFileResponse response = JsonConvert.DeserializeObject<OctoPrintUploadFileResponse>(result.Result);
-                    return response.Done;
+                    OctoPrintUploadFileResponse? response = GetObjectFromJson<OctoPrintUploadFileResponse>(result?.Result, NewtonsoftJsonSerializerSettings);
+                    return response?.Done ?? false;
                 }
                 else return false;
             }
@@ -355,8 +354,8 @@ namespace AndreasReitberger.API.OctoPrint
                 IRestApiRequestRespone? result = 
                     await SendMultipartFormDataFileRestApiRequestAsync(requestTargetUri: targetRequestUri, authHeaders: AuthHeaders, parameters: parameters);
                 //result = await SendMultipartFormDataFolderRestApiRequestAsync(name, location, path);
-                if (result != null)
-                    return result.Succeeded;
+                if (result is not null)
+                    return result?.Succeeded ?? false;
                 else return false;
             }
             catch (Exception exc)

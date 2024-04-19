@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintPrinterStateChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public OctoPrintPrinterState NewPrinterState { get; set; }
+        public OctoPrintPrinterState? NewPrinterState;
         #endregion
 
         #region Overrides
