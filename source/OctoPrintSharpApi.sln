@@ -5,7 +5,9 @@ VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoPrintSharpApi", "OctoPrintSharpApi\OctoPrintSharpApi.csproj", "{FAA9B62D-38C9-4A60-88E0-F40A3B710AE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OctoPrintSharpApi.NUnitTest", "OctoPrintSharpApi.NUnitTest\OctoPrintSharpApi.NUnitTest.csproj", "{1F6D27D0-1017-4421-8281-0265A627B408}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoPrintSharpApi.NUnitTest", "OctoPrintSharpApi.NUnitTest\OctoPrintSharpApi.NUnitTest.csproj", "{1F6D27D0-1017-4421-8281-0265A627B408}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Print3dServer.Core", "..\..\Print3dServer.Core\src\Print3dServer.Core\Print3dServer.Core.csproj", "{C958DC98-E2DD-417A-8DDA-30B69F1E379B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{1F6D27D0-1017-4421-8281-0265A627B408}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F6D27D0-1017-4421-8281-0265A627B408}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F6D27D0-1017-4421-8281-0265A627B408}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

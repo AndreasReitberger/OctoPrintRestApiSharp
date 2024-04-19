@@ -1,152 +1,248 @@
-﻿using AndreasReitberger.Core.Utilities;
+﻿using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using Newtonsoft.Json;
 using System;
-
+using System.Threading.Tasks;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public partial class OctoPrintPrinter : BaseModel
+    public partial class OctoPrintPrinter : ObservableObject, IPrinter3d
     {
         #region Properties
-        [JsonIgnore]
-        bool _isOnline = true;
-        [JsonIgnore]
-        public bool IsOnline
-        {
-            get { return _isOnline; }
-            set { SetProperty(ref _isOnline, value); }
-        }
-        [JsonIgnore]
-        double? _extruder1 = 0;
-        [JsonIgnore]
-        public double? Extruder1
-        {
-            get { return _extruder1; }
-            set { SetProperty(ref _extruder1, value); }
-        }
-
-        [JsonIgnore]
-        double? _extruder2 = 0;
-        [JsonIgnore]
-        public double? Extruder2
-        {
-            get { return _extruder2; }
-            set { SetProperty(ref _extruder2, value); }
-        }
-
-        [JsonIgnore]
-        double? _heatedBed = 0;
-        [JsonIgnore]
-        public double? HeatedBed
-        {
-            get { return _heatedBed; }
-            set { SetProperty(ref _heatedBed, value); }
-        }
-
-        [JsonIgnore]
-        double? _chamber = 0;
-        [JsonIgnore]
-        public double? Chamber
-        {
-            get { return _chamber; }
-            set { SetProperty(ref _chamber, value); }
-        }
-
-        [JsonIgnore]
-        double _progress = 0;
-        [JsonIgnore]
-        public double Progress
-        {
-            get { return _progress; }
-            set { SetProperty(ref _progress, value); }
-        }
-
-        [JsonIgnore]
-        double _remainingPrintTime = 0;
-        [JsonIgnore]
-        public double RemainingPrintTime
-        {
-            get { return _remainingPrintTime; }
-            set { SetProperty(ref _remainingPrintTime, value); }
-        }
-
-        [JsonIgnore]
-        string _job;
-        [JsonIgnore]
-        public string Job
-        {
-            get { return _job; }
-            set { SetProperty(ref _job, value); }
-        }
-
-        [JsonIgnore]
-        bool _isPrinting = false;
-        [JsonIgnore]
-        public bool IsPrinting
-        {
-            get { return _isPrinting; }
-            set { SetProperty(ref _isPrinting, value); }
-        }
-        [JsonIgnore]
-        bool _isPaused = false;
-        [JsonIgnore]
-        public bool IsPaused
-        {
-            get { return _isPaused; }
-            set { SetProperty(ref _isPaused, value); }
-        }
-        [JsonIgnore]
-        bool _isSelected = false;
-        [JsonIgnore]
-        public bool IsSelected
-        {
-            get { return _isSelected; }
-            set { SetProperty(ref _isSelected, value); }
-        }
 
 
+        [ObservableProperty]
+        [property: JsonIgnore]
+        Guid id;
+
+        [ObservableProperty]
         [JsonProperty("axes")]
-        public OctoPrintPrinterAxes Axes { get; set; }
+        OctoPrintPrinterAxes axes;
 
+        [ObservableProperty]
         [JsonProperty("color")]
-        public string Color { get; set; }
+        string color;
 
+        [ObservableProperty]
         [JsonProperty("current")]
-        public bool Current { get; set; }
+        bool current;
 
+        [ObservableProperty]
         [JsonProperty("default")]
-        public bool DefaultDefault { get; set; }
+        bool defaultDefault;
 
+        [ObservableProperty]
         [JsonProperty("extruder")]
-        public OctoPrintPrinterExtruder Extruder { get; set; }
+        OctoPrintPrinterExtruder extruder;
 
+        [ObservableProperty]
         [JsonProperty("heatedBed")]
-        public bool HasHeatedBed { get; set; }
+        bool hasHeatedBed;
 
+        [ObservableProperty]
         [JsonProperty("heatedChamber")]
-        public bool HasHeatedChamber { get; set; }
+        bool hasHeatedChamber;
 
+        [ObservableProperty]
         [JsonProperty("id")]
-        public string Id { get; set; }
+        string slug;
 
+        [ObservableProperty]
         [JsonProperty("model")]
-        public string Model { get; set; }
+        string model;
 
+        [ObservableProperty]
         [JsonProperty("name")]
-        public string Name { get; set; }
+        string name;
 
+        [ObservableProperty]
         [JsonProperty("resource")]
-        public Uri Resource { get; set; }
+        Uri resource;
 
+        [ObservableProperty]
         [JsonProperty("volume")]
-        public OctoPrintPrinterVolume Volume { get; set; }
+        OctoPrintPrinterVolume volume;
+        #endregion
+
+        #region Interface, unused
+
+        [ObservableProperty]
+        [JsonIgnore]
+        long? lineSent;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        long? layers;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        long? pauseState;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        long? start;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        long? totalLines;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        int? repeat;
+    
+        #endregion
+
+        #region JsonIgnored
+
+        [ObservableProperty]
+        [JsonIgnore]
+        bool isActive = true;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        bool isOnline = true;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        double progress = 0;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        string activeJobName;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        string activeJobId;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        string activeJobState;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        bool isPrinting = false;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        bool isPaused = false;
+
+        [ObservableProperty]
+        [JsonIgnore]
+        bool isSelected = false;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? extruder1Temperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? extruder2Temperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? extruder3Temperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? extruder4Temperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? extruder5Temperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? heatedBedTemperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? heatedChamberTemperature = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? printProgress = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? remainingPrintDuration = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? printStarted = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? printDuration = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        double? printDurationEstimated = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [JsonIgnore]
+        byte[] currentPrintImage = Array.Empty<byte>();
+
+        #endregion
+
+
+        #region Methods
+
+        public Task<bool> HomeAsync(IPrint3dServerClient client, bool x, bool y, bool z) => client?.HomeAsync(x, y, z);
+
         #endregion
 
         #region Overrides
-        public override string ToString()
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
+        public override bool Equals(object obj)
         {
-            return JsonConvert.SerializeObject(this);
+            if (obj is not OctoPrintPrinter item)
+                return false;
+            return Slug.Equals(item.Slug);
         }
+
+        public override int GetHashCode()
+        {
+            return Slug.GetHashCode();
+        }
+
+        #endregion
+
+        #region Dispose
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected void Dispose(bool disposing)
+        {
+            // Ordinarily, we release unmanaged resources here;
+            // but all are wrapped by safe handles.
+
+            // Release disposable objects.
+            if (disposing)
+            {
+                // Nothing to do here
+            }
+        }
+        #endregion
+
+        #region Clone
+
+        public object Clone() => MemberwiseClone();
+
         #endregion
     }
 }

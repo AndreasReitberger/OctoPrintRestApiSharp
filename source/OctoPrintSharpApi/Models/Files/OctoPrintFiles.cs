@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AndreasReitberger.API.Print3dServer.Core.Interfaces;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.API.OctoPrint.Models
@@ -7,11 +8,13 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [JsonProperty("files")]
-        public List<OctoPrintFile> Files { get; set; } = new();
+        public List<IGcode> Files { get; set; } = new();
+        //public List<OctoPrintFile> Files { get; set; } = new();
 
 
         [JsonProperty("children")]
-        public List<OctoPrintFile> Children { get; set; } = new();
+        public List<IGcode> Children { get; set; } = new();
+        //public List<OctoPrintFile> Children { get; set; } = new();
 
         [JsonProperty("free")]
         public long Free { get; set; }

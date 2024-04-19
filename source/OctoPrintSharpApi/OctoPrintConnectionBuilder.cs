@@ -14,6 +14,7 @@ namespace AndreasReitberger.API.OctoPrint
 
             public OctoPrintClient Build()
             {
+                _client.Target = Print3dServer.Core.Enums.Print3dServerTarget.OctoPrint;
                 return _client;
             }
 
@@ -28,6 +29,12 @@ namespace AndreasReitberger.API.OctoPrint
             public OctoPrintConnectionBuilder WithApiKey(string apiKey)
             {
                 _client.ApiKey = apiKey;
+                return this;
+            }
+
+            public OctoPrintConnectionBuilder WithName(string name)
+            {
+                _client.ServerName = name;
                 return this;
             }
 
