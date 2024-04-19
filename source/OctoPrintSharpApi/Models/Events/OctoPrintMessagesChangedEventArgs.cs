@@ -5,7 +5,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintMessagesChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public object RepetierMessage { get; set; }
+        public object? RepetierMessage;
         #endregion
 
         #region Overrides

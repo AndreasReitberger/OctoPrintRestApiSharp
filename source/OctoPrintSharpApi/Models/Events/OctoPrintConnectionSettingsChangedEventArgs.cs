@@ -5,7 +5,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintConnectionSettingsChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public OctoPrintConnectionSettings NewConnectionSettings { get; set; }
+        public OctoPrintConnectionSettings? NewConnectionSettings;
         #endregion
 
         #region Overrides

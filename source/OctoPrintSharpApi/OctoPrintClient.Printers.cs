@@ -18,12 +18,12 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Methods
-        async Task<OctoPrintPrinterProfiles> GetPrinterProfilesAsync()
+        async Task<OctoPrintPrinterProfiles?> GetPrinterProfilesAsync()
         {
             try
             {
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Get,
                        command: "printerprofiles",
@@ -34,11 +34,11 @@ namespace AndreasReitberger.API.OctoPrint
                        )
                     .ConfigureAwait(false);
                 /*
-                IRestApiRequestRespone result =
+                IRestApiRequestRespone? result =
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, "printerprofiles")
                     .ConfigureAwait(false);
                 */
-                OctoPrintPrinterProfiles list = JsonConvert.DeserializeObject<OctoPrintPrinterProfiles>(result.Result);
+                OctoPrintPrinterProfiles? list = GetObjectFromJson<OctoPrintPrinterProfiles>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return list;
             }
             catch (Exception exc)
@@ -76,8 +76,8 @@ namespace AndreasReitberger.API.OctoPrint
             {
                 if (RefreshPrinterList)
                     await RefreshPrinterListAsync().ConfigureAwait(false);
-                IPrinter3d printer = Printers.FirstOrDefault(prt => prt.Slug == Id);
-                if (printer != null && ActivePrinter != printer)
+                IPrinter3d? printer = Printers.FirstOrDefault(prt => prt.Slug == Id);
+                if (printer is not null && ActivePrinter != printer)
                 {
                     ActivePrinter = printer;
                     //Disconnect
@@ -106,8 +106,8 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                List<IPrinter3d> profile = new(result.Profiles.Select(pair => pair.Value));
+                OctoPrintPrinterProfiles? result = await GetPrinterProfilesAsync().ConfigureAwait(false);
+                List<IPrinter3d> profile = [.. result?.Profiles?.Select(pair => pair.Value)];
                 return profile;
             }
             catch (Exception exc)
@@ -119,12 +119,12 @@ namespace AndreasReitberger.API.OctoPrint
 
         public override Task<List<IPrinter3d>> GetPrintersAsync() => GetAllPrinterProfilesAsync();
 
-        public async Task<IPrinter3d> GetPrinterProfileAsync(string slug)
+        public async Task<IPrinter3d?> GetPrinterProfileAsync(string slug)
         {
             try
             {
-                OctoPrintPrinterProfiles result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                IPrinter3d profile = new ObservableCollection<IPrinter3d>(result.Profiles.Select(pair => pair.Value)).FirstOrDefault(prof => prof.Slug == slug);
+                OctoPrintPrinterProfiles? result = await GetPrinterProfilesAsync().ConfigureAwait(false);
+                IPrinter3d? profile = new ObservableCollection<IPrinter3d>(result?.Profiles?.Select(pair => pair.Value) ?? []).FirstOrDefault(prof => prof.Slug == slug);
                 return profile;
             }
             catch (Exception exc)
@@ -134,7 +134,7 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        public async Task<OctoPrintPrinterState> GetCurrentPrinterStateAsync(bool includeHistory, int limit = 0, string[] excludes = null)
+        public async Task<OctoPrintPrinterState?> GetCurrentPrinterStateAsync(bool includeHistory, int limit = 0, string[]? excludes = null)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace AndreasReitberger.API.OctoPrint
                 };
                 if (limit > 0)
                     urlSegments.Add("limit", limit.ToString());
-                if (excludes != null && excludes.Length > 0)
+                if (excludes is not null && excludes.Length > 0)
                 {
                     StringBuilder sb = new();
                     for (int i = 0; i < excludes.Length; i++)
@@ -158,7 +158,7 @@ namespace AndreasReitberger.API.OctoPrint
                 }
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -173,7 +173,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
                 */
-                OctoPrintPrinterState response = JsonConvert.DeserializeObject<OctoPrintPrinterState>(result.Result);
+                OctoPrintPrinterState? response = GetObjectFromJson<OctoPrintPrinterState>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)

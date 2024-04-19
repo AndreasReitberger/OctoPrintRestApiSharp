@@ -6,9 +6,9 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public struct OctoPrintCustomGcodeCommand
     {
         #region Properties
-        public OctoPrintCommandName Name { get; set; }
-        public OctoPrintCommandType Type { get; set; }
-        public string Command { get; set; }
+        public OctoPrintCommandName Name;
+        public OctoPrintCommandType Type;
+        public string Command;
         #endregion
 
         #region Overrides

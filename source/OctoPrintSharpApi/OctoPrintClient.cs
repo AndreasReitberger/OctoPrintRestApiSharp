@@ -53,8 +53,8 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region General
 
-        [JsonIgnore, XmlIgnore]
         [ObservableProperty]
+        [JsonIgnore, XmlIgnore]
         object? update;
 
         #endregion
@@ -71,90 +71,62 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region State & Config
+        [ObservableProperty]
         [JsonIgnore, XmlIgnore]
-        OctoPrintSettings config;
-        [JsonIgnore, XmlIgnore]
-        public OctoPrintSettings Config
+        OctoPrintSettings? config;
+        partial void OnConfigChanged(OctoPrintSettings? value)
         {
-            get => config;
-            set
+            OnOctoPrintPrinterConfigChanged(new OctoPrintPrinterConfigChangedEventArgs()
             {
-                if (config == value) return;
-                config = value;
-                OnOctoPrintPrinterConfigChanged(new OctoPrintPrinterConfigChangedEventArgs()
-                {
-                    NewConfiguration = value,
-                    SessionId = SessionId,
-                    CallbackId = -1,
-                    Printer = GetActivePrinterSlug()
-                });
-                UpdatePrinterConfig(value);
-                OnPropertyChanged();
-            }
+                NewConfiguration = value,
+                SessionId = SessionId,
+                CallbackId = -1,
+                Printer = GetActivePrinterSlug()
+            });
+            UpdatePrinterConfig(value);
+        }
+     
+        [ObservableProperty]
+        [JsonIgnore, XmlIgnore]
+        OctoPrintConnectionSettings? connectionSettings;
+        partial void OnConnectionSettingsChanged(OctoPrintConnectionSettings? value)
+        {
+            OnOctoPrintConnectionSettingsChanged(new OctoPrintConnectionSettingsChangedEventArgs()
+            {
+                NewConnectionSettings = value,
+                SessionId = SessionId,
+                CallbackId = -1,
+                Printer = GetActivePrinterSlug(),
+            });
+            UpdateConnectionSettings(value);
         }
 
+        [ObservableProperty]
         [JsonIgnore, XmlIgnore]
-        OctoPrintConnectionSettings connectionSettings;
-        [JsonIgnore, XmlIgnore]
-        public OctoPrintConnectionSettings ConnectionSettings
+        OctoPrintPrinterState? state;
+        partial void OnStateChanged(OctoPrintPrinterState? value)
         {
-            get => connectionSettings;
-            set
+            OnOctoPrintPrinterStateChanged(new OctoPrintPrinterStateChangedEventArgs()
             {
-                if (connectionSettings == value) return;
-                connectionSettings = value;
-                OnOctoPrintConnectionSettingsChanged(new OctoPrintConnectionSettingsChangedEventArgs()
-                {
-                    NewConnectionSettings = value,
-                    SessionId = SessionId,
-                    CallbackId = -1,
-                    Printer = GetActivePrinterSlug(),
-                });
-                UpdateConnectionSettings(value);
-                OnPropertyChanged();
-            }
+                NewPrinterState = value,
+                SessionId = SessionId,
+                CallbackId = -1,
+                Printer = GetActivePrinterSlug(),
+            });
+            UpdatePrinterState(value);
         }
 
+        [ObservableProperty]
         [JsonIgnore, XmlIgnore]
-        OctoPrintPrinterState state;
-        [JsonIgnore, XmlIgnore]
-        public OctoPrintPrinterState State
+        OctoPrintJobInfo? activePrintInfo;
+        partial void OnActivePrintInfoChanged(OctoPrintJobInfo? value)
         {
-            get => state;
-            set
+            OnPrintInfoChanged(new OctoPrintActivePrintInfoChangedEventArgs()
             {
-                if (state == value) return;
-                state = value;
-                OnOctoPrintPrinterStateChanged(new OctoPrintPrinterStateChangedEventArgs()
-                {
-                    NewPrinterState = value,
-                    SessionId = SessionId,
-                    CallbackId = -1,
-                    Printer = GetActivePrinterSlug(),
-                });
-                UpdatePrinterState(value);
-                OnPropertyChanged();
-            }
-        }
-
-        [JsonIgnore, XmlIgnore]
-        OctoPrintJobInfo activePrintInfo;
-        [JsonIgnore, XmlIgnore]
-        public OctoPrintJobInfo ActivePrintInfo
-        {
-            get => activePrintInfo;
-            set
-            {
-                if (activePrintInfo == value) return;
-                activePrintInfo = value;
-                OnPrintInfoChanged(new OctoPrintActivePrintInfoChangedEventArgs()
-                {
-                    SessionId = SessionId,
-                    NewActivePrintInfo = value,
-                    Printer = GetActivePrinterSlug(),
-                });
-                OnPropertyChanged();
-            }
+                SessionId = SessionId,
+                NewActivePrintInfo = value,
+                Printer = GetActivePrinterSlug(),
+            });
         }
 
         [JsonIgnore, XmlIgnore, Obsolete("Use Toolheads instead")]
@@ -171,26 +143,19 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Models
-        /* */
+
+        [ObservableProperty]
         [JsonIgnore, XmlIgnore]
-        ObservableCollection<OctoPrintModel> _models = new();
-        [JsonIgnore, XmlIgnore]
-        public ObservableCollection<OctoPrintModel> Models
+        ObservableCollection<OctoPrintModel> models = new();
+        partial void OnModelsChanged(ObservableCollection<OctoPrintModel> value)
         {
-            get => _models;
-            set
+            OnOctoPrintModelsChanged(new OctoPrintModelsChangedEventArgs()
             {
-                if (_models == value) return;
-                _models = value;
-                OnOctoPrintModelsChanged(new OctoPrintModelsChangedEventArgs()
-                {
-                    NewModels = value,
-                    SessionId = SessionId,
-                    CallbackId = -1,
-                    Printer = GetActivePrinterSlug(),
-                });
-                OnPropertyChanged();
-            }
+                NewModels = value,
+                SessionId = SessionId,
+                CallbackId = -1,
+                Printer = GetActivePrinterSlug(),
+            });
         }
        
         #endregion
@@ -245,7 +210,7 @@ namespace AndreasReitberger.API.OctoPrint
         #region Destructor
         ~OctoPrintClient()
         {
-            if (WebSocket != null)
+            if (WebSocket is not null)
             {
                 /* SharpWebSocket
                 if (WebSocket.ReadyState == WebSocketState.Open)
@@ -281,7 +246,7 @@ namespace AndreasReitberger.API.OctoPrint
 
                 Instance = this;
 
-                if (Instance != null)
+                if (Instance is not null)
                 {
                     Instance.UpdateInstance = false;
                     Instance.IsInitialized = true;
@@ -305,7 +270,7 @@ namespace AndreasReitberger.API.OctoPrint
         #region RestApi
 
         [Obsolete("Use method from Core library instead")]
-        async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
+        async Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
             string filePath,
             string location,
             string path,
@@ -314,7 +279,7 @@ namespace AndreasReitberger.API.OctoPrint
             int timeout = 100000
             )
         {
-            IRestApiRequestRespone apiResponseResult = null;
+            IRestApiRequestRespone? apiResponseResult = null;
             if (!IsOnline) return apiResponseResult;
 
             try
@@ -339,11 +304,14 @@ namespace AndreasReitberger.API.OctoPrint
                 request.AddParameter("print", printFile ? "true" : "false", ParameterType.GetOrPost);
                 request.AddParameter("path", path, ParameterType.GetOrPost);
 
-                Uri fullUri = restClient.BuildUri(request);
+                Uri? fullUri = restClient?.BuildUri(request);
                 try
                 {
-                    RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
-                    apiResponseResult = ValidateResponse(response, fullUri);
+                    if (restClient is not null)
+                    {
+                        RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
+                        apiResponseResult = ValidateResponse(response, fullUri);
+                    }
                 }
                 catch (TaskCanceledException texp)
                 {
@@ -378,7 +346,7 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [Obsolete("Use method from Core library instead")]
-        Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
+        Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
             string filePath,
             OctoPrintFileLocation location,
             string path,
@@ -388,7 +356,7 @@ namespace AndreasReitberger.API.OctoPrint
             ) => SendMultipartFormDataFileRestApiRequestAsyncOld(filePath, location.Location, path, selectFile, printFile, timeout);
 
         [Obsolete("Use method from Core library instead")]
-        internal async Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
+        internal async Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
             byte[] file,
             string fileName,
             string location,
@@ -423,11 +391,14 @@ namespace AndreasReitberger.API.OctoPrint
                 request.AddParameter("print", printFile ? "true" : "false", ParameterType.GetOrPost);
                 request.AddParameter("path", path, ParameterType.GetOrPost);
 
-                Uri fullUri = restClient.BuildUri(request);
+                Uri? fullUri = restClient?.BuildUri(request);
                 try
                 {
-                    RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
-                    apiResponseResult = ValidateResponse(response, fullUri);
+                    if (restClient is not null)
+                    {
+                        RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
+                        apiResponseResult = ValidateResponse(response, fullUri);
+                    }
                 }
                 catch (TaskCanceledException texp)
                 {
@@ -462,7 +433,7 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [Obsolete("Use method from Core library instead")]
-        internal Task<IRestApiRequestRespone> SendMultipartFormDataFileRestApiRequestAsyncOld(
+        internal Task<IRestApiRequestRespone?> SendMultipartFormDataFileRestApiRequestAsyncOld(
             byte[] file,
             string fileName,
             OctoPrintFileLocation location,
@@ -474,14 +445,14 @@ namespace AndreasReitberger.API.OctoPrint
 
 
         [Obsolete("Use method from Core library instead")]
-        internal async Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsyncOld(
+        internal async Task<IRestApiRequestRespone?> SendMultipartFormDataFolderRestApiRequestAsyncOld(
             string folderName,
             string location,
             string path,
             int timeout = 100000
             )
         {
-            IRestApiRequestRespone apiResponseResult = new RestApiRequestRespone();
+            IRestApiRequestRespone? apiResponseResult = new RestApiRequestRespone();
             if (!IsOnline) return apiResponseResult;
 
             try
@@ -504,11 +475,14 @@ namespace AndreasReitberger.API.OctoPrint
                 request.AddParameter("foldername", folderName, ParameterType.GetOrPost);
                 request.AddParameter("path", path, ParameterType.GetOrPost);
 
-                Uri fullUri = restClient.BuildUri(request);
+                Uri? fullUri = restClient?.BuildUri(request);
                 try
                 {
-                    RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
-                    apiResponseResult = ValidateResponse(response, fullUri);
+                    if (restClient is not null)
+                    {
+                        RestResponse response = await restClient.ExecuteAsync(request, cts.Token);
+                        apiResponseResult = ValidateResponse(response, fullUri);
+                    }
                 }
                 catch (TaskCanceledException texp)
                 {
@@ -544,7 +518,7 @@ namespace AndreasReitberger.API.OctoPrint
 
 
         [Obsolete("Use method from Core library instead")]
-        internal Task<IRestApiRequestRespone> SendMultipartFormDataFolderRestApiRequestAsync(
+        internal Task<IRestApiRequestRespone?> SendMultipartFormDataFolderRestApiRequestAsync(
             string folderName,
             OctoPrintFileLocation location,
             string path,
@@ -554,7 +528,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Download
         [Obsolete("Check if can be replaced by base method")]
-        internal async Task<byte[]> DownloadFileFromUriAsyncOld(string path, int timeout = 100000)
+        internal async Task<byte[]?> DownloadFileFromUriAsyncOld(string path, int timeout = 100000)
         {
             try
             {
@@ -569,13 +543,17 @@ namespace AndreasReitberger.API.OctoPrint
                 request.Method = Method.Get;
                 request.Timeout = timeout;
 
-                Uri fullUrl = restClient.BuildUri(request);
+                Uri? fullUrl = restClient?.BuildUri(request);
                 CancellationTokenSource cts = new(timeout);
-                byte[] response = await restClient.DownloadDataAsync(request, cts.Token)
-                    .ConfigureAwait(false)
-                    ;
+                if (restClient is not null)
+                {
+                    byte[]? response = await restClient.DownloadDataAsync(request, cts.Token)
+                        .ConfigureAwait(false)
+                        ;
 
-                return response;
+                    return response;
+                }
+                else return null;
                 /*
                 // Workaround, because the RestClient returns bad requests
                 using WebClient client = new();
@@ -597,7 +575,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region StateUpdates
-        void UpdatePrinterState(OctoPrintPrinterState newState)
+        void UpdatePrinterState(OctoPrintPrinterState? newState)
         {
             try
             {
@@ -605,7 +583,20 @@ namespace AndreasReitberger.API.OctoPrint
                 {
                     return;
                 }
+                List<OctoPrintPrinterStateToolheadInfo> extruders = [];
+                if (newState.Temperature?.Tool0 is not null) extruders.Add(newState.Temperature.Tool0);
+                if (newState.Temperature?.Tool1 is not null) extruders.Add(newState.Temperature.Tool1);
+                Extruders = [.. extruders];
 
+                List<OctoPrintPrinterStateTemperatureInfo> heatedBeds = [];
+                if (newState.Temperature?.Bed is not null) heatedBeds.Add(newState.Temperature.Bed);
+                HeatedBeds = [..  heatedBeds];
+
+                List<OctoPrintPrinterStateTemperatureInfo> heatedChambers = [];
+                if (newState.Temperature?.Chamber is not null) heatedChambers.Add(newState.Temperature.Chamber);
+                HeatedChambers = [.. heatedChambers];
+
+                /*
                 Extruders = newState.Temperature?.Tool1 is null ? new()
                 {
                     newState.Temperature?.Tool0,
@@ -614,25 +605,30 @@ namespace AndreasReitberger.API.OctoPrint
                 {
                     newState.Temperature?.Tool0,
                     newState.Temperature?.Tool1,
-                }
-                ;
-                HeatedBeds = newState.Temperature?.Bed != null ? new()
+                };
+                */
+
+                /*
+                HeatedBeds = newState.Temperature?.Bed is not null ? new()
                 {
                     newState.Temperature?.Bed,
                 } :
                 new();
-                HeatedChambers = newState.Temperature?.Chamber != null ? new()
+                */
+                /*
+                HeatedChambers = newState.Temperature?.Chamber is not null ? new()
                 {
                     newState.Temperature?.Chamber,
                 } :
                 new();
+                */
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        void UpdatePrinterConfig(OctoPrintSettings newConfig)
+        void UpdatePrinterConfig(OctoPrintSettings? newConfig)
         {
             try
             {
@@ -644,7 +640,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        void UpdateConnectionSettings(OctoPrintConnectionSettings newConnectionSettings)
+        void UpdateConnectionSettings(OctoPrintConnectionSettings? newConnectionSettings)
         {
             try
             {
@@ -660,7 +656,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Models
-        async Task<OctoPrintFiles> GetFilesAsync(string location, string path = "", bool recursive = true)
+        async Task<OctoPrintFiles?> GetFilesAsync(string location, string path = "", bool recursive = true)
         {
             try
             {
@@ -672,7 +668,7 @@ namespace AndreasReitberger.API.OctoPrint
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Get,
                        command: files,
@@ -687,8 +683,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, files, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                if (list != null)
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result);
+                if (list is not null)
                 {
                     FreeDiskSpace = list.Free;
                     TotalDiskSpace = list.Total;
@@ -761,7 +757,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Refresh
 
-        public new Task StartListeningAsync(bool stopActiveListening = false) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, () => Task.Run(async() =>
+        public new Task StartListeningAsync(bool stopActiveListening = false, string[]? commandsOnConnect = null) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, () => Task.Run(async() =>
         {
             List<Task> tasks = new()
             {
@@ -770,7 +766,7 @@ namespace AndreasReitberger.API.OctoPrint
                 RefreshConnectionSettingsAsync(),
             };
             await Task.WhenAll(tasks).ConfigureAwait(false);
-        }));
+        }), commandsOnConnect: commandsOnConnect);
 
         public new async Task RefreshAllAsync()
         {
@@ -781,13 +777,13 @@ namespace AndreasReitberger.API.OctoPrint
                 if (IsRefreshing) return;
                 IsRefreshing = true;
 
-                List<Task> tasks = new()
-                {
+                List<Task> tasks =
+                [
                     RefreshConnectionSettingsAsync(),
                     RefreshCurrentPrintInfosAsync(),
                     RefreshPrinterStateAsync(),
                     RefreshFilesAsync(CurrentFileLocation),
-                };
+                ];
                 await Task.WhenAll(tasks).ConfigureAwait(false);
                 if (!InitialDataFetched)
                     InitialDataFetched = true;
@@ -818,13 +814,6 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region CheckOnline
 
-        public async Task CheckOnlineAsync(int Timeout = 10000)
-        {
-            CancellationTokenSource cts = new(new TimeSpan(0, 0, 0, 0, Timeout));
-            await CheckOnlineAsync(cts).ConfigureAwait(false);
-            cts?.Dispose();
-        }
-
         public Task CheckOnlineAsync(CancellationTokenSource cts) => CheckOnlineAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", cts);
         
         public Task<bool> CheckIfApiIsValidAsync(int timeout = 10000) => CheckIfApiIsValidAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", timeout);
@@ -836,7 +825,7 @@ namespace AndreasReitberger.API.OctoPrint
         #region CheckForUpdates
         public async Task CheckForServerUpdateAsync()
         {
-            IRestApiRequestRespone result = new RestApiRequestRespone();
+            IRestApiRequestRespone? result = new RestApiRequestRespone();
             try
             {
                 string targetUri = $"{OctoPrintCommands.Api}";
@@ -860,7 +849,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OnError(new JsonConvertEventArgs()
                 {
                     Exception = jecx,
-                    OriginalString = result.Result,
+                    OriginalString = result?.Result,
                     Message = jecx.Message,
                 });
             }
@@ -892,12 +881,12 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region VersionInformation
-        public async Task<OctoPrintVersionInfo> GetVersionInfoAsync()
+        public async Task<OctoPrintVersionInfo?> GetVersionInfoAsync()
         {
             try
             {
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: "",
@@ -911,7 +900,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, "version")
                     .ConfigureAwait(false);
                 */
-                OctoPrintVersionInfo response = JsonConvert.DeserializeObject<OctoPrintVersionInfo>(result.Result);
+                OctoPrintVersionInfo? response = GetObjectFromJson<OctoPrintVersionInfo>(result?.Result);
                 return response;
             }
             catch (Exception exc)
@@ -923,14 +912,14 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region ConnectionHandling
-        public async Task<OctoPrintConnectionSettings> GetConnectionSettingsAsync()
+        public async Task<OctoPrintConnectionSettings?> GetConnectionSettingsAsync()
         {
             try
             {
                 string command = "connection";
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -944,7 +933,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command)
                     .ConfigureAwait(false);
                 */
-                OctoPrintConnectionSettings response = JsonConvert.DeserializeObject<OctoPrintConnectionSettings>(result.Result);
+                OctoPrintConnectionSettings? response = GetObjectFromJson<OctoPrintConnectionSettings>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -1005,7 +994,7 @@ namespace AndreasReitberger.API.OctoPrint
                 }
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1020,7 +1009,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return string.IsNullOrEmpty(result.Result);
+                return string.IsNullOrEmpty(result?.Result);
             }
             catch (Exception exc)
             {
@@ -1044,7 +1033,7 @@ namespace AndreasReitberger.API.OctoPrint
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1059,7 +1048,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return string.IsNullOrEmpty(result.Result);
+                return string.IsNullOrEmpty(result?.Result);
             }
             catch (Exception exc)
             {
@@ -1094,7 +1083,7 @@ namespace AndreasReitberger.API.OctoPrint
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1109,7 +1098,7 @@ namespace AndreasReitberger.API.OctoPrint
                 OctoPrintApiRequestResponse result = await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1126,7 +1115,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "jog", x = x, y = y, z = z, absolute = absolute };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1142,7 +1131,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1163,7 +1152,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "home", axes = axes };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1179,7 +1168,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1196,7 +1185,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "feedrate", factor = feedRate };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1213,7 +1202,7 @@ namespace AndreasReitberger.API.OctoPrint
                     .ConfigureAwait(false);
                 */
                 LastFeedRate = feedRate;
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1230,7 +1219,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "feedrate", factor = feedRate };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1247,7 +1236,7 @@ namespace AndreasReitberger.API.OctoPrint
                     .ConfigureAwait(false);
                 */
                 LastFeedRate = feedRate;
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1258,7 +1247,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Tool
-        public async Task<OctoPrintToolState> GetCurrentToolStateAsync(bool includeHistory, int limit = 0)
+        public async Task<OctoPrintToolState?> GetCurrentToolStateAsync(bool includeHistory, int limit = 0)
         {
             try
             {
@@ -1271,7 +1260,7 @@ namespace AndreasReitberger.API.OctoPrint
                     urlSegments.Add("limit", limit.ToString());
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1286,7 +1275,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
                 */
-                OctoPrintToolState response = JsonConvert.DeserializeObject<OctoPrintToolState>(result.Result);
+                OctoPrintToolState? response = GetObjectFromJson<OctoPrintToolState>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -1303,7 +1292,7 @@ namespace AndreasReitberger.API.OctoPrint
             {
 
                 string command = "printer/tool";
-                object parameter = null;
+                object? parameter = null;
                 if (tool0 != int.MinValue && tool1 != int.MinValue)
                     parameter = new { command = "target", targets = new { tool0 = tool0, tool1 = tool1 } };
                 else if (tool0 != int.MinValue)
@@ -1312,7 +1301,7 @@ namespace AndreasReitberger.API.OctoPrint
                     parameter = new { command = "target", targets = new { tool1 = tool1 } };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1328,7 +1317,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1345,7 +1334,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "offset", offsets = new { tool0 = tool0, tool1 = tool1 } };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1361,7 +1350,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1377,7 +1366,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "select", tool = string.Format("tool{0}", tool) };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1393,7 +1382,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1409,7 +1398,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "extrude", amount = length, speed = speed };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1425,7 +1414,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1445,7 +1434,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "flowrate", factor = flowRate };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1462,7 +1451,7 @@ namespace AndreasReitberger.API.OctoPrint
                     .ConfigureAwait(false);
                 */
                 LastFlowRate = flowRate;
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1478,7 +1467,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "flowrate", factor = flowRate };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1495,7 +1484,7 @@ namespace AndreasReitberger.API.OctoPrint
                     .ConfigureAwait(false);
                 */
                 LastFlowRate = flowRate;
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1506,7 +1495,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Bed
-        public async Task<OctoPrintBedState> GetCurrentBedStateAsync(bool includeHistory, int limit = 0)
+        public async Task<OctoPrintBedState?> GetCurrentBedStateAsync(bool includeHistory, int limit = 0)
         {
             try
             {
@@ -1519,7 +1508,7 @@ namespace AndreasReitberger.API.OctoPrint
                     urlSegments.Add("limit", limit.ToString());
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1534,7 +1523,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
                 */
-                OctoPrintBedState response = JsonConvert.DeserializeObject<OctoPrintBedState>(result.Result);
+                OctoPrintBedState? response = GetObjectFromJson<OctoPrintBedState>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -1553,7 +1542,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "target", target = target };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1569,7 +1558,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return string.IsNullOrEmpty(result.Result);
+                return string.IsNullOrEmpty(result?.Result);
             }
             catch (Exception exc)
             {
@@ -1585,7 +1574,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "offset", offset = offset };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1601,7 +1590,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1612,7 +1601,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Chamber
-        public async Task<OctoPrintChamberState> GetCurrentChamberStateAsync(bool includeHistory, int limit = 0)
+        public async Task<OctoPrintChamberState?> GetCurrentChamberStateAsync(bool includeHistory, int limit = 0)
         {
             try
             {
@@ -1625,7 +1614,7 @@ namespace AndreasReitberger.API.OctoPrint
                     urlSegments.Add("limit", limit.ToString());
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1640,7 +1629,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
                 */
-                OctoPrintChamberState response = JsonConvert.DeserializeObject<OctoPrintChamberState>(result.Result);
+                OctoPrintChamberState? response = GetObjectFromJson<OctoPrintChamberState>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -1661,7 +1650,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "target", target = target };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1677,7 +1666,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1693,7 +1682,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "offset", offset = offset };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1709,7 +1698,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1720,7 +1709,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Sd
-        public async Task<OctoPrintPrinterStateSd> GetCurrentSdState(bool includeHistory, int limit = 0)
+        public async Task<OctoPrintPrinterStateSd?> GetCurrentSdState(bool includeHistory, int limit = 0)
         {
             try
             {
@@ -1733,7 +1722,7 @@ namespace AndreasReitberger.API.OctoPrint
                     urlSegments.Add("limit", limit.ToString());
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1748,7 +1737,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command, jsonObject: null, cts: default, urlSegments)
                     .ConfigureAwait(false);
                 */
-                OctoPrintPrinterStateSd response = JsonConvert.DeserializeObject<OctoPrintPrinterStateSd>(result.Result);
+                OctoPrintPrinterStateSd? response = GetObjectFromJson<OctoPrintPrinterStateSd>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -1765,7 +1754,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "init" };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1781,7 +1770,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1797,7 +1786,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "refresh" };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1813,7 +1802,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1829,7 +1818,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = "release" };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1845,7 +1834,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1865,7 +1854,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { command = cmd };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1881,7 +1870,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1897,7 +1886,7 @@ namespace AndreasReitberger.API.OctoPrint
                 object parameter = new { commands = cmds };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1913,7 +1902,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                return result.Succeeded;
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1939,7 +1928,7 @@ namespace AndreasReitberger.API.OctoPrint
                     urlSegments.Add("limit", limit.ToString());
 
                 var result = await SendRestApiRequestAsync(Method.Get, command, "", urlSegments).ConfigureAwait(false);
-                var response = JsonConvert.DeserializeObject<OctoPrintPrinterStateSd>(result.Result);
+                var response = GetObjectFromJson<OctoPrintPrinterStateSd>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
                 
             }
@@ -1964,7 +1953,7 @@ namespace AndreasReitberger.API.OctoPrint
                 //string parameter = string.Format("{{\"command\":{0}}}", "start");
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -1979,8 +1968,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result?.Result);
-                return result.Succeeded;
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -1997,7 +1986,7 @@ namespace AndreasReitberger.API.OctoPrint
                 //string parameter = string.Format("{{\"command\":{0}}}", "cancel");
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2012,8 +2001,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                return result.Succeeded;
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -2030,7 +2019,7 @@ namespace AndreasReitberger.API.OctoPrint
                 //string parameter = string.Format("{{\"command\":{0}}}", "restart");
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2045,8 +2034,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                return result.Succeeded;
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -2063,7 +2052,7 @@ namespace AndreasReitberger.API.OctoPrint
                 //string parameter = string.Format("{{\"command\":{0}, \"action\":{1}}}", "pause", "pause");
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2078,8 +2067,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                return result.Succeeded;
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -2093,10 +2082,9 @@ namespace AndreasReitberger.API.OctoPrint
             {
                 string command = "job";
                 object parameter = new { command = "pause", action = "resume" };
-                //string parameter = string.Format("{{\"command\":{0}, \"action\":{1}}}", "pause", "resume");
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2111,8 +2099,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                return result.Succeeded;
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -2129,7 +2117,7 @@ namespace AndreasReitberger.API.OctoPrint
                 //string parameter = string.Format("{{\"command\":{0}, \"action\":{1}}}", "pause", "toggle");
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2144,8 +2132,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, parameter)
                     .ConfigureAwait(false);
                 */
-                OctoPrintFiles list = JsonConvert.DeserializeObject<OctoPrintFiles>(result.Result);
-                return result.Succeeded;
+                OctoPrintFiles? list = GetObjectFromJson<OctoPrintFiles>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
             }
             catch (Exception exc)
             {
@@ -2154,14 +2142,13 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        public async Task<OctoPrintJobInfo> GetJobInfoAsync()
+        public async Task<OctoPrintJobInfo?> GetJobInfoAsync()
         {
             try
             {
                 string command = "job";
-
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2176,7 +2163,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command)
                     .ConfigureAwait(false);
                 */
-                OctoPrintJobInfo list = JsonConvert.DeserializeObject<OctoPrintJobInfo>(result.Result);
+                OctoPrintJobInfo? list = GetObjectFromJson<OctoPrintJobInfo>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return list;
             }
             catch (Exception exc)
@@ -2202,14 +2189,13 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Settings
-        public async Task<OctoPrintSettings> GetSettingsAsync()
+        public async Task<OctoPrintSettings?> GetSettingsAsync()
         {
             try
             {
                 string command = "settings";
-
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
@@ -2225,7 +2211,7 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Get, command)
                     .ConfigureAwait(false);
                 */
-                OctoPrintSettings response = JsonConvert.DeserializeObject<OctoPrintSettings>(result.Result);
+                OctoPrintSettings? response = GetObjectFromJson<OctoPrintSettings>(result?.Result, NewtonsoftJsonSerializerSettings);
                 return response;
             }
             catch (Exception exc)
@@ -2253,11 +2239,11 @@ namespace AndreasReitberger.API.OctoPrint
                 string command = "settings";
 
                 string targetUri = $"{OctoPrintCommands.Api}";
-                IRestApiRequestRespone result = await SendRestApiRequestAsync(
+                IRestApiRequestRespone? result = await SendRestApiRequestAsync(
                        requestTargetUri: targetUri,
                        method: Method.Post,
                        command: command,
-                       jsonObject: null,
+                       jsonObject: SettingsTreeObject,
                        authHeaders: AuthHeaders,
                        //urlSegments: urlSegments,
                        cts: default
@@ -2269,8 +2255,8 @@ namespace AndreasReitberger.API.OctoPrint
                     await SendRestApiRequestAsync(OctoPrintCommandBase.api, Method.Post, command, SettingsTreeObject)
                     .ConfigureAwait(false);
                 */
-                OctoPrintSettings response = JsonConvert.DeserializeObject<OctoPrintSettings>(result.Result);
-                return result.Succeeded;
+                OctoPrintSettings? response = GetObjectFromJson<OctoPrintSettings>(result?.Result, NewtonsoftJsonSerializerSettings);
+                return result?.Succeeded ?? false;
                 //return response;
             }
             catch (Exception exc)
@@ -2298,7 +2284,7 @@ namespace AndreasReitberger.API.OctoPrint
                 return string.Empty;
             }
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if
                 (obj is not OctoPrintClient item)

@@ -9,17 +9,6 @@ namespace AndreasReitberger.API.OctoPrint
     public partial class OctoPrintClient
     {
         #region Static
-        public static string ConvertStackToPath(Stack<string> stack, string separator)
-        {
-            StringBuilder sb = new();
-            for (int i = stack.Count - 1; i >= 0; i--)
-            {
-                sb.Append(stack.ElementAt(i));
-                if (i > 0)
-                    sb.Append(separator);
-            }
-            return sb.ToString();
-        }
 
         public static OctoPrintConnectionStates ConvertConnectionStateString(string ConnectionState)
         {

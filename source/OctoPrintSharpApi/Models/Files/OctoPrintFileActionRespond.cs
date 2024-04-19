@@ -7,15 +7,15 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Properties
         [ObservableProperty, JsonIgnore]
         [property: JsonProperty("origin", NullValueHandling = NullValueHandling.Ignore)]
-        string origin;
+        string origin = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
-        string path;
+        string path = string.Empty;
 
         [ObservableProperty, JsonIgnore]
         [property: JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]

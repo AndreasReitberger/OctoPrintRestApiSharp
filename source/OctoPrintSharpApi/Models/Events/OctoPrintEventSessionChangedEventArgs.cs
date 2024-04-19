@@ -5,7 +5,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintEventSessionChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public object Session { get; set; }
+        public object? Session;
         #endregion
 
         #region Overrides

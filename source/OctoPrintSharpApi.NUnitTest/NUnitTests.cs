@@ -233,7 +233,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 xmlSerializer = new XmlSerializer(typeof(OctoPrintClient));
                 using (var fileStream = new FileStream(serverConfig, FileMode.Open))
                 {
-                    var instance = (OctoPrintClient)xmlSerializer.Deserialize(fileStream);
+                    var instance = (OctoPrintClient?)xmlSerializer.Deserialize(fileStream);
                 }
 
             }
@@ -324,7 +324,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 _server.Error += (o, args) =>
                 {
-                    Assert.Fail(args?.ToString());
+                    Assert.Fail(args?.ToString() ?? "");
                 };
                 _server.ServerWentOffline += (o, args) =>
                 {
@@ -354,7 +354,7 @@ namespace OctoPrintSharpApi.NUnitTest
                 OctoPrintClient _server = new(_host, _api, _port, _ssl);
                 _server.Error += (o, args) =>
                 {
-                    Assert.Fail(args.ToString());
+                    Assert.Fail(args.ToString() ?? "");
                 };
                 _server.ServerWentOffline += (o, args) =>
                 {
@@ -383,7 +383,7 @@ namespace OctoPrintSharpApi.NUnitTest
 
                 _server.Error += (o, args) =>
                 {
-                    Assert.Fail(args.ToString());
+                    Assert.Fail(args?.ToString() ?? "");
                 };
                 _server.ServerWentOffline += (o, args) =>
                 {
@@ -455,7 +455,7 @@ namespace OctoPrintSharpApi.NUnitTest
                         // Wait till temp rises
                         while (temp < 23)
                         {
-                            OctoPrintBedState state = await _server.GetCurrentBedStateAsync(true);
+                            OctoPrintBedState? state = await _server.GetCurrentBedStateAsync(true);
                             if (state != null && state.Bed != null)
                             {
                                 var bed = state.Bed;

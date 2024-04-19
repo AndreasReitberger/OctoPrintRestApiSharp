@@ -14,7 +14,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region WebSocket
 
-        protected void Client_WebSocketMessageReceived(object sender, WebsocketEventArgs e)
+        protected void Client_WebSocketMessageReceived(object? sender, WebsocketEventArgs e)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace AndreasReitberger.API.OctoPrint
                     return;
                 if (e.Message.StartsWith("{\"connected\":"))
                 {
-                    OctoPrintWebSocketConnectionResponse response = JsonConvert.DeserializeObject<OctoPrintWebSocketConnectionResponse>(e.Message);
+                    OctoPrintWebSocketConnectionResponse? response = GetObjectFromJson<OctoPrintWebSocketConnectionResponse>(e.Message);
                 }
                 /*
                 OnWebSocketMessageReceived(new WebsocketEventArgs()

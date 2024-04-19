@@ -5,7 +5,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public class OctoPrintJobsChangedEventArgs : OctoPrintEventArgs
     {
         #region Properties
-        public object Data { get; set; }
+        public object? Data;
         #endregion
 
         #region Overrides
