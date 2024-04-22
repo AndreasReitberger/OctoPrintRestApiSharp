@@ -36,7 +36,7 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 #else
         #region Release
-        public static JsonSerializerOptions DefaultJsonSerializerSettings = new()
+        public new static JsonSerializerOptions DefaultJsonSerializerSettings = new()
         {
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
             WriteIndented = true,
