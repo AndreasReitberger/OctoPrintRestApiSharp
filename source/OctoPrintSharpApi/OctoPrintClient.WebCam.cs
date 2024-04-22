@@ -16,22 +16,6 @@ namespace AndreasReitberger.API.OctoPrint
             return [];
         }
 
-        [Obsolete("Use GetDefaultWebCamUri instead")]
-        internal string GetWebCamUri()
-        {
-            try
-            {
-                string currentPrinter = GetActivePrinterSlug();
-                if (string.IsNullOrEmpty(currentPrinter)) return string.Empty;
-                return $"{FullWebAddress}/webcam/?action=stream?t={ApiKey}";
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return "";
-            }
-        }
-
         #endregion
 
     }
