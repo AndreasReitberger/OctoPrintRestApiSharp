@@ -12,7 +12,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -118,6 +117,7 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [ObservableProperty]
+        [Obsolete("Use ActiveJob insead")]
         [JsonIgnore, XmlIgnore]
         OctoPrintJobInfo? activePrintInfo;
         partial void OnActivePrintInfoChanged(OctoPrintJobInfo? value)

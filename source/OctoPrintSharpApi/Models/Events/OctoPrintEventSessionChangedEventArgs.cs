@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using AndreasReitberger.API.Print3dServer.Core.Events;
+using Newtonsoft.Json;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintEventSessionChangedEventArgs : OctoPrintEventArgs
+    public class OctoPrintEventSessionChangedEventArgs : Print3dBaseEventArgs
     {
         #region Properties
         public object? Session;

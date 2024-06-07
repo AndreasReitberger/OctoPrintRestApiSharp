@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
+using AndreasReitberger.API.Print3dServer.Core.Events;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintJsonConvertEventArgs : EventArgs
+    public class OctoPrintJsonConvertEventArgs : Print3dBaseEventArgs
     {
         #region Properties
-        public string Message { get; set; } = string.Empty;
         public string OriginalString { get; set; } = string.Empty;
         public Exception? Exception { get; set; }
         #endregion

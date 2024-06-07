@@ -3,7 +3,8 @@ using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintEventArgs : EventArgs
+    [Obsolete("Use Print3dBaseEventArgs instead")]
+    internal class OctoPrintEventArgs : EventArgs
     {
         #region Properties
         public string Message { get; set; } = string.Empty;
