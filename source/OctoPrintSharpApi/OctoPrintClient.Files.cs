@@ -18,6 +18,16 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Methods
 
+        public override async Task<List<IGcodeGroup>> GetModelGroupsAsync(string path = "")
+        {
+            List<IGcode> files = await GetFilesAsync().ConfigureAwait(false);
+            IEnumerable<OctoPrintGroup> directories = files
+                .Select(gc => gc.Group)
+                .Distinct()
+                .Select(groupName => new OctoPrintGroup() { Name = groupName, DirectoryName = groupName, Path = groupName });
+            return [.. directories];
+        }
+
         public override async Task<List<IGcode>> GetFilesAsync()
         {
             List<OctoPrintModel> models = await GetAllFilesAsync(location: OctoPrintFileLocations.local.ToString()).ConfigureAwait(false);

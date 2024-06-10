@@ -29,6 +29,7 @@ namespace AndreasReitberger.API.OctoPrint
                 new TypeMappingConverter<IAuthenticationHeader, AuthenticationHeader>(),
                 new TypeMappingConverter<IPrinter3d, OctoPrintPrinter>(),
                 new TypeMappingConverter<IGcode, OctoPrintFile>(),
+                new TypeMappingConverter<IGcodeGroup, OctoPrintGroup>(),
                 new TypeMappingConverter<IHeaterComponent, OctoPrintPrinterStateTemperatureInfo>(),
                 new TypeMappingConverter<IToolhead, OctoPrintPrinterStateToolheadInfo>(),
                 new TypeMappingConverter<IPrint3dJobStatus, OctoPrintJobInfo>(),
@@ -47,6 +48,7 @@ namespace AndreasReitberger.API.OctoPrint
                 new TypeMappingConverter<IAuthenticationHeader, AuthenticationHeader>(),
                 new TypeMappingConverter<IPrinter3d, OctoPrintPrinter>(),
                 new TypeMappingConverter<IGcode, OctoPrintFile>(),
+                new TypeMappingConverter<IGcodeGroup, OctoPrintGroup>(),
                 new TypeMappingConverter<IHeaterComponent, OctoPrintPrinterStateTemperatureInfo>(),
                 new TypeMappingConverter<IToolhead, OctoPrintPrinterStateToolheadInfo>(),
             }
