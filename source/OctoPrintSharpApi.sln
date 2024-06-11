@@ -7,7 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoPrintSharpApi", "OctoPr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctoPrintSharpApi.NUnitTest", "OctoPrintSharpApi.NUnitTest\OctoPrintSharpApi.NUnitTest.csproj", "{1F6D27D0-1017-4421-8281-0265A627B408}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Print3dServer.Core", "..\..\Print3dServer.Core\src\Print3dServer.Core\Print3dServer.Core.csproj", "{C958DC98-E2DD-417A-8DDA-30B69F1E379B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C522F0B9-21DF-43E5-A2B2-72FD0336CB4D}"
+	ProjectSection(SolutionItems) = preProject
+		..\common.props = ..\common.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +26,6 @@ Global
 		{1F6D27D0-1017-4421-8281-0265A627B408}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F6D27D0-1017-4421-8281-0265A627B408}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F6D27D0-1017-4421-8281-0265A627B408}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C958DC98-E2DD-417A-8DDA-30B69F1E379B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
