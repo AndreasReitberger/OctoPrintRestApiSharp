@@ -1,8 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using AndreasReitberger.API.Print3dServer.Core.Events;
+using Newtonsoft.Json;
+using System;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintActivePrinterChangedEventArgs : OctoPrintEventArgs
+    [Obsolete("Use ActivePrinterChangedEventArgs instead")]
+    public class OctoPrintActivePrinterChangedEventArgs : Print3dBaseEventArgs
     {
         #region Properties
         public OctoPrintPrinter? NewPrinter;

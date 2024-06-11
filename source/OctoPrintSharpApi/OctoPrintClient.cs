@@ -12,7 +12,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -116,39 +115,6 @@ namespace AndreasReitberger.API.OctoPrint
             });
             UpdatePrinterState(value);
         }
-
-        [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        OctoPrintJobInfo? activePrintInfo;
-        partial void OnActivePrintInfoChanged(OctoPrintJobInfo? value)
-        {
-            OnPrintInfoChanged(new OctoPrintActivePrintInfoChangedEventArgs()
-            {
-                SessionId = SessionId,
-                NewActivePrintInfo = value,
-                Printer = GetActivePrinterSlug(),
-            });
-        }
-
-
-        #endregion
-
-        #region Models
-
-        [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        ObservableCollection<OctoPrintModel> models = new();
-        partial void OnModelsChanged(ObservableCollection<OctoPrintModel> value)
-        {
-            OnOctoPrintModelsChanged(new OctoPrintModelsChangedEventArgs()
-            {
-                NewModels = value,
-                SessionId = SessionId,
-                CallbackId = -1,
-                Printer = GetActivePrinterSlug(),
-            });
-        }
-       
         #endregion
 
         #region ReadOnly
@@ -1825,12 +1791,14 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                ActivePrintInfo = await GetJobInfoAsync().ConfigureAwait(false);
+                //ActivePrintInfo = await GetJobInfoAsync().ConfigureAwait(false);
+                ActiveJob = await GetJobInfoAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                ActivePrintInfo = null;
+                //ActivePrintInfo = null;
+                ActiveJob = null;
             }
 
         }

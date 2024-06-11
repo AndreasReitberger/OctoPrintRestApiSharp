@@ -15,13 +15,17 @@ namespace AndreasReitberger.API.OctoPrint
             MessagesChanged?.Invoke(this, e);
         }
 
+        [Obsolete("Use the event JobStatusChanged isntead")]
         public event EventHandler<OctoPrintActivePrintInfosChangedEventArgs>? PrintInfosChanged;
+        [Obsolete("Use the event JobStatusChanged isntead")]
         protected virtual void OnPrintInfosChanged(OctoPrintActivePrintInfosChangedEventArgs e)
         {
             PrintInfosChanged?.Invoke(this, e);
         }
 
+        [Obsolete("Use the event JobStatusChanged isntead")]
         public event EventHandler<OctoPrintActivePrintInfoChangedEventArgs>? PrintInfoChanged;
+        [Obsolete("Use the event JobStatusChanged isntead")]
         protected virtual void OnPrintInfoChanged(OctoPrintActivePrintInfoChangedEventArgs e)
         {
             PrintInfoChanged?.Invoke(this, e);
@@ -49,18 +53,6 @@ namespace AndreasReitberger.API.OctoPrint
         protected virtual void OnOctoPrintConnectionSettingsChanged(OctoPrintConnectionSettingsChangedEventArgs e)
         {
             OctoPrintConnectionSettingsChanged?.Invoke(this, e);
-        }
-
-        public event EventHandler<OctoPrintModelsChangedEventArgs>? OctoPrintModelsChanged;
-        protected virtual void OnOctoPrintModelsChanged(OctoPrintModelsChangedEventArgs e)
-        {
-            OctoPrintModelsChanged?.Invoke(this, e);
-        }
-
-        public event EventHandler<OctoPrintModelGroupsChangedEventArgs>? OctoPrintModelGroupsChanged;
-        protected virtual void OnOctoPrintModelGroupsChanged(OctoPrintModelGroupsChangedEventArgs e)
-        {
-            OctoPrintModelGroupsChanged?.Invoke(this, e);
         }
 
         #endregion
