@@ -115,40 +115,6 @@ namespace AndreasReitberger.API.OctoPrint
             });
             UpdatePrinterState(value);
         }
-
-        [ObservableProperty]
-        [Obsolete("Use ActiveJob insead")]
-        [JsonIgnore, XmlIgnore]
-        OctoPrintJobInfo? activePrintInfo;
-        partial void OnActivePrintInfoChanged(OctoPrintJobInfo? value)
-        {
-            OnPrintInfoChanged(new OctoPrintActivePrintInfoChangedEventArgs()
-            {
-                SessionId = SessionId,
-                NewActivePrintInfo = value,
-                Printer = GetActivePrinterSlug(),
-            });
-        }
-
-
-        #endregion
-
-        #region Models
-
-        [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        ObservableCollection<OctoPrintModel> models = new();
-        partial void OnModelsChanged(ObservableCollection<OctoPrintModel> value)
-        {
-            OnOctoPrintModelsChanged(new OctoPrintModelsChangedEventArgs()
-            {
-                NewModels = value,
-                SessionId = SessionId,
-                CallbackId = -1,
-                Printer = GetActivePrinterSlug(),
-            });
-        }
-       
         #endregion
 
         #region ReadOnly
@@ -1825,12 +1791,14 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                ActivePrintInfo = await GetJobInfoAsync().ConfigureAwait(false);
+                //ActivePrintInfo = await GetJobInfoAsync().ConfigureAwait(false);
+                ActiveJob = await GetJobInfoAsync().ConfigureAwait(false);
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                ActivePrintInfo = null;
+                //ActivePrintInfo = null;
+                ActiveJob = null;
             }
 
         }

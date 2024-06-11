@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.API.OctoPrint.Enum;
 using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.OctoPrint.Structs;
+using AndreasReitberger.API.Print3dServer.Core;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using Newtonsoft.Json;
 using System;
@@ -20,6 +21,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         public override async Task<List<IGcodeGroup>> GetModelGroupsAsync(string path = "")
         {
+            //List<IGcode> files = await GetAllFilesAsync().ConfigureAwait(false);
             List<IGcode> files = await GetFilesAsync().ConfigureAwait(false);
             IEnumerable<OctoPrintGroup> directories = files
                 .Select(gc => gc.Group)
@@ -55,43 +57,58 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        public async Task RefreshFilesAsync()
+        public Task RefreshFilesAsync() => RefreshFilesAsync(CurrentFileLocation.ToString());
+        /*
         {
             try
             {
                 List<OctoPrintModel> modelData = [];
                 if (!IsReady || ActivePrinter is null)
                 {
-                    Models = [.. modelData];
+                    Files = [];
+                    Groups = [];
                     return;
                 }
                 modelData = await GetAllFilesAsync(CurrentFileLocation.ToString()).ConfigureAwait(false);
-                Models = [.. modelData];
+                
+                IEnumerable<OctoPrintModel> files = modelData.Where(md => !md.IsFolder && md.File is not null);
+                Files = [.. files.Select(md => md.File)];
+
+                IEnumerable<OctoPrintModel> folders = modelData.Where(md => md.IsFolder);
+                Groups = [.. folders.Select(f => new OctoPrintGroup() { Name = f.Name, DirectoryName = f.Name, Path = f.Path, Root = f.Location)];
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                Models = [];
+                Files = [];
+                Groups = [];
             }
-        }
+        }*/
 
-        public async Task RefreshFilesAsync(string Location)
+        public async Task RefreshFilesAsync(string location)
         {
             try
             {
                 List<OctoPrintModel> modelData = [];
                 if (!IsReady || ActivePrinter is null)
                 {
-                    Models = [.. modelData];
+                    Files = [];
+                    Groups = [];
                     return;
                 }
-                modelData = await GetAllFilesAsync(Location).ConfigureAwait(false);
-                Models = [.. modelData];
+                modelData = await GetAllFilesAsync(location).ConfigureAwait(false);
+
+                IEnumerable<OctoPrintModel> files = modelData.Where(md => !md.IsFolder && md.File is not null);
+                Files = [.. files.Select(md => md.File)];
+
+                IEnumerable<OctoPrintModel> folders = modelData.Where(md => md.IsFolder);
+                Groups = [.. folders.Select(f => new OctoPrintGroup() { Name = f.Name, DirectoryName = f.Name, Path = f.Path, Root = f.Location })];
             }
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                Models = [];
+                Files = [];
+                Groups = [];
             }
         }
         public Task RefreshFilesAsync(OctoPrintFileLocations Location) => RefreshFilesAsync(Location.ToString());

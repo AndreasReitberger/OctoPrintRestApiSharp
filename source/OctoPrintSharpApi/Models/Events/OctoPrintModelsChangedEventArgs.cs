@@ -1,10 +1,12 @@
 ﻿using AndreasReitberger.API.Print3dServer.Core.Events;
 using Newtonsoft.Json;
+using System;
 using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
-    public class OctoPrintModelsChangedEventArgs : Print3dBaseEventArgs
+    [Obsolete("Use GcodesChangedEventArgs instead")]
+    internal class OctoPrintModelsChangedEventArgs : Print3dBaseEventArgs
     {
         #region Properties
         public ObservableCollection<OctoPrintModel> NewModels { get; set; } = [];
