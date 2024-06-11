@@ -27,7 +27,9 @@ namespace AndreasReitberger.API.OctoPrint.Models
         double? offset = 0;
 
         [JsonIgnore]
-        public OctoPrintCurrentToolState State { get => GetCurrentState(); }
+        public Printer3dToolHeadState State { get => GetCurrentState(); }
+        //public OctoPrintCurrentToolState State { get => GetCurrentState(); }
+
         [ObservableProperty]
         Printer3dHeaterType type = Printer3dHeaterType.Extruder;
 
@@ -53,19 +55,19 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #endregion
 
         #region Methods
-        OctoPrintCurrentToolState GetCurrentState()
+        public Printer3dToolHeadState GetCurrentState()
         {
             if (TempSet is null || TempSet < 0 || TempRead is null || TempRead < 0)
-                return OctoPrintCurrentToolState.Error;
+                return Printer3dToolHeadState.Error;
             else
             {
                 if (TempSet <= 0)
-                    return OctoPrintCurrentToolState.Idle;
+                    return Printer3dToolHeadState.Idle;
                 // Check if temperature is reached with a hysteresis
                 else if (TempSet > TempRead && Math.Abs((double)TempSet - (double)TempRead) > 2)
-                    return OctoPrintCurrentToolState.Heating;
+                    return Printer3dToolHeadState.Heating;
                 else
-                    return OctoPrintCurrentToolState.Ready;
+                    return Printer3dToolHeadState.Ready;
             }
         }
         public Task<bool> SetTemperatureAsync(IPrint3dServerClient client, string command, object? data) => client.SetExtruderTemperatureAsync(command, data);

@@ -4,6 +4,7 @@ using AndreasReitberger.API.Print3dServer.Core.Events;
 
 namespace AndreasReitberger.API.OctoPrint.Models
 {
+    [Obsolete("Use JsonConvertEventArgs instead")]
     public class OctoPrintJsonConvertEventArgs : Print3dBaseEventArgs
     {
         #region Properties

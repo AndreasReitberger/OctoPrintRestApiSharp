@@ -13,10 +13,6 @@ namespace AndreasReitberger.API.OctoPrint
 {
     public partial class OctoPrintClient
     {
-        #region Properties
-
-        #endregion
-
         #region Methods
         async Task<OctoPrintPrinterProfiles?> GetPrinterProfilesAsync()
         {
