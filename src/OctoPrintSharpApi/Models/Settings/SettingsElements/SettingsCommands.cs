@@ -6,17 +6,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("serverRestartCommand", NullValueHandling = NullValueHandling.Ignore)]
         public partial string ServerRestartCommand { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonProperty("systemRestartCommand", NullValueHandling = NullValueHandling.Ignore)]
         public partial string SystemRestartCommand { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonProperty("systemShutdownCommand", NullValueHandling = NullValueHandling.Ignore)]
         public partial string SystemShutdownCommand { get; set; } = string.Empty;
         #endregion

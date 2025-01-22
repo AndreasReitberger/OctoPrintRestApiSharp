@@ -7,17 +7,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
         public partial bool? Enabled { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
         public partial long? Ttl { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
         public partial Uri? Url { get; set; }
         #endregion

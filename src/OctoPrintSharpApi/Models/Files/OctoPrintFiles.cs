@@ -8,26 +8,26 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("files")]
         public partial List<IGcode> Files { get; set; } = [];
 
         //public List<OctoPrintFile> Files; = new();
 
         [ObservableProperty]
-        
+
         [JsonProperty("children")]
         public partial List<IGcode> Children { get; set; } = [];
 
         //public List<OctoPrintFile> Children; = new();
 
         [ObservableProperty]
-        
+
         [JsonProperty("free")]
         public partial long Free { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("total")]
         public partial long Total { get; set; }
         #endregion

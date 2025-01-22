@@ -7,7 +7,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("profiles")]
         public partial Dictionary<string, OctoPrintPrinter> Profiles { get; set; } = [];
         #endregion

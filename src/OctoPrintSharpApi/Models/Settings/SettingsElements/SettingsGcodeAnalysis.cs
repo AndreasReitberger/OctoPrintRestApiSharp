@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("runAt", NullValueHandling = NullValueHandling.Ignore)]
         public partial string RunAt { get; set; } = string.Empty;
         #endregion

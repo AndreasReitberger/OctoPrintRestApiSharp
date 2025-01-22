@@ -11,22 +11,22 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonIgnore]
         public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("actual", NullValueHandling = NullValueHandling.Ignore)]
         public partial double? TempRead { get; set; } = 0;
 
         [ObservableProperty]
-        
+
         [JsonProperty("target")]
         public partial double? TempSet { get; set; } = 0;
 
         [ObservableProperty]
-        
+
         [JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
         public partial double? Offset { get; set; } = 0;
         [JsonIgnore]
@@ -38,12 +38,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         #region Interface, unused
         [ObservableProperty]
-        
+
         [JsonIgnore]
         public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonIgnore]
         public partial long Error { get; set; }
         #endregion

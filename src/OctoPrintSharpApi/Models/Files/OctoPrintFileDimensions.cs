@@ -6,17 +6,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("depth")]
         public partial double Depth { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("height")]
         public partial double Height { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("width")]
         public partial double Width { get; set; }
         #endregion

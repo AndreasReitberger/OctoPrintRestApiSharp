@@ -6,12 +6,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("allowCrossOrigin", NullValueHandling = NullValueHandling.Ignore)]
         public partial bool? AllowCrossOrigin { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("key", NullValueHandling = NullValueHandling.Ignore)]
         public partial string Key { get; set; } = string.Empty;
         #endregion

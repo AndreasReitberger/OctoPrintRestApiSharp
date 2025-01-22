@@ -6,12 +6,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("averagePrintTime")]
         public partial OctoPrintFilePrintTime? AveragePrintTime { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("lastPrintTime")]
         public partial OctoPrintFilePrintTime? LastPrintTime { get; set; }
         #endregion

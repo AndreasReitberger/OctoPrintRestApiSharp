@@ -8,23 +8,23 @@ namespace AndreasReitberger.API.OctoPrint.Models
         public bool IsFolder => !string.IsNullOrEmpty(Type) && Type?.ToLower() == "folder";
 
         [ObservableProperty]
-        
+
         public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         public partial string Type { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         public partial string Location { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         public partial string Path { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         public partial OctoPrintFile? File { get; set; }
         #endregion
 

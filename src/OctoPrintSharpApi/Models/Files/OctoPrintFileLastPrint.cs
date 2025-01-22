@@ -6,17 +6,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("date")]
         public partial double Date { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("printTime")]
         public partial double PrintTime { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("success")]
         public partial bool Success { get; set; }
         #endregion

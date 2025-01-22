@@ -6,17 +6,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("failure")]
         public partial long Failure { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("last")]
         public partial OctoPrintFileLastPrint? Last { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("success")]
         public partial long Success { get; set; }
         #endregion

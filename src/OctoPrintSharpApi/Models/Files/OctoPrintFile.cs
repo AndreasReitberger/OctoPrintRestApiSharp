@@ -172,10 +172,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         [JsonIgnore]
         public bool IsAnalysed => GcodeAnalysis is not null;
-        
+
         [JsonIgnore]
         public bool Printed => Statistics is not null;
-        
+
         #endregion
 
         #region Methods

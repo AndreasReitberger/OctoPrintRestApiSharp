@@ -10,17 +10,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Interface, unused
 
         [ObservableProperty]
-       
+
         [JsonIgnore]
         public partial double X { get; set; } = 0;
 
         [ObservableProperty]
-        
+
         [JsonIgnore]
         public partial double Y { get; set; } = 0;
 
         [ObservableProperty]
-        
+
         [JsonIgnore]
         public partial double Z { get; set; } = 0;
 

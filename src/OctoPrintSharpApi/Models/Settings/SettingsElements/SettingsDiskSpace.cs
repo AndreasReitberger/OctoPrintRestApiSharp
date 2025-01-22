@@ -6,12 +6,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("critical", NullValueHandling = NullValueHandling.Ignore)]
         public partial long? Critical { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("warning", NullValueHandling = NullValueHandling.Ignore)]
         public partial long? Warning { get; set; }
         #endregion

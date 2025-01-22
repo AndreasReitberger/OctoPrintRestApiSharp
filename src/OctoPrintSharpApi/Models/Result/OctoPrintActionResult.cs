@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("ok")]
         public partial bool Ok { get; set; }
         #endregion
