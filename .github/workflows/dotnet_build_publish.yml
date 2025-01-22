@@ -28,7 +28,7 @@ jobs:
 #        & dotnet workload install maui --source https://api.nuget.org/v3/index.json
 #        & dotnet workload install android ios maccatalyst tvos macos maui wasm-tools maui-maccatalyst --source https://api.nuget.org/v3/index.json
     - name: Build
-      run: dotnet build --configuration Release ./src 
+      run: dotnet build --configuration Release ./source 
     - name: Package NuGets
       shell: pwsh
       run: |
