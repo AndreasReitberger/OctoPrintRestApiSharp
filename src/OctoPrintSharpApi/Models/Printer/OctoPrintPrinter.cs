@@ -89,7 +89,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region JsonIgnored
 
         [ObservableProperty]
-        
+
         public partial bool IsActive { get; set; } = true;
         [ObservableProperty]
         [JsonIgnore]

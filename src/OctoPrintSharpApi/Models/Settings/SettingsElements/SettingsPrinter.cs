@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("defaultExtrusionLength", NullValueHandling = NullValueHandling.Ignore)]
         public partial long? DefaultExtrusionLength { get; set; }
         #endregion

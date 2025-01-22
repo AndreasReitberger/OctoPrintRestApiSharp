@@ -7,12 +7,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("download", NullValueHandling = NullValueHandling.Ignore)]
         public partial Uri? Download { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
         public partial Uri? Resource { get; set; }
         #endregion

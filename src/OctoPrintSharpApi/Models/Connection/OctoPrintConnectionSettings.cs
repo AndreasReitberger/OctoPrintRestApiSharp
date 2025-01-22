@@ -6,12 +6,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("current")]
         public partial OctoPrintConnectionSettingsConnection? Current { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("options")]
         public partial OctoPrintConnectionSettingsOptions? Options { get; set; }
         #endregion

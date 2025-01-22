@@ -7,12 +7,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
         public partial List<object> Actions { get; set; } = [];
 
         [ObservableProperty]
-        
+
         [JsonProperty("events")]
         public partial object? Events { get; set; }
         #endregion

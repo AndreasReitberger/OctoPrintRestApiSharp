@@ -271,7 +271,7 @@ namespace AndreasReitberger.API.OctoPrint
                 List<OctoPrintPrinterStateTemperatureInfo> heatedChambers = [];
                 if (newState.Temperature?.Chamber is not null) heatedChambers.Add(newState.Temperature.Chamber);
                 HeatedChambers = [.. heatedChambers];
-                */             
+                */
             }
             catch (Exception exc)
             {
@@ -347,7 +347,7 @@ namespace AndreasReitberger.API.OctoPrint
                 return new OctoPrintFiles();
             }
         }
-        protected List<OctoPrintModel> IterateOctoPrintFileStack(IGcode[] files) =>  IterateOctoPrintFileStack(files.ToList());
+        protected List<OctoPrintModel> IterateOctoPrintFileStack(IGcode[] files) => IterateOctoPrintFileStack(files.ToList());
 
         protected List<OctoPrintModel> IterateOctoPrintFileStack(List<IGcode>? files)
         {
@@ -407,7 +407,7 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Refresh
 
-        public new Task StartListeningAsync(bool stopActiveListening = false, string[]? commandsOnConnect = null) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, () => Task.Run(async() =>
+        public new Task StartListeningAsync(bool stopActiveListening = false, string[]? commandsOnConnect = null) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, () => Task.Run(async () =>
         {
             List<Task> tasks = new()
             {
@@ -465,11 +465,11 @@ namespace AndreasReitberger.API.OctoPrint
         #region CheckOnline
 
         public Task CheckOnlineAsync(CancellationTokenSource cts) => CheckOnlineAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", cts);
-        
+
         public Task<bool> CheckIfApiIsValidAsync(int timeout = 10000) => CheckIfApiIsValidAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", timeout);
-       
+
         public Task CheckServerIfApiIsValidAsync(int Timeout = 10000) => CheckIfApiIsValidAsync(Timeout);
-        
+
         #endregion
 
         #region CheckForUpdates
@@ -668,9 +668,9 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        public Task<bool> ConnectPrinterAsync(string printerProfile, bool save, bool autoconnect, string port = "", long baudRate = -1) 
+        public Task<bool> ConnectPrinterAsync(string printerProfile, bool save, bool autoconnect, string port = "", long baudRate = -1)
             => ConnectPrinterAsync(port, baudRate, printerProfile, save, autoconnect);
-          
+
 
         public async Task<bool> DisconnectPrinterAsync()
         {
@@ -707,9 +707,9 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
         #endregion
-     
+
         #region PrinterOperations
-       
+
         #region PrintHead
         public async Task<bool> JogPrinterAsync(
             double Speed = 100,
@@ -903,7 +903,7 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
         public Task<bool> SetToolTemperatureAsync(long tool0, long tool1 = 0) => SetToolTemperatureAsync(Convert.ToInt32(tool0), Convert.ToInt32(tool1));
-        
+
         public async Task<bool> SetToolTemperatureAsync(int tool0 = int.MinValue, int tool1 = int.MinValue)
         {
             try
@@ -1151,7 +1151,7 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
         public Task<bool> SetBedTemperatureAsync(long target) => SetBedTemperatureAsync(Convert.ToInt32(target));
-        
+
         public async Task<bool> SetBedTemperatureAsync(int target)
         {
             try

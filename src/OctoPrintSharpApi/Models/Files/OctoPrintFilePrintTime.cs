@@ -6,7 +6,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("_default")]
         public partial double DefaultValue { get; set; }
         #endregion

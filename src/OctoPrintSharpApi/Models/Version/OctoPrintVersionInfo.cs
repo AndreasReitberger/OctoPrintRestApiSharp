@@ -6,17 +6,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("api")]
         public partial string Api { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonProperty("server")]
         public partial string Server { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonProperty("text")]
         public partial string Text { get; set; } = string.Empty;
         #endregion

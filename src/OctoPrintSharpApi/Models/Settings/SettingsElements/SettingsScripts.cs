@@ -7,7 +7,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("gcode", NullValueHandling = NullValueHandling.Ignore)]
         public partial Dictionary<string, string> Gcode { get; set; } = [];
         #endregion

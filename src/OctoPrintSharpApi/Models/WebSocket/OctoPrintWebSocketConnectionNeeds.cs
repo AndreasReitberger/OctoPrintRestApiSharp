@@ -7,7 +7,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("role")]
         public partial List<string> Role { get; set; } = [];
         #endregion

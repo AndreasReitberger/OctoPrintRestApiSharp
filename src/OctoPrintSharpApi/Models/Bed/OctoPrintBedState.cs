@@ -7,12 +7,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
         public partial OctoPrintPrinterStateTemperatureInfo? Bed { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
         public partial List<OctoPrintBedStateHistory> History { get; set; } = [];
         #endregion

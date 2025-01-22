@@ -6,17 +6,17 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("afterPrintCancelled", NullValueHandling = NullValueHandling.Ignore)]
         public partial string AfterPrintCancelled { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonProperty("snippets/disable_bed", NullValueHandling = NullValueHandling.Ignore)]
         public partial string SnippetsDisableBed { get; set; } = string.Empty;
 
         [ObservableProperty]
-        
+
         [JsonProperty("snippets/disable_hotends", NullValueHandling = NullValueHandling.Ignore)]
         public partial string SnippetsDisableHotends { get; set; } = string.Empty;
         #endregion

@@ -374,7 +374,7 @@ namespace AndreasReitberger.API.OctoPrint
                     { "foldername", name },
                     { "path", path },
                 };
-                IRestApiRequestRespone? result = 
+                IRestApiRequestRespone? result =
                     await SendMultipartFormDataFileRestApiRequestAsync(requestTargetUri: targetRequestUri, authHeaders: AuthHeaders, parameters: parameters);
                 //result = await SendMultipartFormDataFolderRestApiRequestAsync(name, location, path);
                 if (result is not null)
@@ -388,9 +388,9 @@ namespace AndreasReitberger.API.OctoPrint
             }
         }
 
-        public override Task<byte[]?> DownloadFileAsync(string downloadUri) 
+        public override Task<byte[]?> DownloadFileAsync(string downloadUri)
             => DownloadFileFromUriAsync(path: downloadUri, authHeaders: AuthHeaders, timeout: 100000);
-        public Task<byte[]?> DownloadFileAsync(string downloadUri, int timeout = 100000) 
+        public Task<byte[]?> DownloadFileAsync(string downloadUri, int timeout = 100000)
             => DownloadFileFromUriAsync(path: downloadUri, authHeaders: AuthHeaders, timeout: timeout);
         #endregion
 

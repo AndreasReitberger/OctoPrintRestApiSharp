@@ -6,22 +6,22 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("e")]
         public partial OctoPrintPrinterAxesAttribute? E { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("x")]
         public partial OctoPrintPrinterAxesAttribute? X { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("y")]
         public partial OctoPrintPrinterAxesAttribute? Y { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("z")]
         public partial OctoPrintPrinterAxesAttribute? Z { get; set; }
         #endregion

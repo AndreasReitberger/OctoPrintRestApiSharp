@@ -7,12 +7,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
         [ObservableProperty]
-        
+
         [JsonProperty("done", NullValueHandling = NullValueHandling.Ignore)]
         public partial bool Done { get; set; }
 
         [ObservableProperty]
-        
+
         [JsonProperty("files", NullValueHandling = NullValueHandling.Ignore)]
         public partial Dictionary<string, OctoPrintFile> Files { get; set; } = [];
         #endregion
