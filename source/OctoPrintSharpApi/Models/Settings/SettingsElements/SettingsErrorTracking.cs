@@ -6,25 +6,30 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsErrorTracking : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enabled;
+        [ObservableProperty]
+        
+        [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Enabled { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enabled_unreleased", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enabledUnreleased;
+        [ObservableProperty]
+        
+        [JsonProperty("enabled_unreleased", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? EnabledUnreleased { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("unique_id", NullValueHandling = NullValueHandling.Ignore)]
-        Guid? uniqueId;
+        [ObservableProperty]
+        
+        [JsonProperty("unique_id", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Guid? UniqueId { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("url_coreui", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? urlCoreui;
+        [ObservableProperty]
+        
+        [JsonProperty("url_coreui", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? UrlCoreui { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("url_server", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? urlServer;
+        [ObservableProperty]
+        
+        [JsonProperty("url_server", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? UrlServer { get; set; }
         #endregion
 
         #region Overrides

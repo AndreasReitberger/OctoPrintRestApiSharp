@@ -9,12 +9,12 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintJobInfo : ObservableObject, IPrint3dJobStatus
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("job")]
-        OctoPrintJobInfoJob? job;
+        [ObservableProperty]
+        [JsonProperty("job")]
+        public partial OctoPrintJobInfoJob? Job { get; set; }
         partial void OnJobChanged(OctoPrintJobInfoJob? value)
         {
             if (value is not null)
@@ -26,9 +26,9 @@ namespace AndreasReitberger.API.OctoPrint.Models
             }
         }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("progress")]
-        OctoPrintJobInfoProgress? progress;
+        [ObservableProperty]
+        [JsonProperty("progress")]
+        public partial OctoPrintJobInfoProgress? Progress { get; set; }
         partial void OnProgressChanged(OctoPrintJobInfoProgress? value)
         {
             if (value is not null)
@@ -39,20 +39,21 @@ namespace AndreasReitberger.API.OctoPrint.Models
             }
         }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("state")]
-        Print3dJobState? state;
+        [ObservableProperty]
+        [JsonProperty("state")]
+        public partial Print3dJobState? State { get; set; }
+
         //string state = string.Empty;
         #endregion
 
         #region Interface
 
 
-        [ObservableProperty, JsonIgnore]
-        string fileName = string.Empty;
+        [ObservableProperty]
+        public partial string FileName { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        double? done;
+        [ObservableProperty]
+        public partial double? Done { get; set; }
         partial void OnDoneChanged(double? value)
         {
             if (value is not null)
@@ -61,71 +62,80 @@ namespace AndreasReitberger.API.OctoPrint.Models
                 DonePercentage = 0;
         }
 
-        [ObservableProperty, JsonIgnore]
-        double? printDurationTimeComp;
+        [ObservableProperty]
+        public partial double? PrintDurationTimeComp { get; set; }
 
-        [ObservableProperty, JsonIgnore]
+        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(StartTimeGeneralized))]
-        double? startTime;
+        public partial double? StartTime { get; set; }
         partial void OnStartTimeChanged(double? value)
         {
             if (value is not null)
                 StartTimeGeneralized = TimeBaseConvertHelper.FromDouble(value);
         }
 
-        [ObservableProperty, JsonIgnore]
-        DateTime? startTimeGeneralized;
+        [ObservableProperty]
+        public partial DateTime? StartTimeGeneralized { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        double? endTime;
+        [ObservableProperty]
+        public partial double? EndTime { get; set; }
         partial void OnEndTimeChanged(double? value)
         {
             if (value is not null)
                 EndTimeGeneralized = TimeBaseConvertHelper.FromDouble(value);
         }
 
-        [ObservableProperty, JsonIgnore]
-        DateTime? endTimeGeneralized;
+        [ObservableProperty]
+        public partial DateTime? EndTimeGeneralized { get; set; }
 
-        [ObservableProperty, JsonIgnore]
+        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(PrintDurationGeneralized))]
-        double? printDuration;
+        public partial double? PrintDuration { get; set; }
         partial void OnPrintDurationChanged(double? value)
         {
             if (value is not null)
                 PrintDurationGeneralized = TimeBaseConvertHelper.FromDoubleHours(value);
         }
 
-        [ObservableProperty, JsonIgnore]
-        TimeSpan? printDurationGeneralized;
+        [ObservableProperty]
+        public partial TimeSpan? PrintDurationGeneralized { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        double? totalPrintDuration;
+        [ObservableProperty]
+        public partial double? TotalPrintDuration { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        TimeSpan? totalPrintDurationGeneralized;
+        [ObservableProperty]
+        public partial TimeSpan? TotalPrintDurationGeneralized { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        string jobId = string.Empty;
+        [ObservableProperty]
+        public partial string JobId { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        double? filamentUsed;
+        [ObservableProperty]
+        public partial double? FilamentUsed { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        double? donePercentage;
+        [ObservableProperty]
+        public partial double? DonePercentage { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        bool fileExists;
+        [ObservableProperty]
+        public partial bool FileExists { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        IGcodeMeta? meta;
+        [ObservableProperty]
+        public partial IGcodeMeta? Meta { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        double? remainingPrintTime;
-        /*
-        [JsonIgnore]
-        public double? RemainingPrintTime => PrintDuration > 0 ? PrintDuration - PrintDurationTimeComp : 0;
-        */
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(RemainingPrintTimeGeneralized))]
+        public partial double? RemainingPrintTime { get; set; }
+        partial void OnRemainingPrintTimeChanged(double? value)
+        {
+            if (value is not null)
+                RemainingPrintTimeGeneralized = TimeBaseConvertHelper.FromDoubleSeconds(value);
+        }
+
+        [ObservableProperty]
+        public partial TimeSpan? RemainingPrintTimeGeneralized { get; set; }
+
+        [ObservableProperty]
+        public partial long? Repeat { get; set; }
+
         #endregion
 
         #region Static
@@ -144,6 +154,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
             return JsonConvert.SerializeObject(this);
         }
         #endregion
+
         #region Dispose
         public void Dispose()
         {

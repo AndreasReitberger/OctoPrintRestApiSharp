@@ -6,13 +6,15 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsSystemClass : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
-        List<object> actions = [];
+        [ObservableProperty]
+        
+        [JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<object> Actions { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("events")]
-        object? events;
+        [ObservableProperty]
+        
+        [JsonProperty("events")]
+        public partial object? Events { get; set; }
         #endregion
 
         #region Overrides

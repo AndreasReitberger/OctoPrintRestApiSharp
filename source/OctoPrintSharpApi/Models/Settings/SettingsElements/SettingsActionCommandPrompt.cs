@@ -5,21 +5,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsActionCommandPrompt : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
-        string command = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("command", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Command { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enable", NullValueHandling = NullValueHandling.Ignore)]
-        string enable = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("enable", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Enable { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enable_emergency_sending", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enableEmergencySending;
+        [ObservableProperty]
+        
+        [JsonProperty("enable_emergency_sending", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? EnableEmergencySending { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enable_signal_support", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enableSignalSupport;
+        [ObservableProperty]
+        
+        [JsonProperty("enable_signal_support", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? EnableSignalSupport { get; set; }
         #endregion
 
         #region Overrides

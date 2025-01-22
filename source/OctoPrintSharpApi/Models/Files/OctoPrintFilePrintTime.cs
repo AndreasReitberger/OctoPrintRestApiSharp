@@ -5,9 +5,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintFilePrintTime : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("_default")]
-        double defaultValue;
+        [ObservableProperty]
+        
+        [JsonProperty("_default")]
+        public partial double DefaultValue { get; set; }
         #endregion
 
         #region Overrides

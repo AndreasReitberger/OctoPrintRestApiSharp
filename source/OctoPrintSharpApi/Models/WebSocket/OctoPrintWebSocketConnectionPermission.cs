@@ -7,33 +7,40 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintWebSocketConnectionPermission : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("key")]
-        string key = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("key")]
+        public partial string Key { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name")]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("name")]
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("dangerous")]
-        bool dangerous;
+        [ObservableProperty]
+        
+        [JsonProperty("dangerous")]
+        public partial bool Dangerous { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("default_groups")]
-        List<OctoPrintDefaultGroup> defaultGroups = [];
+        [ObservableProperty]
+        
+        [JsonProperty("default_groups")]
+        public partial List<OctoPrintDefaultGroup> DefaultGroups { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("description")]
-        string description = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("description")]
+        public partial string Description { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("needs")]
-        OctoPrintWebSocketConnectionNeeds? needs;
+        [ObservableProperty]
+        
+        [JsonProperty("needs")]
+        public partial OctoPrintWebSocketConnectionNeeds? Needs { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
-        string plugin = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("plugin", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Plugin { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

@@ -6,37 +6,45 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintWebSocketConnectionInfo : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("version")]
-        string version = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("version")]
+        public partial string Version { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("display_version")]
-        string displayVersion = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("display_version")]
+        public partial string DisplayVersion { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("branch")]
-        string branch = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("branch")]
+        public partial string Branch { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("plugin_hash")]
-        string pluginHash = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("plugin_hash")]
+        public partial string PluginHash { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("config_hash")]
-        string configHash = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("config_hash")]
+        public partial string ConfigHash { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("debug")]
-        bool debug;
+        [ObservableProperty]
+        
+        [JsonProperty("debug")]
+        public partial bool Debug { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("safe_mode")]
-        object? safeMode;
+        [ObservableProperty]
+        
+        [JsonProperty("safe_mode")]
+        public partial object? SafeMode { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("permissions")]
-        List<OctoPrintWebSocketConnectionPermission> permissions = new();
+        [ObservableProperty]
+        
+        [JsonProperty("permissions")]
+        public partial List<OctoPrintWebSocketConnectionPermission> Permissions { get; set; } = new();
         #endregion
 
         #region Overrides

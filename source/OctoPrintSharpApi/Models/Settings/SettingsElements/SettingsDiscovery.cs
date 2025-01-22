@@ -7,37 +7,45 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsDiscovery : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("httpPassword")]
-        object? httpPassword;
+        [ObservableProperty]
+        
+        [JsonProperty("httpPassword")]
+        public partial object? HttpPassword { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("httpUsername")]
-        object? httpUsername;
+        [ObservableProperty]
+        
+        [JsonProperty("httpUsername")]
+        public partial object? HttpUsername { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("model", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsModel? model;
+        [ObservableProperty]
+        
+        [JsonProperty("model", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsModel? Model { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("pathPrefix")]
-        object? pathPrefix;
+        [ObservableProperty]
+        
+        [JsonProperty("pathPrefix")]
+        public partial object? PathPrefix { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("publicHost")]
-        object? publicHost;
+        [ObservableProperty]
+        
+        [JsonProperty("publicHost")]
+        public partial object? PublicHost { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("publicPort", NullValueHandling = NullValueHandling.Ignore)]
-        long? publicPort;
+        [ObservableProperty]
+        
+        [JsonProperty("publicPort", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? PublicPort { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("upnpUuid", NullValueHandling = NullValueHandling.Ignore)]
-        Guid? upnpUuid;
+        [ObservableProperty]
+        
+        [JsonProperty("upnpUuid", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Guid? UpnpUuid { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("zeroConf", NullValueHandling = NullValueHandling.Ignore)]
-        List<object> zeroConf = [];
+        [ObservableProperty]
+        
+        [JsonProperty("zeroConf", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<object> ZeroConf { get; set; } = [];
         #endregion
 
         #region Overrides

@@ -5,37 +5,45 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsAppearance : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("closeModalsWithClick", NullValueHandling = NullValueHandling.Ignore)]
-        bool? closeModalsWithClick;
+        [ObservableProperty]
+        
+        [JsonProperty("closeModalsWithClick", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? CloseModalsWithClick { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("color", NullValueHandling = NullValueHandling.Ignore)]
-        string color = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("color", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Color { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("colorIcon", NullValueHandling = NullValueHandling.Ignore)]
-        bool? colorIcon;
+        [ObservableProperty]
+        
+        [JsonProperty("colorIcon", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? ColorIcon { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("colorTransparent", NullValueHandling = NullValueHandling.Ignore)]
-        bool? colorTransparent;
+        [ObservableProperty]
+        
+        [JsonProperty("colorTransparent", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? ColorTransparent { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("defaultLanguage", NullValueHandling = NullValueHandling.Ignore)]
-        string defaultLanguage = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("defaultLanguage", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string DefaultLanguage { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("fuzzyTimes", NullValueHandling = NullValueHandling.Ignore)]
-        bool? fuzzyTimes;
+        [ObservableProperty]
+        
+        [JsonProperty("fuzzyTimes", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? FuzzyTimes { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("showFahrenheitAlso", NullValueHandling = NullValueHandling.Ignore)]
-        bool? showFahrenheitAlso;
+        [ObservableProperty]
+        
+        [JsonProperty("showFahrenheitAlso", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? ShowFahrenheitAlso { get; set; }
         #endregion
 
         #region Overrides

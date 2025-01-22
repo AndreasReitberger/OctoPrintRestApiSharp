@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\common.props" />
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.1;net6</TargetFrameworks>
+        <TargetFrameworks>netstandard2.1;net8;net9</TargetFrameworks>
         <RootNamespace>AndreasReitberger.API.OctoPrint</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Description>A simple Rest-API-Client for interacting with a OctoPrint instance from any C# project.</Description>
@@ -11,12 +11,12 @@
 		<Nullable>enable</Nullable>
     </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Print3dServer.Core" Version="1.0.2-preview2" />
+		<PackageReference Include="Print3dServer.Core" Version="1.0.3-preview" />
 		<PackageReference Include="RCoreSharp" Version="1.0.9" />
 		<PackageReference Include="RestSharp" Version="112.1.0" />
-		<PackageReference Include="System.Memory" Version="4.5.5" />
+		<PackageReference Include="System.Memory" Version="4.6.0" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>

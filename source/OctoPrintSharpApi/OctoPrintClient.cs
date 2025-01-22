@@ -3,14 +3,15 @@ using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.OctoPrint.Structs;
 using AndreasReitberger.API.Print3dServer.Core;
 using AndreasReitberger.API.Print3dServer.Core.Enums;
-using AndreasReitberger.API.Print3dServer.Core.Events;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
+using AndreasReitberger.API.REST;
+using AndreasReitberger.API.REST.Events;
+using AndreasReitberger.API.REST.Interfaces;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -54,26 +55,27 @@ namespace AndreasReitberger.API.OctoPrint
         #region General
 
         [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        object? update;
+        [field: JsonIgnore, XmlIgnore]
+        public partial object? Update { get; set; }
 
         #endregion
 
         #region PrinterStateInformation
         [ObservableProperty]
-        double lastFlowRate = 100;
+        public partial double LastFlowRate { get; set; } = 100;
 
         [ObservableProperty]
-        double lastFeedRate = 100;
+        public partial double LastFeedRate { get; set; } = 100;
 
         [ObservableProperty]
-        OctoPrintFileLocations currentFileLocation = OctoPrintFileLocations.local;
+        public partial OctoPrintFileLocations CurrentFileLocation { get; set; } = OctoPrintFileLocations.local;
         #endregion
 
         #region State & Config
         [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        OctoPrintSettings? config;
+        [field: JsonIgnore, XmlIgnore]
+        public partial OctoPrintSettings? Config { get; set; }
+
         partial void OnConfigChanged(OctoPrintSettings? value)
         {
             OnOctoPrintPrinterConfigChanged(new OctoPrintPrinterConfigChangedEventArgs()
@@ -85,10 +87,11 @@ namespace AndreasReitberger.API.OctoPrint
             });
             UpdatePrinterConfig(value);
         }
-     
+
         [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        OctoPrintConnectionSettings? connectionSettings;
+        [field: JsonIgnore, XmlIgnore]
+        public partial OctoPrintConnectionSettings? ConnectionSettings { get; set; }
+
         partial void OnConnectionSettingsChanged(OctoPrintConnectionSettings? value)
         {
             OnOctoPrintConnectionSettingsChanged(new OctoPrintConnectionSettingsChangedEventArgs()
@@ -102,8 +105,9 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         [ObservableProperty]
-        [JsonIgnore, XmlIgnore]
-        OctoPrintPrinterState? state;
+        [field: JsonIgnore, XmlIgnore]
+        public partial OctoPrintPrinterState? State { get; set; }
+
         partial void OnStateChanged(OctoPrintPrinterState? value)
         {
             OnOctoPrintPrinterStateChanged(new OctoPrintPrinterStateChangedEventArgs()

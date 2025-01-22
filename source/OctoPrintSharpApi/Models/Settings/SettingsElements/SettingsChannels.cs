@@ -5,25 +5,30 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsChannels : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("_blog", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsBlog? blog;
+        [ObservableProperty]
+        
+        [JsonProperty("_blog", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsBlog? Blog { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("_important", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsBlog? important;
+        [ObservableProperty]
+        
+        [JsonProperty("_important", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsBlog? Important { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("_octopi", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsBlog? octopi;
+        [ObservableProperty]
+        
+        [JsonProperty("_octopi", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsBlog? Octopi { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("_plugins", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsBlog? plugins;
+        [ObservableProperty]
+        
+        [JsonProperty("_plugins", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsBlog? Plugins { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("_releases", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsBlog? releases;
+        [ObservableProperty]
+        
+        [JsonProperty("_releases", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsBlog? Releases { get; set; }
         #endregion
 
         #region Overrides

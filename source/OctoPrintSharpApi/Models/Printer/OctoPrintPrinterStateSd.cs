@@ -5,9 +5,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintPrinterStateSd : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ready", NullValueHandling = NullValueHandling.Ignore)]
-        bool? ready;
+        [ObservableProperty]
+        
+        [JsonProperty("ready", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Ready { get; set; }
         #endregion
 
         #region Overrides

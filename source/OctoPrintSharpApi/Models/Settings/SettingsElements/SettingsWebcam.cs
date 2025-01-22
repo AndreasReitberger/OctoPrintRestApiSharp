@@ -6,69 +6,85 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsWebcam : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("bitrate", NullValueHandling = NullValueHandling.Ignore)]
-        string bitrate = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("bitrate", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Bitrate { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ffmpegPath", NullValueHandling = NullValueHandling.Ignore)]
-        string ffmpegPath = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("ffmpegPath", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string FfmpegPath { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ffmpegThreads", NullValueHandling = NullValueHandling.Ignore)]
-        long? ffmpegThreads;
+        [ObservableProperty]
+        
+        [JsonProperty("ffmpegThreads", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? FfmpegThreads { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ffmpegVideoCodec", NullValueHandling = NullValueHandling.Ignore)]
-        string ffmpegVideoCodec = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("ffmpegVideoCodec", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string FfmpegVideoCodec { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("flipH", NullValueHandling = NullValueHandling.Ignore)]
-        bool? flipH;
+        [ObservableProperty]
+        
+        [JsonProperty("flipH", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? FlipH { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("flipV", NullValueHandling = NullValueHandling.Ignore)]
-        bool? flipV;
+        [ObservableProperty]
+        
+        [JsonProperty("flipV", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? FlipV { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("rotate90", NullValueHandling = NullValueHandling.Ignore)]
-        bool? rotate90;
+        [ObservableProperty]
+        
+        [JsonProperty("rotate90", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Rotate90 { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("snapshotSslValidation", NullValueHandling = NullValueHandling.Ignore)]
-        bool? snapshotSslValidation;
+        [ObservableProperty]
+        
+        [JsonProperty("snapshotSslValidation", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? SnapshotSslValidation { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("snapshotTimeout", NullValueHandling = NullValueHandling.Ignore)]
-        long? snapshotTimeout;
+        [ObservableProperty]
+        
+        [JsonProperty("snapshotTimeout", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? SnapshotTimeout { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("snapshotUrl", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? snapshotUrl;
+        [ObservableProperty]
+        
+        [JsonProperty("snapshotUrl", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? SnapshotUrl { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("streamRatio", NullValueHandling = NullValueHandling.Ignore)]
-        string streamRatio = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("streamRatio", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string StreamRatio { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("streamTimeout", NullValueHandling = NullValueHandling.Ignore)]
-        long? streamTimeout;
+        [ObservableProperty]
+        
+        [JsonProperty("streamTimeout", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? StreamTimeout { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("streamUrl", NullValueHandling = NullValueHandling.Ignore)]
-        string streamUrl = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("streamUrl", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string StreamUrl { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("timelapseEnabled", NullValueHandling = NullValueHandling.Ignore)]
-        bool? timelapseEnabled;
+        [ObservableProperty]
+        
+        [JsonProperty("timelapseEnabled", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? TimelapseEnabled { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("watermark", NullValueHandling = NullValueHandling.Ignore)]
-        bool? watermark;
+        [ObservableProperty]
+        
+        [JsonProperty("watermark", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Watermark { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("webcamEnabled", NullValueHandling = NullValueHandling.Ignore)]
-        bool? webcamEnabled;
+        [ObservableProperty]
+        
+        [JsonProperty("webcamEnabled", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? WebcamEnabled { get; set; }
         #endregion
 
         #region Overrides

@@ -6,17 +6,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsPluginBlacklist : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enabled;
+        [ObservableProperty]
+        
+        [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Enabled { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
-        long? ttl;
+        [ObservableProperty]
+        
+        [JsonProperty("ttl", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Ttl { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? url;
+        [ObservableProperty]
+        
+        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? Url { get; set; }
         #endregion
 
         #region Overrides

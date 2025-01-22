@@ -6,33 +6,40 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintConnectionSettingsOptions : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("baudratePreference")]
-        object? baudratePreference;
+        [ObservableProperty]
+        
+        [JsonProperty("baudratePreference")]
+        public partial object? BaudratePreference { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("baudrates")]
-        List<long> baudrates = [];
+        [ObservableProperty]
+        
+        [JsonProperty("baudrates")]
+        public partial List<long> Baudrates { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("portPreference")]
-        object? portPreference;
+        [ObservableProperty]
+        
+        [JsonProperty("portPreference")]
+        public partial object? PortPreference { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ports")]
-        List<string> ports = [];
+        [ObservableProperty]
+        
+        [JsonProperty("ports")]
+        public partial List<string> Ports { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("printerProfilePreference")]
-        string printerProfilePreference = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("printerProfilePreference")]
+        public partial string PrinterProfilePreference { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("autoconnect", NullValueHandling = NullValueHandling.Ignore)]
-        bool? autoconnect;
+        [ObservableProperty]
+        
+        [JsonProperty("autoconnect", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Autoconnect { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("printerProfiles")]
-        List<OctoPrintConnectionSettingsPrinterProfile> printerProfiles = [];
+        [ObservableProperty]
+        
+        [JsonProperty("printerProfiles")]
+        public partial List<OctoPrintConnectionSettingsPrinterProfile> PrinterProfiles { get; set; } = [];
         #endregion
 
         #region Overrides

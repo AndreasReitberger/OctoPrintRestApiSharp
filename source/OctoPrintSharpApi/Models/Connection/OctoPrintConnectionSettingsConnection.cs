@@ -5,21 +5,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintConnectionSettingsConnection : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("baudrate", NullValueHandling = NullValueHandling.Ignore)]
-        long baudrate;
+        [ObservableProperty]
+        
+        [JsonProperty("baudrate", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long Baudrate { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("port", NullValueHandling = NullValueHandling.Ignore)]
-        string port = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("port", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Port { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("printerProfile", NullValueHandling = NullValueHandling.Ignore)]
-        string printerProfile = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("printerProfile", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string PrinterProfile { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
-        string state = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string State { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

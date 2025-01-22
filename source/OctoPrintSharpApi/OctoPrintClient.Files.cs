@@ -1,9 +1,8 @@
 ﻿using AndreasReitberger.API.OctoPrint.Enum;
 using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.OctoPrint.Structs;
-using AndreasReitberger.API.Print3dServer.Core;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
-using Newtonsoft.Json;
+using AndreasReitberger.API.REST.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +12,6 @@ namespace AndreasReitberger.API.OctoPrint
 {
     public partial class OctoPrintClient
     {
-        #region Properties
-
-        #endregion
 
         #region Methods
 

@@ -5,21 +5,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsTemperature : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("cutoff", NullValueHandling = NullValueHandling.Ignore)]
-        long? cutoff;
+        [ObservableProperty]
+        
+        [JsonProperty("cutoff", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Cutoff { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("profiles", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsProfile[] profiles = [];
+        [ObservableProperty]
+        
+        [JsonProperty("profiles", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsProfile[] Profiles { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("sendAutomatically", NullValueHandling = NullValueHandling.Ignore)]
-        bool? sendAutomatically;
+        [ObservableProperty]
+        
+        [JsonProperty("sendAutomatically", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? SendAutomatically { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("sendAutomaticallyAfter", NullValueHandling = NullValueHandling.Ignore)]
-        long? sendAutomaticallyAfter;
+        [ObservableProperty]
+        
+        [JsonProperty("sendAutomaticallyAfter", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? SendAutomaticallyAfter { get; set; }
         #endregion
 
         #region Overrides

@@ -7,25 +7,30 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty(nameof(Id))]
-        Guid id;
+        [ObservableProperty]
+        
+        [JsonProperty(nameof(Id))]
+        public partial Guid Id { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty(nameof(Command))]
-        string command = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty(nameof(Command))]
+        public partial string Command { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty(nameof(Sent))]
-        bool sent = false;
+        [ObservableProperty]
+        
+        [JsonProperty(nameof(Sent))]
+        public partial bool Sent { get; set; } = false;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty(nameof(Succeeded))]
-        bool succeeded = false;
+        [ObservableProperty]
+        
+        [JsonProperty(nameof(Succeeded))]
+        public partial bool Succeeded { get; set; } = false;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty(nameof(TimeStamp))]
-        DateTime timeStamp = DateTime.Now;
+        [ObservableProperty]
+        
+        [JsonProperty(nameof(TimeStamp))]
+        public partial DateTime TimeStamp { get; set; } = DateTime.Now;
 
         #endregion
 

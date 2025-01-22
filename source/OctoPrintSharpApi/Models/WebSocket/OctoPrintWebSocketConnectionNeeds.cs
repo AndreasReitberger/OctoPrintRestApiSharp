@@ -6,9 +6,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintWebSocketConnectionNeeds : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("role")]
-        List<string> role = [];
+        [ObservableProperty]
+        
+        [JsonProperty("role")]
+        public partial List<string> Role { get; set; } = [];
         #endregion
 
         #region Overrides

@@ -1,7 +1,8 @@
 ﻿using AndreasReitberger.API.OctoPrint.Models;
-using AndreasReitberger.API.Print3dServer.Core;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using AndreasReitberger.API.Print3dServer.Core.JSON.Newtonsoft;
+using AndreasReitberger.API.REST;
+using AndreasReitberger.API.REST.Interfaces;
 using Newtonsoft.Json;
 
 namespace AndreasReitberger.API.OctoPrint
@@ -11,10 +12,6 @@ namespace AndreasReitberger.API.OctoPrint
 
 #if DEBUG
         #region Debug
-
-        [ObservableProperty]
-        [property: JsonIgnore, System.Text.Json.Serialization.JsonIgnore, XmlIgnore]
-        JsonSerializerSettings newtonsoftJsonSerializerSettings = DefaultNewtonsoftJsonSerializerSettings;
 
         public new static JsonSerializerSettings DefaultNewtonsoftJsonSerializerSettings = new()
         {

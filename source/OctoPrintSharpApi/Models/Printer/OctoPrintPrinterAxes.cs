@@ -5,21 +5,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintPrinterAxes : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("e")]
-        OctoPrintPrinterAxesAttribute? e;
+        [ObservableProperty]
+        
+        [JsonProperty("e")]
+        public partial OctoPrintPrinterAxesAttribute? E { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("x")]
-        OctoPrintPrinterAxesAttribute? x;
+        [ObservableProperty]
+        
+        [JsonProperty("x")]
+        public partial OctoPrintPrinterAxesAttribute? X { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("y")]
-        OctoPrintPrinterAxesAttribute? y;
+        [ObservableProperty]
+        
+        [JsonProperty("y")]
+        public partial OctoPrintPrinterAxesAttribute? Y { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("z")]
-        OctoPrintPrinterAxesAttribute? z;
+        [ObservableProperty]
+        
+        [JsonProperty("z")]
+        public partial OctoPrintPrinterAxesAttribute? Z { get; set; }
         #endregion
 
         #region Overrides

@@ -6,25 +6,30 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintPrinterStateTemperature : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateTemperatureInfo? bed;
+        [ObservableProperty]
+        
+        [JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateTemperatureInfo? Bed { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("chamber", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateTemperatureInfo? chamber;
+        [ObservableProperty]
+        
+        [JsonProperty("chamber", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateTemperatureInfo? Chamber { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
-        List<OctoPrintPrinterStateHistory> history = [];
+        [ObservableProperty]
+        
+        [JsonProperty("history", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<OctoPrintPrinterStateHistory> History { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("tool0", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateToolheadInfo? tool0;
+        [ObservableProperty]
+        
+        [JsonProperty("tool0", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateToolheadInfo? Tool0 { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("tool1", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateToolheadInfo? tool1;
+        [ObservableProperty]
+        
+        [JsonProperty("tool1", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateToolheadInfo? Tool1 { get; set; }
         #endregion
 
         #region Overrides

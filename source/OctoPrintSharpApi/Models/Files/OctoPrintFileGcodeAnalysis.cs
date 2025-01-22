@@ -7,23 +7,27 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintFileGcodeAnalysis : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("dimensions")]
-        OctoPrintFileDimensions dimensions = new() { Depth = 0, Height = 0, Width = 0 };
+        [ObservableProperty]
+        
+        [JsonProperty("dimensions")]
+        public partial OctoPrintFileDimensions Dimensions { get; set; } = new() { Depth = 0, Height = 0, Width = 0 };
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("estimatedPrintTime")]
-        double estimatedPrintTime = 0;
+        [ObservableProperty]
+        
+        [JsonProperty("estimatedPrintTime")]
+        public partial double EstimatedPrintTime { get; set; } = 0;
 
-        [ObservableProperty, JsonIgnore]
+        [ObservableProperty]
+        
         [NotifyPropertyChangedFor(nameof(TotalFilamentLength))]
         [NotifyPropertyChangedFor(nameof(TotalFilamentVolume))]
-        [property: JsonProperty("filament")]
-        Dictionary<string, OctoPrintFilament> filament = [];
+        [JsonProperty("filament")]
+        public partial Dictionary<string, OctoPrintFilament> Filament { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("printingArea")]
-        Dictionary<string, double> printingArea = [];
+        [ObservableProperty]
+        
+        [JsonProperty("printingArea")]
+        public partial Dictionary<string, double> PrintingArea { get; set; } = [];
 
         [JsonIgnore]
         public double TotalFilamentVolume

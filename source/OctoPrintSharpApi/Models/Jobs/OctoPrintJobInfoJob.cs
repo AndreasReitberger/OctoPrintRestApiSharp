@@ -5,17 +5,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintJobInfoJob : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("file", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintJobInfoFile? file;
+        [ObservableProperty]
+        
+        [JsonProperty("file", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintJobInfoFile? File { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("estimatedPrintTime", NullValueHandling = NullValueHandling.Ignore)]
-        long estimatedPrintTime;
+        [ObservableProperty]
+        
+        [JsonProperty("estimatedPrintTime", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long EstimatedPrintTime { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("filament", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintFilament? filament;
+        [ObservableProperty]
+        
+        [JsonProperty("filament", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintFilament? Filament { get; set; }
         #endregion
 
         #region Overrides

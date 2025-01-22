@@ -5,17 +5,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintPrinterState : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("temperature", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateTemperature? temperature;
+        [ObservableProperty]
+        
+        [JsonProperty("temperature", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateTemperature? Temperature { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("sd", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateSd? sd;
+        [ObservableProperty]
+        
+        [JsonProperty("sd", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateSd? Sd { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintPrinterStateState? state;
+        [ObservableProperty]
+        
+        [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintPrinterStateState? State { get; set; }
         #endregion
 
         #region Overrides

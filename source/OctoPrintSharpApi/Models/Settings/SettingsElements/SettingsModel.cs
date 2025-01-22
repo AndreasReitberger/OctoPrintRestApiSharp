@@ -5,33 +5,40 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsModel : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("description")]
-        object? description;
+        [ObservableProperty]
+        
+        [JsonProperty("description")]
+        public partial object? Description { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name")]
-        object? ame;
+        [ObservableProperty]
+        
+        [JsonProperty("name")]
+        public partial object? Ame { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("number")]
-        object? number;
+        [ObservableProperty]
+        
+        [JsonProperty("number")]
+        public partial object? Number { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("serial")]
-        object? serial;
+        [ObservableProperty]
+        
+        [JsonProperty("serial")]
+        public partial object? Serial { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("url")]
-        object? url;
+        [ObservableProperty]
+        
+        [JsonProperty("url")]
+        public partial object? Url { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("vendor")]
-        object? vendor;
+        [ObservableProperty]
+        
+        [JsonProperty("vendor")]
+        public partial object? Vendor { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("vendorUrl")]
-        object? vendorUrl;
+        [ObservableProperty]
+        
+        [JsonProperty("vendorUrl")]
+        public partial object? VendorUrl { get; set; }
         #endregion
 
         #region Overrides
