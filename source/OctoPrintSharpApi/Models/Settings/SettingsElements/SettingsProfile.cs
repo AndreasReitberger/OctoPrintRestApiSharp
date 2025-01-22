@@ -5,21 +5,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsProfile : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
-        long? bed;
+        [ObservableProperty]
+        
+        [JsonProperty("bed", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Bed { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("chamber")]
-        object? chamber;
+        [ObservableProperty]
+        
+        [JsonProperty("chamber")]
+        public partial object? Chamber { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("extruder", NullValueHandling = NullValueHandling.Ignore)]
-        long? extruder;
+        [ObservableProperty]
+        
+        [JsonProperty("extruder", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Extruder { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Name { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

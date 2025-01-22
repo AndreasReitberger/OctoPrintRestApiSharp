@@ -5,17 +5,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintFilePrints : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("failure")]
-        long failure;
+        [ObservableProperty]
+        
+        [JsonProperty("failure")]
+        public partial long Failure { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("last")]
-        OctoPrintFileLastPrint? last;
+        [ObservableProperty]
+        
+        [JsonProperty("last")]
+        public partial OctoPrintFileLastPrint? Last { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("success")]
-        long success;
+        [ObservableProperty]
+        
+        [JsonProperty("success")]
+        public partial long Success { get; set; }
         #endregion
 
         #region Overrides

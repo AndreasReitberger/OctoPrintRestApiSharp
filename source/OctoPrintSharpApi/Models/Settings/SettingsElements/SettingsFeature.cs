@@ -6,53 +6,65 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsFeature : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("autoUppercaseBlacklist", NullValueHandling = NullValueHandling.Ignore)]
-        List<string> autoUppercaseBlacklist = [];
+        [ObservableProperty]
+        
+        [JsonProperty("autoUppercaseBlacklist", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<string> AutoUppercaseBlacklist { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("g90InfluencesExtruder", NullValueHandling = NullValueHandling.Ignore)]
-        bool? g90InfluencesExtruder;
+        [ObservableProperty]
+        
+        [JsonProperty("g90InfluencesExtruder", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? G90InfluencesExtruder { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("gcodeViewer", NullValueHandling = NullValueHandling.Ignore)]
-        bool? gcodeViewer;
+        [ObservableProperty]
+        
+        [JsonProperty("gcodeViewer", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? GcodeViewer { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("keyboardControl", NullValueHandling = NullValueHandling.Ignore)]
-        bool? keyboardControl;
+        [ObservableProperty]
+        
+        [JsonProperty("keyboardControl", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? KeyboardControl { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("mobileSizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
-        long? mobileSizeThreshold;
+        [ObservableProperty]
+        
+        [JsonProperty("mobileSizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? MobileSizeThreshold { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("modelSizeDetection", NullValueHandling = NullValueHandling.Ignore)]
-        bool? modelSizeDetection;
+        [ObservableProperty]
+        
+        [JsonProperty("modelSizeDetection", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? ModelSizeDetection { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("pollWatched", NullValueHandling = NullValueHandling.Ignore)]
-        bool? pollWatched;
+        [ObservableProperty]
+        
+        [JsonProperty("pollWatched", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? PollWatched { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("printCancelConfirmation", NullValueHandling = NullValueHandling.Ignore)]
-        bool? printCancelConfirmation;
+        [ObservableProperty]
+        
+        [JsonProperty("printCancelConfirmation", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? PrintCancelConfirmation { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("printStartConfirmation", NullValueHandling = NullValueHandling.Ignore)]
-        bool? printStartConfirmation;
+        [ObservableProperty]
+        
+        [JsonProperty("printStartConfirmation", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? PrintStartConfirmation { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("sdSupport", NullValueHandling = NullValueHandling.Ignore)]
-        bool? sdSupport;
+        [ObservableProperty]
+        
+        [JsonProperty("sdSupport", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? SdSupport { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("sizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
-        long? sizeThreshold;
+        [ObservableProperty]
+        
+        [JsonProperty("sizeThreshold", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? SizeThreshold { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("temperatureGraph", NullValueHandling = NullValueHandling.Ignore)]
-        bool? temperatureGraph;
+        [ObservableProperty]
+        
+        [JsonProperty("temperatureGraph", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? TemperatureGraph { get; set; }
         #endregion
 
         #region Overrides

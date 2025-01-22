@@ -5,21 +5,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsOnlineCheck : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enabled;
+        [ObservableProperty]
+        
+        [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Enabled { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("host", NullValueHandling = NullValueHandling.Ignore)]
-        string host = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("host", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Host { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("interval", NullValueHandling = NullValueHandling.Ignore)]
-        long? interval;
+        [ObservableProperty]
+        
+        [JsonProperty("interval", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Interval { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("port", NullValueHandling = NullValueHandling.Ignore)]
-        long? port;
+        [ObservableProperty]
+        
+        [JsonProperty("port", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Port { get; set; }
         #endregion
 
         #region Overrides

@@ -5,25 +5,30 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsFolder : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("logs", NullValueHandling = NullValueHandling.Ignore)]
-        string logs = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("logs", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Logs { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("timelapse", NullValueHandling = NullValueHandling.Ignore)]
-        string timelapse = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("timelapse", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Timelapse { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("timelapseTmp", NullValueHandling = NullValueHandling.Ignore)]
-        string timelapseTmp = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("timelapseTmp", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string TimelapseTmp { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("uploads", NullValueHandling = NullValueHandling.Ignore)]
-        string uploads = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("uploads", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Uploads { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("watched", NullValueHandling = NullValueHandling.Ignore)]
-        string watched = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("watched", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Watched { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

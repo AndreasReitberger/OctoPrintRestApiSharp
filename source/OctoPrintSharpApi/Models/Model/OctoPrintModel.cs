@@ -7,20 +7,25 @@ namespace AndreasReitberger.API.OctoPrint.Models
         #region Properties
         public bool IsFolder => !string.IsNullOrEmpty(Type) && Type?.ToLower() == "folder";
 
-        [ObservableProperty, JsonIgnore]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        string type = string.Empty;
+        [ObservableProperty]
+        
+        public partial string Type { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        string location = string.Empty;
+        [ObservableProperty]
+        
+        public partial string Location { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        string path = string.Empty;
+        [ObservableProperty]
+        
+        public partial string Path { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        OctoPrintFile? file;
+        [ObservableProperty]
+        
+        public partial OctoPrintFile? File { get; set; }
         #endregion
 
         #region Constructor

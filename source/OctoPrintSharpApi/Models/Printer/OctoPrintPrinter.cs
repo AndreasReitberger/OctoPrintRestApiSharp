@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.API.Print3dServer.Core.Interfaces;
+using AndreasReitberger.API.Print3dServer.Core.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -11,188 +12,206 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        Guid id;
+        [JsonIgnore]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("axes")]
-        OctoPrintPrinterAxes? axes;
+        [JsonProperty("axes")]
+        public partial OctoPrintPrinterAxes? Axes { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("color")]
-        string color = string.Empty;
+        [JsonProperty("color")]
+        public partial string Color { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: JsonProperty("current")]
-        bool current;
+        [JsonProperty("current")]
+        public partial bool Current { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("default")]
-        bool defaultDefault;
+        [JsonProperty("default")]
+        public partial bool DefaultDefault { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("extruder")]
-        OctoPrintPrinterExtruder? extruder;
+        [JsonProperty("extruder")]
+        public partial OctoPrintPrinterExtruder? Extruder { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("heatedBed")]
-        bool hasHeatedBed;
+        [JsonProperty("heatedBed")]
+        public partial bool HasHeatedBed { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("heatedChamber")]
-        bool hasHeatedChamber;
+        [JsonProperty("heatedChamber")]
+        public partial bool HasHeatedChamber { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("id")]
-        string slug = string.Empty;
+        [JsonProperty("id")]
+        public partial string Slug { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: JsonProperty("model")]
-        string model = string.Empty ;
+        [JsonProperty("model")]
+        public partial string Model { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: JsonProperty("name")]
-        string name = string.Empty;
+        [JsonProperty("name")]
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: JsonProperty("resource")]
-        Uri? resource;
+        [JsonProperty("resource")]
+        public partial Uri? Resource { get; set; }
 
         [ObservableProperty]
-        [property: JsonProperty("volume")]
-        OctoPrintPrinterVolume? volume;
+        [JsonProperty("volume")]
+        public partial OctoPrintPrinterVolume? Volume { get; set; }
         #endregion
 
         #region Interface, unused
 
         [ObservableProperty]
-        [JsonIgnore]
-        long? lineSent;
+        public partial long? LineSent { get; set; }
 
         [ObservableProperty]
-        [JsonIgnore]
-        long? layers;
+        public partial long? Layers { get; set; }
 
         [ObservableProperty]
-        [JsonIgnore]
-        long? pauseState;
+        public partial long? PauseState { get; set; }
 
         [ObservableProperty]
-        [JsonIgnore]
-        long? start;
+        public partial long? Start { get; set; }
 
         [ObservableProperty]
-        [JsonIgnore]
-        long? totalLines;
+        public partial long? TotalLines { get; set; }
 
         [ObservableProperty]
-        [JsonIgnore]
-        int? repeat;
-    
+        public partial int? Repeat { get; set; }
+
         #endregion
 
         #region JsonIgnored
 
         [ObservableProperty]
+        
+        public partial bool IsActive { get; set; } = true;
+        [ObservableProperty]
         [JsonIgnore]
-        bool isActive = true;
+        public partial bool IsOnline { get; set; } = true;
 
         [ObservableProperty]
         [JsonIgnore]
-        bool isOnline = true;
+        public partial double Progress { get; set; } = 0;
 
         [ObservableProperty]
         [JsonIgnore]
-        double progress = 0;
+        public partial string ActiveJobName { get; set; } = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]
-        string activeJobName = string.Empty;
+        public partial string ActiveJobId { get; set; } = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]
-        string activeJobId = string.Empty;
+        public partial string ActiveJobState { get; set; } = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]
-        string activeJobState = string.Empty;
+        public partial bool IsPrinting { get; set; } = false;
 
         [ObservableProperty]
         [JsonIgnore]
-        bool isPrinting = false;
+        public partial bool IsPaused { get; set; } = false;
 
         [ObservableProperty]
         [JsonIgnore]
-        bool isPaused = false;
+        public partial bool IsSelected { get; set; } = false;
 
         [ObservableProperty]
         [JsonIgnore]
-        bool isSelected = false;
+        public partial double? Extruder1Temperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? extruder1Temperature = 0;
+        public partial double? Extruder2Temperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? extruder2Temperature = 0;
+        public partial double? Extruder3Temperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? extruder3Temperature = 0;
+        public partial double? Extruder4Temperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? extruder4Temperature = 0;
+        public partial double? Extruder5Temperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? extruder5Temperature = 0;
+        public partial double? HeatedBedTemperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? heatedBedTemperature = 0;
+        public partial double? HeatedChamberTemperature { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [JsonIgnore]
-        double? heatedChamberTemperature = 0;
+        public partial double? PrintProgress { get; set; } = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        [NotifyPropertyChangedFor(nameof(RemainingPrintDurationGeneralized))]
         [JsonIgnore]
-        double? printProgress = 0;
+        public partial double? RemainingPrintDuration { get; set; } = 0;
+        partial void OnRemainingPrintDurationChanged(double? value)
+        {
+            if (value is not null)
+                RemainingPrintDurationGeneralized = TimeBaseConvertHelper.FromDoubleSeconds(value);
+        }
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        [JsonIgnore]
-        double? remainingPrintDuration = 0;
+        public partial TimeSpan? RemainingPrintDurationGeneralized { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        [NotifyPropertyChangedFor(nameof(PrintStartedGeneralized))]
         [JsonIgnore]
-        double? printStarted = 0;
+        public partial double? PrintStarted { get; set; } = 0;
+        partial void OnPrintStartedChanged(double? value)
+        {
+            if (value is not null)
+                PrintStartedGeneralized = TimeBaseConvertHelper.FromUnixDate(value);
+        }
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        [JsonIgnore]
-        double? printDuration = 0;
+        public partial DateTime? PrintStartedGeneralized { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        [NotifyPropertyChangedFor(nameof(PrintDurationGeneralized))]
         [JsonIgnore]
-        double? printDurationEstimated = 0;
+        public partial double? PrintDuration { get; set; } = 0;
+        partial void OnPrintDurationChanged(double? value)
+        {
+            if (value is not null)
+                PrintDurationGeneralized = TimeBaseConvertHelper.FromDoubleHours(value);
+            if (value > 0)
+                RemainingPrintDuration = value * PrintProgress;
+        }
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        public partial TimeSpan? PrintDurationGeneralized { get; set; }
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(PrintDurationEstimatedGeneralized))]
         [JsonIgnore]
-        byte[] currentPrintImage = [];
+        public partial double? PrintDurationEstimated { get; set; } = 0;
+        partial void OnPrintDurationEstimatedChanged(double? value)
+        {
+            if (value is not null)
+                PrintDurationEstimatedGeneralized = TimeBaseConvertHelper.FromDoubleHours(value);
+        }
+
+        [ObservableProperty]
+        public partial TimeSpan? PrintDurationEstimatedGeneralized { get; set; }
+
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial byte[] CurrentPrintImage { get; set; } = [];
 
         #endregion
 

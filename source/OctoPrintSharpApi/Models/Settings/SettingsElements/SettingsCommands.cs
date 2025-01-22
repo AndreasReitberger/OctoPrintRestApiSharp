@@ -5,17 +5,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsCommands : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("serverRestartCommand", NullValueHandling = NullValueHandling.Ignore)]
-        string serverRestartCommand = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("serverRestartCommand", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string ServerRestartCommand { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("systemRestartCommand", NullValueHandling = NullValueHandling.Ignore)]
-        string systemRestartCommand = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("systemRestartCommand", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string SystemRestartCommand { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("systemShutdownCommand", NullValueHandling = NullValueHandling.Ignore)]
-        string systemShutdownCommand = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("systemShutdownCommand", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string SystemShutdownCommand { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

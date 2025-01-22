@@ -4,7 +4,6 @@ using AndreasReitberger.API.Print3dServer.Core.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace AndreasReitberger.API.OctoPrint.Models
@@ -13,31 +12,32 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
 
-        [ObservableProperty, JsonIgnore]
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        GcodeTimeBaseTarget timeBaseTarget = GcodeTimeBaseTarget.LongSeconds;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial GcodeTimeBaseTarget TimeBaseTarget { get; set; } = GcodeTimeBaseTarget.LongSeconds;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
-        List<IGcode> children = [];
+        [ObservableProperty]
+        [JsonProperty("children", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<IGcode> Children { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("date")]
-        long date;
+        [ObservableProperty]
+        [JsonProperty("date")]
+        public partial long Date { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("display", NullValueHandling = NullValueHandling.Ignore)]
-        string display = string.Empty;
+        [ObservableProperty]
+        [JsonProperty("display", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Display { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
+        [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(PrintTime))]
         [NotifyPropertyChangedFor(nameof(Volume))]
         [NotifyPropertyChangedFor(nameof(Filament))]
-        [property: JsonProperty("gcodeAnalysis", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintFileGcodeAnalysis? gcodeAnalysis;
+        [JsonProperty("gcodeAnalysis", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintFileGcodeAnalysis? GcodeAnalysis { get; set; }
+
         partial void OnGcodeAnalysisChanged(OctoPrintFileGcodeAnalysis? value)
         {
             if (value is not null)
@@ -48,110 +48,127 @@ namespace AndreasReitberger.API.OctoPrint.Models
             }
         }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
-        string hash = string.Empty;
+        [ObservableProperty]
+        [JsonProperty("hash", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Hash { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name")]
-        string fileName = string.Empty;
+        [ObservableProperty]
+        [JsonProperty("name")]
+        public partial string FileName { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("origin")]
-        string origin = string.Empty;
+        [ObservableProperty]
+        [JsonProperty("origin")]
+        public partial string Origin { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
-        string filePath = string.Empty;
+        [ObservableProperty]
+        [JsonProperty("path", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string FilePath { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("prints")]
-        OctoPrintFilePrints? prints;
+        [ObservableProperty]
+        [JsonProperty("prints")]
+        public partial OctoPrintFilePrints? Prints { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
-        OctoPrintFileChildRefs? refs;
+        [ObservableProperty]
+        [JsonProperty("refs", NullValueHandling = NullValueHandling.Ignore)]
+        public partial OctoPrintFileChildRefs? Refs { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("size")]
-        long size;
+        [ObservableProperty]
+        [JsonProperty("size")]
+        public partial long Size { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("statistics")]
-        OctoPrintFileStatistics? statistics;
+        [ObservableProperty]
+        [JsonProperty("statistics")]
+        public partial OctoPrintFileStatistics? Statistics { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-        string type = string.Empty;
+        [ObservableProperty]
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Type { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("typePath", NullValueHandling = NullValueHandling.Ignore)]
-        List<string> typePath = [];
+        [ObservableProperty]
+        [JsonProperty("typePath", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<string> TypePath { get; set; } = [];
 
         #endregion
 
         #region Interface, unused
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double modified;
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CreatedGeneralized))]
+        public partial double? Created { get; set; } = 0;
+        partial void OnCreatedChanged(double? value)
+        {
+            if (value is not null)
+                CreatedGeneralized = TimeBaseConvertHelper.FromUnixDoubleMiliseconds(value);
+        }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double volume;
+        [ObservableProperty]
+        public partial DateTime? CreatedGeneralized { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double filament;
-   
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double printTime;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial double? Modified { get; set; }
+
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial double Volume { get; set; }
+
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial double Filament { get; set; }
+
+        [ObservableProperty]
+        public partial double PrintTime { get; set; }
+
         partial void OnPrintTimeChanged(double value)
         {
             PrintTimeGeneralized = TimeBaseConvertHelper.FromLongSeconds(value);
         }
 
-        [ObservableProperty, JsonIgnore]
-        TimeSpan? printTimeGeneralized;
+        [ObservableProperty]
+        public partial TimeSpan? PrintTimeGeneralized { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        string permissions = string.Empty;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial string Permissions { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        string group = string.Empty;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial string Group { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        IGcodeMeta? meta;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial IGcodeMeta? Meta { get; set; }
         #endregion
 
         #region JsonIgnore
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        long identifier;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial long Identifier { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        string printerName = string.Empty;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial string PrinterName { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        bool isVisible;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial bool IsVisible { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        bool isLoadingImage = false;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial bool IsLoadingImage { get; set; } = false;
 
-        [ObservableProperty, JsonIgnore]
-        byte[] image = [];
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial byte[] Image { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        byte[] thumbnail = [];
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial byte[] Thumbnail { get; set; } = [];
 
-        [ObservableProperty, JsonIgnore]
-        GcodeImageType imageType = GcodeImageType.Thumbnail;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial GcodeImageType ImageType { get; set; } = GcodeImageType.Thumbnail;
 
         [JsonIgnore]
         public bool IsAnalysed => GcodeAnalysis is not null;

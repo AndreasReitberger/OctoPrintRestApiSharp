@@ -10,37 +10,42 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintPrinterStateTemperatureInfo : ObservableObject, IHeaterComponent
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        Guid id;
+        [ObservableProperty]
+        
+        [JsonIgnore]
+        public partial Guid Id { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("actual", NullValueHandling = NullValueHandling.Ignore)]
-        double? tempRead = 0;
+        [ObservableProperty]
+        
+        [JsonProperty("actual", NullValueHandling = NullValueHandling.Ignore)]
+        public partial double? TempRead { get; set; } = 0;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("target")]
-        double? tempSet = 0;
+        [ObservableProperty]
+        
+        [JsonProperty("target")]
+        public partial double? TempSet { get; set; } = 0;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
-        double? offset = 0;
-
+        [ObservableProperty]
+        
+        [JsonProperty("offset", NullValueHandling = NullValueHandling.Ignore)]
+        public partial double? Offset { get; set; } = 0;
         [JsonIgnore]
         public Printer3dToolHeadState State { get => GetCurrentState(); }
         //public OctoPrintCurrentToolState State { get => GetCurrentState(); }
 
         [ObservableProperty]
-        Printer3dHeaterType type = Printer3dHeaterType.Extruder;
+        public partial Printer3dHeaterType Type { get; set; } = Printer3dHeaterType.Extruder;
 
         #region Interface, unused
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonIgnore]
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        long error;
+        [ObservableProperty]
+        
+        [JsonIgnore]
+        public partial long Error { get; set; }
         #endregion
 
         #endregion

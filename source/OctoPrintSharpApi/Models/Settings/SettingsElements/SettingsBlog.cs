@@ -6,29 +6,35 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsBlog : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
-        string description = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Description { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("priority", NullValueHandling = NullValueHandling.Ignore)]
-        long? priority;
+        [ObservableProperty]
+        
+        [JsonProperty("priority", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Priority { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("read_until", NullValueHandling = NullValueHandling.Ignore)]
-        long? readUntil;
+        [ObservableProperty]
+        
+        [JsonProperty("read_until", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? ReadUntil { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
-        string type = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("type", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Type { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? url;
+        [ObservableProperty]
+        
+        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? Url { get; set; }
         #endregion
 
         #region Overrides

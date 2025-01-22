@@ -6,29 +6,35 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsTracking : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
-        bool? enabled;
+        [ObservableProperty]
+        
+        [JsonProperty("enabled", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? Enabled { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("events", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsEvents? events;
+        [ObservableProperty]
+        
+        [JsonProperty("events", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsEvents? Events { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("ping")]
-        object? ping;
+        [ObservableProperty]
+        
+        [JsonProperty("ping")]
+        public partial object? Ping { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("pong", NullValueHandling = NullValueHandling.Ignore)]
-        long? pong;
+        [ObservableProperty]
+        
+        [JsonProperty("pong", NullValueHandling = NullValueHandling.Ignore)]
+        public partial long? Pong { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("server")]
-        object? server;
+        [ObservableProperty]
+        
+        [JsonProperty("server")]
+        public partial object? Server { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("unique_id", NullValueHandling = NullValueHandling.Ignore)]
-        Guid? uniqueId;
+        [ObservableProperty]
+        
+        [JsonProperty("unique_id", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Guid? UniqueId { get; set; }
         #endregion
 
         #region Overrides

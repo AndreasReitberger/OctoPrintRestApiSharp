@@ -5,13 +5,15 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsTerminalFilter : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("regex", NullValueHandling = NullValueHandling.Ignore)]
-        string regex = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("regex", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Regex { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

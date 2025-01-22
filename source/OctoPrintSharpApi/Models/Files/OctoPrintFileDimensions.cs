@@ -5,17 +5,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintFileDimensions : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("depth")]
-        double depth;
+        [ObservableProperty]
+        
+        [JsonProperty("depth")]
+        public partial double Depth { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("height")]
-        double height;
+        [ObservableProperty]
+        
+        [JsonProperty("height")]
+        public partial double Height { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("width")]
-        double width;
+        [ObservableProperty]
+        
+        [JsonProperty("width")]
+        public partial double Width { get; set; }
         #endregion
 
         #region Overrides

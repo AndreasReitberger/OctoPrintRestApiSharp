@@ -6,13 +6,15 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintFileActionRespondRefs : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("download", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? download;
+        [ObservableProperty]
+        
+        [JsonProperty("download", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? Download { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
-        Uri? resource;
+        [ObservableProperty]
+        
+        [JsonProperty("resource", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Uri? Resource { get; set; }
         #endregion
 
         #region Overrides

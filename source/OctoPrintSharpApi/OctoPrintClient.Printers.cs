@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.OctoPrint.Structs;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
+using AndreasReitberger.API.REST.Interfaces;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

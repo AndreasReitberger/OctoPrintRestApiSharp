@@ -5,9 +5,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsGcodeAnalysis : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("runAt", NullValueHandling = NullValueHandling.Ignore)]
-        string runAt = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("runAt", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string RunAt { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

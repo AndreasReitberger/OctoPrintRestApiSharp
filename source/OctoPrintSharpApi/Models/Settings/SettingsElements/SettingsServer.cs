@@ -5,25 +5,30 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsServer : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("allowFraming", NullValueHandling = NullValueHandling.Ignore)]
-        bool? allowFraming;
+        [ObservableProperty]
+        
+        [JsonProperty("allowFraming", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool? AllowFraming { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("commands", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsCommands? commands;
+        [ObservableProperty]
+        
+        [JsonProperty("commands", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsCommands? Commands { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("diskspace", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsDiskSpace? diskspace;
+        [ObservableProperty]
+        
+        [JsonProperty("diskspace", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsDiskSpace? Diskspace { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("onlineCheck", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsOnlineCheck? onlineCheck;
+        [ObservableProperty]
+        
+        [JsonProperty("onlineCheck", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsOnlineCheck? OnlineCheck { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("pluginBlacklist", NullValueHandling = NullValueHandling.Ignore)]
-        SettingsPluginBlacklist? pluginBlacklist;
+        [ObservableProperty]
+        
+        [JsonProperty("pluginBlacklist", NullValueHandling = NullValueHandling.Ignore)]
+        public partial SettingsPluginBlacklist? PluginBlacklist { get; set; }
         #endregion
 
         #region Overrides

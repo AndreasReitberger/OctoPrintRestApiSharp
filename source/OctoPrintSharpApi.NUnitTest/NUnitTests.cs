@@ -1,15 +1,13 @@
 using AndreasReitberger.API.OctoPrint;
+using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.Print3dServer.Core.Interfaces;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using RepetierServerSharpApiTest;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using AndreasReitberger.API.OctoPrint.Models;
 
 namespace OctoPrintSharpApi.NUnitTest
 {
@@ -49,7 +47,7 @@ namespace OctoPrintSharpApi.NUnitTest
                     TotalDiskSpace = 65621361616161,
                     ServerName = "My OctoPrint Server"
                 };
-                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
+                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
 
                 var serializedString = System.Text.Json.JsonSerializer.Serialize(OctoPrintClient.Instance, OctoPrintClient.DefaultJsonSerializerSettings);
                 var serializedObject = System.Text.Json.JsonSerializer.Deserialize<OctoPrintClient>(serializedString, OctoPrintClient.DefaultJsonSerializerSettings);
@@ -78,7 +76,7 @@ namespace OctoPrintSharpApi.NUnitTest
                     TotalDiskSpace = 65621361616161,
                     ServerName = "My OctoPrint Server"
                 };
-                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
+                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
 
                 var serializedString = JsonConvert.SerializeObject(OctoPrintClient.Instance, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
                 var serializedObject = JsonConvert.DeserializeObject<OctoPrintClient>(serializedString, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
@@ -224,7 +222,7 @@ namespace OctoPrintSharpApi.NUnitTest
                         TotalDiskSpace = 65621361616161,
                         ServerName = "My OctoPrint Server"
                     };
-                    OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", SecureStringHelper.ConvertToSecureString("my_awesome_pwd"), true);
+                    OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
 
                     xmlSerializer.Serialize(fileStream, OctoPrintClient.Instance);
                     Assert.That(File.Exists(Path.Combine(dir, "server.xml")));

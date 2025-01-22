@@ -6,13 +6,15 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintUploadFileResponse : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("done", NullValueHandling = NullValueHandling.Ignore)]
-        bool done;
+        [ObservableProperty]
+        
+        [JsonProperty("done", NullValueHandling = NullValueHandling.Ignore)]
+        public partial bool Done { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("files", NullValueHandling = NullValueHandling.Ignore)]
-        Dictionary<string, OctoPrintFile> files = [];
+        [ObservableProperty]
+        
+        [JsonProperty("files", NullValueHandling = NullValueHandling.Ignore)]
+        public partial Dictionary<string, OctoPrintFile> Files { get; set; } = [];
         #endregion
 
         #region Overrides

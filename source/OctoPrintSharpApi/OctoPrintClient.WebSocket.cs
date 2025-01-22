@@ -1,11 +1,8 @@
-﻿using AndreasReitberger.API.OctoPrint.Enum;
-using AndreasReitberger.API.OctoPrint.Models;
+﻿using AndreasReitberger.API.OctoPrint.Models;
 using AndreasReitberger.API.Print3dServer.Core.Events;
+using AndreasReitberger.API.REST.Events;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AndreasReitberger.API.OctoPrint
 {

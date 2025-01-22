@@ -6,17 +6,20 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class SettingsOctoprintBranchMapping : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("branch", NullValueHandling = NullValueHandling.Ignore)]
-        string branch = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("branch", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Branch { get; set; } = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("commitish", NullValueHandling = NullValueHandling.Ignore)]
-        List<string> commitish = new();
+        [ObservableProperty]
+        
+        [JsonProperty("commitish", NullValueHandling = NullValueHandling.Ignore)]
+        public partial List<string> Commitish { get; set; } = new();
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
-        string name = string.Empty;
+        [ObservableProperty]
+        
+        [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
+        public partial string Name { get; set; } = string.Empty;
         #endregion
 
         #region Overrides

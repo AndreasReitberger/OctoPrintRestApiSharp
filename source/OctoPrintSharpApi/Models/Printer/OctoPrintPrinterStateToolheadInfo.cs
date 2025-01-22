@@ -1,5 +1,4 @@
-﻿using AndreasReitberger.API.Print3dServer.Core.Enums;
-using AndreasReitberger.API.Print3dServer.Core.Interfaces;
+﻿using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using Newtonsoft.Json;
 
 namespace AndreasReitberger.API.OctoPrint.Models
@@ -8,29 +7,23 @@ namespace AndreasReitberger.API.OctoPrint.Models
     {
         #region Properties
 
-        [ObservableProperty]
-        Printer3dHeaterType type = Printer3dHeaterType.Extruder;
-
         #region Interface, unused
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        string name = string.Empty;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double x = 0;
+        [ObservableProperty]
+       
+        [JsonIgnore]
+        public partial double X { get; set; } = 0;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double y = 0;
+        [ObservableProperty]
+        
+        [JsonIgnore]
+        public partial double Y { get; set; } = 0;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        double z = 0;
+        [ObservableProperty]
+        
+        [JsonIgnore]
+        public partial double Z { get; set; } = 0;
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonIgnore]
-        long error;
         #endregion
 
         #endregion

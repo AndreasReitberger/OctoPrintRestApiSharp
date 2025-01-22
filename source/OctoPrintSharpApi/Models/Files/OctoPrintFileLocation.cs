@@ -9,16 +9,16 @@ namespace AndreasReitberger.API.OctoPrint.Models
         [
             new() { Location = "local", Icon = "\U000f02ca" },
             new() { Location = "sdcard", Icon = "\U000f07dc" }
-        ];  
+        ];
 
         #endregion
 
         #region Properties
         [ObservableProperty]
-        string location = string.Empty;
+        public partial string Location { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string icon = string.Empty;
+        public partial string Icon { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

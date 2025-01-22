@@ -5,9 +5,10 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintWebSocketConnectionResponse : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("connected")]
-        OctoPrintWebSocketConnectionInfo? connected;
+        [ObservableProperty]
+        
+        [JsonProperty("connected")]
+        public partial OctoPrintWebSocketConnectionInfo? Connected { get; set; }
         #endregion
 
         #region Overrides

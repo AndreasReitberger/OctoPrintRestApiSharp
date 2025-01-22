@@ -7,23 +7,29 @@ namespace AndreasReitberger.API.OctoPrint.Models
     public partial class OctoPrintFiles : ObservableObject
     {
         #region Properties
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("files")]
-        List<IGcode> files = [];
+        [ObservableProperty]
+        
+        [JsonProperty("files")]
+        public partial List<IGcode> Files { get; set; } = [];
+
         //public List<OctoPrintFile> Files; = new();
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("children")]
-        List<IGcode> children = [];
+        [ObservableProperty]
+        
+        [JsonProperty("children")]
+        public partial List<IGcode> Children { get; set; } = [];
+
         //public List<OctoPrintFile> Children; = new();
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("free")]
-        long free;
+        [ObservableProperty]
+        
+        [JsonProperty("free")]
+        public partial long Free { get; set; }
 
-        [ObservableProperty, JsonIgnore]
-        [property: JsonProperty("total")]
-        long total;
+        [ObservableProperty]
+        
+        [JsonProperty("total")]
+        public partial long Total { get; set; }
         #endregion
 
         #region Overrides
