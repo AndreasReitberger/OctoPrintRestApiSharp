@@ -28,7 +28,7 @@ jobs:
 #        & dotnet workload install maui --source https://api.nuget.org/v3/index.json
 #        & dotnet workload install android ios maccatalyst tvos macos maui wasm-tools maui-maccatalyst --source https://api.nuget.org/v3/index.json
     - name: Build
-      run: dotnet build --configuration Release ./source 
+      run: dotnet build --configuration Release ./src 
     - name: Package NuGets
       shell: pwsh
       run: |
@@ -40,7 +40,7 @@ jobs:
         echo "PACKAGE VERSION: $VERSION"
         
         New-Item -ItemType Directory -Force -Path .\artifacts
-        dotnet pack --output ./artifacts --configuration Release ./source/OctoPrintSharpApi/OctoPrintSharpApi.csproj
+        dotnet pack --output ./artifacts --configuration Release ./src/OctoPrintSharpApi/OctoPrintSharpApi.csproj
 #        dotnet pack --output ./artifacts --configuration Release -p:PackageVersion=$VERSION ./src/Print3dServer.Core/Print3dServer.Core.csproj
 #        echo "::set-output name=pkgverci::$VERSION"
         

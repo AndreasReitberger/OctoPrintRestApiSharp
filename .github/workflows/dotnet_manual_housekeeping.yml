@@ -28,7 +28,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: "fix"
           #only-changed-files: true # only works for PRs
-          workspace: "source/OctoPrintSharpApi.sln"
+          workspace: "src/OctoPrintSharpApi.sln"
     
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'
