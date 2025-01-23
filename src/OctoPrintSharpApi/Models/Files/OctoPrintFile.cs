@@ -160,11 +160,11 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         [ObservableProperty]
         [JsonIgnore]
-        public partial byte[] Image { get; set; } = [];
+        public partial byte[]? Image { get; set; } = [];
 
         [ObservableProperty]
         [JsonIgnore]
-        public partial byte[] Thumbnail { get; set; } = [];
+        public partial byte[]? Thumbnail { get; set; } = [];
 
         [ObservableProperty]
         [JsonIgnore]

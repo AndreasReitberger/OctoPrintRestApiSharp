@@ -29,7 +29,7 @@ namespace AndreasReitberger.API.OctoPrint
         public override async Task<List<IGcode>> GetFilesAsync()
         {
             List<OctoPrintModel> models = await GetAllFilesAsync(location: OctoPrintFileLocations.local.ToString()).ConfigureAwait(false);
-            return [.. models?.Select(gcode => gcode.File)];
+            return [.. models.Select(gcode => gcode.File)];
         }
         public async Task<List<OctoPrintModel>> GetAllFilesAsync(string location, string path = "", bool recursive = true)
         {

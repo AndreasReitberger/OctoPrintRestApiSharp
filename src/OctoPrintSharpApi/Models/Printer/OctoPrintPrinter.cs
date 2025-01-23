@@ -109,7 +109,7 @@ namespace AndreasReitberger.API.OctoPrint.Models
 
         [ObservableProperty]
         [JsonIgnore]
-        public partial string ActiveJobState { get; set; } = string.Empty;
+        public partial string? ActiveJobState { get; set; } = string.Empty;
 
         [ObservableProperty]
         [JsonIgnore]

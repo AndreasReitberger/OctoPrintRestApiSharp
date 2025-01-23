@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-		<Version>1.2.3-preview2</Version>
+		<Version>1.2.3-preview3</Version>
         <PackageIcon>ar_128.png</PackageIcon>
         <NeutralLanguage>en</NeutralLanguage>
 		<PackageProjectUrl>https://github.com/AndreasReitberger/OctoPrintRestApiSharp</PackageProjectUrl>
