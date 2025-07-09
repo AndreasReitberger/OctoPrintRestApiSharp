@@ -104,8 +104,13 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 OctoPrintPrinterProfiles? result = await GetPrinterProfilesAsync().ConfigureAwait(false);
-                List<IPrinter3d> profile = [.. result?.Profiles?.Select(pair => pair.Value)];
-                return profile;
+                IEnumerable<OctoPrintPrinter>? profiles = result?.Profiles?.Select(pair => pair.Value);
+                if (profiles is not null)
+                {
+                    List<IPrinter3d> profile = [.. profiles];
+                    return profile;
+                }
+                else return [];
             }
             catch (Exception exc)
             {
