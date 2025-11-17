@@ -198,11 +198,11 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
+                string command = $"files/{file.Origin}/{file.FilePath}";
                 object parameter = new
                 {
                     command = "copy",
-                    destination = destination
+                    destination
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
@@ -234,11 +234,11 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
+                string command = $"files/{file.Origin}/{file.FilePath}";
                 object parameter = new
                 {
                     command = "move",
-                    destination = destination
+                    destination
                 };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
@@ -270,7 +270,7 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                string command = string.Format("files/{0}/{1}", file.Origin, file.FilePath);
+                string command = $"files/{file.Origin}/{file.FilePath}";
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(

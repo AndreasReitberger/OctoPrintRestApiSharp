@@ -41,7 +41,7 @@ namespace AndreasReitberger.API.OctoPrint
             catch (Exception exc)
             {
                 OnError(new UnhandledExceptionEventArgs(exc, false));
-                return new OctoPrintPrinterProfiles() { Profiles = new Dictionary<string, OctoPrintPrinter>() };
+                return new OctoPrintPrinterProfiles() { Profiles = [] };
             }
         }
 
@@ -154,7 +154,7 @@ namespace AndreasReitberger.API.OctoPrint
                     {
                         sb.Append(excludes[i]);
                         if (i < excludes.Length - 1)
-                            sb.Append(",");
+                            sb.Append(',');
                     }
                     urlSegments.Add("exclude", sb.ToString());
                 }

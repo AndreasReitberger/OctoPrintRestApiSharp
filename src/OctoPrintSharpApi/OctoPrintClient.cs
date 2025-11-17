@@ -7,7 +7,7 @@ using AndreasReitberger.API.Print3dServer.Core.Interfaces;
 using AndreasReitberger.API.REST;
 using AndreasReitberger.API.REST.Events;
 using AndreasReitberger.API.REST.Interfaces;
-using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Shared.Core.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
@@ -121,49 +121,27 @@ namespace AndreasReitberger.API.OctoPrint
         }
         #endregion
 
-        #region ReadOnly
-
-        [JsonIgnore, System.Text.Json.Serialization.JsonIgnore, XmlIgnore]
-        public new bool IsReady
-        {
-            get
-            {
-                return (
-                    !string.IsNullOrEmpty(ServerAddress) && !string.IsNullOrEmpty(ApiKey)) && Port > 0 &&
-                    (
-                        // Address
-                        (Regex.IsMatch(ServerAddress, RegexHelper.IPv4AddressRegex) || Regex.IsMatch(ServerAddress, RegexHelper.IPv6AddressRegex) || Regex.IsMatch(ServerAddress, RegexHelper.Fqdn)) &&
-                        // API-Key
-                        (Regex.IsMatch(ApiKey, RegexHelper.OctoPrintApiKey))
-                    ||
-                        // Or validation rules are overriden
-                        OverrideValidationRules
-                    )
-                    ;
-            }
-        }
-        #endregion
-
         #endregion
 
         #region Constructor
-        public OctoPrintClient()
+        public OctoPrintClient() 
         {
             Id = Guid.NewGuid();
-            Target = Print3dServerTarget.OctoPrint;
-            ApiKeyRegexPattern = "";
-            WebSocketTarget = "/sockjs/websocket";
-            WebSocketMessageReceived += Client_WebSocketMessageReceived;
+            LoadDefaults();
             UpdateRestClientInstance();
         }
-        public OctoPrintClient(string serverAddress, string api, int port = 80, bool isSecure = false)
+        public OctoPrintClient(string serverAddress, string api) : base(serverAddress, api)
         {
             Id = Guid.NewGuid();
-            Target = Print3dServerTarget.OctoPrint;
-            ApiKeyRegexPattern = "";
-            WebSocketTarget = "/sockjs/websocket";
-            WebSocketMessageReceived += Client_WebSocketMessageReceived;
-            InitInstance(serverAddress, api, port, isSecure);
+            LoadDefaults();
+            InitInstance(serverAddress, api);
+            UpdateRestClientInstance();
+        }
+        public OctoPrintClient(string serverAddress) : base(serverAddress)
+        {
+            Id = Guid.NewGuid();
+            LoadDefaults();
+            InitInstance(serverAddress, "");
             UpdateRestClientInstance();
         }
         #endregion
@@ -196,14 +174,12 @@ namespace AndreasReitberger.API.OctoPrint
                 //OnError(new UnhandledExceptionEventArgs(exc, false));
             }
         }
-        public void InitInstance(string serverAddress, string api, int port = 3344, bool isSecure = false)
+        public new void InitInstance(string serverAddress, string api)
         {
             try
             {
-                ServerAddress = serverAddress;
+                ApiTargetPath = serverAddress;
                 ApiKey = api;
-                Port = port;
-                IsSecure = isSecure;
 
                 Instance = this;
 
@@ -227,6 +203,21 @@ namespace AndreasReitberger.API.OctoPrint
         #region Methods
 
         #region Private
+
+        #region Misc
+        void LoadDefaults()
+        {
+            PingInterval = 5;
+            Target = Print3dServerTarget.RepetierServer;
+            //WebSocketTarget = "/sockjs/websocket";
+#if NET6_0_OR_GREATER
+            ApiKeyRegex = RegexHelper.RepetierServerProApiKeyGeneratedRegex();
+#endif
+            WebCamTarget = "/printer/cammjpg/";
+            WebSocketMessageReceived -= Client_WebSocketMessageReceived;
+            WebSocketMessageReceived += Client_WebSocketMessageReceived;
+        }
+        #endregion
 
         #region Download
         public Task<byte[]?> DownloadFileFromUriAsync(string path)
@@ -409,12 +400,12 @@ namespace AndreasReitberger.API.OctoPrint
 
         public new Task StartListeningAsync(bool stopActiveListening = false, string[]? commandsOnConnect = null) => StartListeningAsync(WebSocketTargetUri, stopActiveListening, () => Task.Run(async () =>
         {
-            List<Task> tasks = new()
-            {
+            List<Task> tasks =
+            [
                 RefreshPrinterStateAsync(),
                 RefreshCurrentPrintInfosAsync(),
                 RefreshConnectionSettingsAsync(),
-            };
+            ];
             await Task.WhenAll(tasks).ConfigureAwait(false);
         }), commandsOnConnect: commandsOnConnect);
 
@@ -516,10 +507,8 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 return
-                    !(ServerAddress == temp.ServerAddress &&
-                        Port == temp.Port &&
-                        ApiKey == temp.ApiKey &&
-                        IsSecure == temp.IsSecure
+                    !(ApiTargetPath == temp.ApiTargetPath &&
+                        ApiKey == temp.ApiKey
                         );
             }
             catch (Exception exc)
@@ -615,9 +604,9 @@ namespace AndreasReitberger.API.OctoPrint
                     parameter = new
                     {
                         command = "connect",
-                        printerProfile = printerProfile,
-                        save = save,
-                        autoconnect = autoconnect
+                        printerProfile,
+                        save,
+                        autoconnect
                     };
                 }
                 else if (string.IsNullOrEmpty(port))
@@ -625,10 +614,10 @@ namespace AndreasReitberger.API.OctoPrint
                     parameter = new
                     {
                         command = "connect",
-                        baudrate = baudrate,
-                        printerProfile = printerProfile,
-                        save = save,
-                        autoconnect = autoconnect
+                        baudrate,
+                        printerProfile,
+                        save,
+                        autoconnect
                     };
                 }
                 else
@@ -636,10 +625,10 @@ namespace AndreasReitberger.API.OctoPrint
                     parameter = new
                     {
                         command = "connect",
-                        port = port,
-                        printerProfile = printerProfile,
-                        save = save,
-                        autoconnect = autoconnect
+                        port,
+                        printerProfile,
+                        save,
+                        autoconnect
                     };
                 }
 
@@ -761,13 +750,13 @@ namespace AndreasReitberger.API.OctoPrint
         {
             try
             {
-                List<string> axes = new();
+                List<string> axes = [];
                 if (x) axes.Add("x");
                 if (y) axes.Add("y");
                 if (z) axes.Add("z");
 
                 string command = "printer/printhead";
-                object parameter = new { command = "home", axes = axes };
+                object parameter = new { command = "home", axes };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -912,11 +901,11 @@ namespace AndreasReitberger.API.OctoPrint
                 string command = "printer/tool";
                 object? parameter = null;
                 if (tool0 != int.MinValue && tool1 != int.MinValue)
-                    parameter = new { command = "target", targets = new { tool0 = tool0, tool1 = tool1 } };
+                    parameter = new { command = "target", targets = new { tool0, tool1 } };
                 else if (tool0 != int.MinValue)
-                    parameter = new { command = "target", targets = new { tool0 = tool0 } };
+                    parameter = new { command = "target", targets = new { tool0 } };
                 else
-                    parameter = new { command = "target", targets = new { tool1 = tool1 } };
+                    parameter = new { command = "target", targets = new { tool1 } };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -949,7 +938,7 @@ namespace AndreasReitberger.API.OctoPrint
             {
 
                 string command = "printer/tool";
-                object parameter = new { command = "offset", offsets = new { tool0 = tool0, tool1 = tool1 } };
+                object parameter = new { command = "offset", offsets = new { tool0, tool1 } };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -1013,7 +1002,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = "printer/tool";
-                object parameter = new { command = "extrude", amount = length, speed = speed };
+                object parameter = new { command = "extrude", amount = length, speed };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -1157,7 +1146,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = "printer/bed";
-                object parameter = new { command = "target", target = target };
+                object parameter = new { command = "target", target };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -1189,7 +1178,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = "printer/bed";
-                object parameter = new { command = "offset", offset = offset };
+                object parameter = new { command = "offset", offset };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -1265,7 +1254,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = "printer/chamber";
-                object parameter = new { command = "target", target = target };
+                object parameter = new { command = "target", target };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
@@ -1297,7 +1286,7 @@ namespace AndreasReitberger.API.OctoPrint
             try
             {
                 string command = "printer/chamber";
-                object parameter = new { command = "offset", offset = offset };
+                object parameter = new { command = "offset", offset };
 
                 string targetUri = $"{OctoPrintCommands.Api}";
                 IRestApiRequestRespone? result = await SendRestApiRequestAsync(
