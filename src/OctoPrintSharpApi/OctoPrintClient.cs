@@ -13,7 +13,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -221,8 +220,8 @@ namespace AndreasReitberger.API.OctoPrint
 
         #region Download
         public Task<byte[]?> DownloadFileFromUriAsync(string path)
-            => DownloadFileFromUriAsync(path: path, authHeaders: AuthHeaders, urlSegments: null, timeout: 100000);
-        public Task<byte[]?> DownloadFileFromUriAsync(string path, int timeout = 100000)
+            => DownloadFileFromUriAsync(path: path, authHeaders: AuthHeaders, urlSegments: null, timeout: 100);
+        public Task<byte[]?> DownloadFileFromUriAsync(string path, int timeout = 100)
             => DownloadFileFromUriAsync(path: path, authHeaders: AuthHeaders, urlSegments: null, timeout: timeout);
         #endregion
 
@@ -457,9 +456,9 @@ namespace AndreasReitberger.API.OctoPrint
 
         public Task CheckOnlineAsync(CancellationTokenSource cts) => CheckOnlineAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", cts);
 
-        public Task<bool> CheckIfApiIsValidAsync(int timeout = 10000) => CheckIfApiIsValidAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", timeout);
+        public Task<bool> CheckIfApiIsValidAsync(int timeout = 10) => CheckIfApiIsValidAsync($"{OctoPrintCommands.Base}", AuthHeaders, "version", timeout);
 
-        public Task CheckServerIfApiIsValidAsync(int Timeout = 10000) => CheckIfApiIsValidAsync(Timeout);
+        public Task CheckServerIfApiIsValidAsync(int Timeout = 10) => CheckIfApiIsValidAsync(Timeout);
 
         #endregion
 

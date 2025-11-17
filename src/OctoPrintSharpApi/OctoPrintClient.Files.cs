@@ -389,8 +389,8 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         public override Task<byte[]?> DownloadFileAsync(string downloadUri)
-            => DownloadFileFromUriAsync(path: downloadUri, authHeaders: AuthHeaders, timeout: 100000);
-        public Task<byte[]?> DownloadFileAsync(string downloadUri, int timeout = 100000)
+            => DownloadFileFromUriAsync(path: downloadUri, authHeaders: AuthHeaders, timeout: 100);
+        public Task<byte[]?> DownloadFileAsync(string downloadUri, int timeout = 100)
             => DownloadFileFromUriAsync(path: downloadUri, authHeaders: AuthHeaders, timeout: timeout);
         #endregion
 
