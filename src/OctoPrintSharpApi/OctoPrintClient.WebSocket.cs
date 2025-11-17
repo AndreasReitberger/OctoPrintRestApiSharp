@@ -1,5 +1,4 @@
 ﻿using AndreasReitberger.API.OctoPrint.Models;
-using AndreasReitberger.API.Print3dServer.Core.Events;
 using AndreasReitberger.API.REST.Events;
 using Newtonsoft.Json;
 using System;
@@ -8,7 +7,6 @@ namespace AndreasReitberger.API.OctoPrint
 {
     public partial class OctoPrintClient
     {
-
         #region WebSocket
 
         protected void Client_WebSocketMessageReceived(object? sender, WebsocketEventArgs e)
@@ -46,6 +44,5 @@ namespace AndreasReitberger.API.OctoPrint
         }
 
         #endregion
-
     }
 }
