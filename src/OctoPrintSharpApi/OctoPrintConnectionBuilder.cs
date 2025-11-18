@@ -58,6 +58,12 @@ namespace AndreasReitberger.API.OctoPrint
                 _client.EnablePing = enablePing;
                 return this;
             }
+            public OctoPrintConnectionBuilder WithRefreshInterval(int refreshInterval = 1, int onRefreshInterval = 1)
+            {
+                _client.RefreshInterval = refreshInterval;
+                _client.OnRefreshInterval = onRefreshInterval;
+                return this;
+            }
             #endregion
         }
     }
