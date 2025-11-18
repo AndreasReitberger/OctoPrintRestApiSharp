@@ -23,32 +23,6 @@ namespace AndreasReitberger.API.OctoPrint
     public partial class OctoPrintClient : Print3dServerClient, IPrint3dServerClient
     {
 
-        #region Instance
-        static OctoPrintClient? _instance = null;
-        static readonly object Lock = new();
-        public new static OctoPrintClient Instance
-        {
-            get
-            {
-                lock (Lock)
-                {
-                    _instance ??= new OctoPrintClient();
-                }
-                return _instance;
-            }
-            set
-            {
-                if (_instance == value) return;
-                lock (Lock)
-                {
-                    _instance = value;
-                }
-            }
-
-        }
-
-        #endregion
-
         #region Properties
 
         #region General
@@ -133,14 +107,12 @@ namespace AndreasReitberger.API.OctoPrint
         {
             Id = Guid.NewGuid();
             LoadDefaults();
-            InitInstance(serverAddress, api);
             UpdateRestClientInstance();
         }
         public OctoPrintClient(string serverAddress) : base(serverAddress)
         {
             Id = Guid.NewGuid();
             LoadDefaults();
-            InitInstance(serverAddress, "");
             UpdateRestClientInstance();
         }
         #endregion
@@ -157,45 +129,6 @@ namespace AndreasReitberger.API.OctoPrint
                 */
             }
             WebSocketMessageReceived -= Client_WebSocketMessageReceived;
-        }
-        #endregion
-
-        #region Init
-
-        public static void UpdateSingleInstance(OctoPrintClient Inst)
-        {
-            try
-            {
-                Instance = Inst;
-            }
-            catch (Exception)
-            {
-                //OnError(new UnhandledExceptionEventArgs(exc, false));
-            }
-        }
-        public new void InitInstance(string serverAddress, string api)
-        {
-            try
-            {
-                ApiTargetPath = serverAddress;
-                ApiKey = api;
-
-                Instance = this;
-
-                if (Instance is not null)
-                {
-                    Instance.UpdateInstance = false;
-                    Instance.IsInitialized = true;
-                }
-                UpdateInstance = false;
-                IsInitialized = true;
-            }
-            catch (Exception exc)
-            {
-                //UpdateInstance = true;
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                IsInitialized = false;
-            }
         }
         #endregion
 
@@ -1880,18 +1813,8 @@ namespace AndreasReitberger.API.OctoPrint
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            try
-            {
-                return FullWebAddress;
-            }
-            catch (Exception exc)
-            {
-                OnError(new UnhandledExceptionEventArgs(exc, false));
-                return string.Empty;
-            }
-        }
+        public override string ToString() => FullWebAddress;
+
         public override bool Equals(object? obj)
         {
             if
@@ -1899,11 +1822,8 @@ namespace AndreasReitberger.API.OctoPrint
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
-
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
 
     }

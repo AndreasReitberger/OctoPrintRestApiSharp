@@ -75,15 +75,15 @@ namespace OctoPrintSharpApi.NUnitTest
             try
             {
                 string host = $"{(_ssl ? "https://" : "http://")}{_host}:{_port}";
-                OctoPrintClient.Instance = new OctoPrintClient(host)
+                var sClient = new OctoPrintClient(host)
                 {
                     FreeDiskSpace = 1523165212,
                     TotalDiskSpace = 65621361616161,
                     ServerName = "My OctoPrint Server"
                 };
-                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
+                sClient.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
 
-                var serializedString = System.Text.Json.JsonSerializer.Serialize(OctoPrintClient.Instance, OctoPrintClient.DefaultJsonSerializerSettings);
+                var serializedString = System.Text.Json.JsonSerializer.Serialize(sClient, OctoPrintClient.DefaultJsonSerializerSettings);
                 var serializedObject = System.Text.Json.JsonSerializer.Deserialize<OctoPrintClient>(serializedString, OctoPrintClient.DefaultJsonSerializerSettings);
                 Assert.That(serializedObject is OctoPrintClient server && server != null);
 
@@ -104,15 +104,15 @@ namespace OctoPrintSharpApi.NUnitTest
             try
             {
                 string host = $"{(_ssl ? "https://" : "http://")}{_host}:{_port}";
-                OctoPrintClient.Instance = new OctoPrintClient(host)
+                var sClient = new OctoPrintClient(host)
                 {
                     FreeDiskSpace = 1523165212,
                     TotalDiskSpace = 65621361616161,
                     ServerName = "My OctoPrint Server"
                 };
-                OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
+                sClient.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
 
-                var serializedString = JsonConvert.SerializeObject(OctoPrintClient.Instance, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
+                var serializedString = JsonConvert.SerializeObject(sClient, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
                 var serializedObject = JsonConvert.DeserializeObject<OctoPrintClient>(serializedString, OctoPrintClient.DefaultNewtonsoftJsonSerializerSettings);
                 Assert.That(serializedObject is OctoPrintClient server && server != null);
 
@@ -246,15 +246,15 @@ namespace OctoPrintSharpApi.NUnitTest
                 using (var fileStream = new FileStream(serverConfig, FileMode.Create))
                 {
                     string host = $"{(_ssl ? "https://" : "http://")}{_host}:{_port}";
-                    OctoPrintClient.Instance = new OctoPrintClient(host)
+                    var sClient = new OctoPrintClient(host)
                     {
                         FreeDiskSpace = 1523165212,
                         TotalDiskSpace = 65621361616161,
                         ServerName = "My OctoPrint Server"
                     };
-                    OctoPrintClient.Instance.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
+                    sClient.SetProxy(true, "https://testproxy.de", 447, "User", "my_awesome_pwd", true);
 
-                    xmlSerializer.Serialize(fileStream, OctoPrintClient.Instance);
+                    xmlSerializer.Serialize(fileStream, sClient);
                     Assert.That(File.Exists(Path.Combine(dir, "server.xml")));
                 }
 
